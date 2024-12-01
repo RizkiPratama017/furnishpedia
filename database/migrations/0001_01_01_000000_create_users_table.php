@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'seller', 'buyer']);
             $table->boolean('is_active')->default(true);
             $table->string('remember_token', 100)->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
 
@@ -39,6 +40,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+            
         });
     }
 
