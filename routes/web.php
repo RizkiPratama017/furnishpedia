@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('home');
+    return view('home', ['title' => 'Home Page']);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard', ['title' => 'Dashboard']);
@@ -24,7 +25,10 @@ Route::get('/dashboard-category', function () {
         'title' => 'Dashboard Kategori',
         'categories' => $categories
     ]);
+});
 
+Route::get('/profile', function () {
+    return view('profile', ['title' => 'Profile']);
 });
 
 
