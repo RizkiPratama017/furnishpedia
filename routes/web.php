@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
+    return view('home');
+
+Route::get('/dashboard', function () {
     return view('dashboard', ['title' => 'Dashboard']);
 });
 
@@ -20,4 +24,19 @@ Route::get('/dashboard-category', function () {
         'title' => 'Dashboard Kategori',
         'categories' => $categories
     ]);
+
 });
+
+
+Route::view('/login', 'login')->name('login');
+Route::view('/register', 'register')->name('register');
+
+// Form Lupa Password
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+// Dummy routes untuk login sosial
+Route::get('/login/{provider}', function ($provider) {
+    return "Login with $provider not implemented yet!";
+})->name('social.login');
