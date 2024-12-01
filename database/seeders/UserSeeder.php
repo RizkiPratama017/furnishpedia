@@ -23,7 +23,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role' => 'admin',
             'is_active' => true,
-            'remember_token' => Str::random(10)
+            'remember_token' => Str::random(10),
+            'image' => 'default.png',
         ]);
 
         user::factory(10)->create();
