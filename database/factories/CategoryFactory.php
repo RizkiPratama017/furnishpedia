@@ -17,11 +17,27 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        static $categories = [
+            'Meja',
+            'Kursi',
+            'Sofa',
+            'Lemari',
+            'Tempat Tidur',
+            'Rak Buku',
+            'Peralatan Dapur',
+            'Tekstil',
+            'Lampu',
+            'Dekorasi',
+            'Peralatan Kamar Mandi',
+            'Peralatan Anak'
+        ];
+
+        // Ambil satu kategori dari array dan hapus untuk menghindari duplikasi
+        $name = array_shift($categories);
+
         return [
-
-            'name' => fake()->name(),
-            'slug' => Str::slug(fake()->sentence(rand(1,2),false))
-
+            'name' => $name,
+            'slug' => Str::slug($name),
         ];
     }
 }

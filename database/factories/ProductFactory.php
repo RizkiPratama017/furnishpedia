@@ -18,27 +18,41 @@ class ProductFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-{
-    return [    
-        "user_id" => User::whereNotIn('role', ['admin', 'buyer'])->inRandomOrder()->first()->id,
-        "category_id" => Category::inRandomOrder()->first()->id,
-        "name" => fake()->randomElement([
-            'Laptop',
-            'Smartphone',
-            'Headphone',
-            'Tablet',
-            'Smartwatch',
-            'Keyboard',
-            'Mouse',
-            'Monitor',
-            'Printer',
-            'Speaker'
-        ]),
-        "description" => fake()->sentence(),
-        "price" => fake()->randomFloat(2, 1, 100),
-        "stock" => fake()->numberBetween(1, 100),
-        "image" => fake()->imageUrl()
-    ];
-}
+    {
 
+        $category = Category::inRandomOrder()->first();
+
+
+        $productNames = [
+            'Meja' => ['Meja Makan', 'Meja Kerja', 'Meja Kopi', 'Meja Belajar', 'Meja Lipat'],
+            'Kursi' => ['Kursi Makan', 'Kursi Kantor', 'Kursi Santai', 'Kursi Gaming', 'Kursi Lipat'],
+            'Sofa' => ['Sofa 2 Dudukan', 'Sofa Sudut', 'Sofa Tidur', 'Sofa Modular'],
+            'Lemari' => ['Lemari Pakaian', 'Lemari Dapur', 'Lemari Buku', 'Lemari Arsip'],
+            'Tempat Tidur' => ['Tempat Tidur King Size', 'Tempat Tidur Queen Size', 'Tempat Tidur Anak'],
+            'Rak Buku' => ['Rak Buku Dinding', 'Rak Buku Kayu', 'Rak Buku Minimalis'],
+            'Peralatan Dapur' => ['Panci', 'Wajan', 'Pisau Dapur', 'Blender', 'Talenan'],
+            'Tekstil' => ['Sprei', 'Selimut', 'Handuk', 'Gorden', 'Karpet'],
+            'Lampu' => ['Lampu Gantung', 'Lampu Meja', 'Lampu Lantai', 'Lampu LED'],
+            'Dekorasi' => ['Vas Bunga', 'Bingkai Foto', 'Lilin Aromaterapi', 'Tanaman Hias Buatan'],
+            'Peralatan Kamar Mandi' => ['Handuk Mandi', 'Tirai Mandi', 'Rak Penyimpanan', 'Keset Kamar Mandi'],
+            'Peralatan Anak' => ['Tempat Tidur Bayi', 'Meja Belajar Anak', 'Mainan Edukasi', 'Rak Mainan']
+        ];
+
+
+        $categoryName = $category->name;
+        $productNamesForCategory = $productNames[$categoryName];
+
+
+        $name = fake()->randomElement($productNamesForCategory);
+
+        return [
+            "user_id" => User::whereNotIn('role', ['penjual', 'buyer'])->inRandomOrder()->first()->id,
+            "category_id" => $category->id,
+            "name" => $name,
+            "description" => Str::slug(fake()->sentence()),
+            "price" => fake()->randomFloat(2, 1, 100),
+            "stock" => fake()->numberBetween(1, 100),
+            "image" => fake()->imageUrl(),
+        ];
+    }
 }
