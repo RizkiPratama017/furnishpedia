@@ -2,7 +2,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="img/r.jpg" class="h-8 rounded" alt="Ruma.id Logo" />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Ruma.id</span>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Furnishpedia</span>
         </a>
         <button data-collapse-toggle="navbar-hamburger" type="button"
             class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
@@ -27,10 +27,6 @@
                 <li>
                     <a href="#"
                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 hover:text-black">Product</a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="block py-2 px-3 text-white rounded hover:bg-gray-100 hover:text-black">About</a>
                 </li>
             </ul>
         </div>
