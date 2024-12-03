@@ -12,7 +12,6 @@ Route::get('/', function () {
     return view('home', ['title' => 'Home Page']);
 });
 
-//Middleware Auth
 Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard', ['title' => 'Dashboard']);
 });
