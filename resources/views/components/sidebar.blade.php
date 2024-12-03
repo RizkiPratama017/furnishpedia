@@ -5,6 +5,10 @@
         <li><a href="/dashboard-category" class="block px-2 py-1 hover:bg-gray-700 rounded">Kategori</a></li>
         <li><a href="/dashboard-product" class="block px-2 py-1 hover:bg-gray-700 rounded">Produk</a></li>
         <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">Profile</a></li>
-        <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">Logout</a></li>
+        {{-- <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">Logout</a></li> --}}
+        <form action="/logout" method="POST">
+            @csrf
+                <button type="submit" class="block px-2 py-1 hover:bg-gray-700 rounded"> Sign out </button>
+        </form>
     </ul>
 </aside>
