@@ -50,8 +50,8 @@ class ProductFactory extends Factory
             "category_id" => $category->id,
             "name" => $name,
             "description" => Str::slug(fake()->sentence()),
-            "price" => fake()->randomFloat(0, 10000, 10000000),
-            "stock" => fake()->numberBetween(1, 50),
+            "price" => fake()->randomFloat(2, 1, 100),
+            "stock" => fake()->numberBetween(1, 100),
             "image" => fake()->imageUrl(),
         ];
     }

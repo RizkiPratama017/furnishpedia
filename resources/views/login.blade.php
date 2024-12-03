@@ -35,7 +35,7 @@
             
             <div class="flex justify-between items-center mb-4">
                 <label class="flex items-center text-sm text-gray-600">
-                    <input type="checkbox" name="remember" class="mr-2"> Remember Me
+                    <input type="checkbox" id="remember" name="remember" class="mr-2"> Remember Me
                 </label>
                 <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
             </div>
