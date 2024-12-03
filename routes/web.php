@@ -12,11 +12,18 @@ Route::get('/', function () {
     return view('home', ['title' => 'Home Page']);
 });
 
-Route::get('/dashboard', function () {
+Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard', ['title' => 'Dashboard']);
 });
 
-Route::get('/dashboard/product', function () {
+Route::middleware('auth')->get('/dashboard/category', function () {
+    $categories = App\Models\Category::paginate(5);
+    return view('dashboard-category', [
+        'title' => 'Dashboard Kategori',
+        'categories' => $categories
+    ]);
+});
+Route::middleware('auth')->get('/dashboard/product', function () {
     $products = App\Models\Product::paginate(5);
     $categories = \App\Models\Category::all();
     return view('dashboard-product', [
@@ -26,15 +33,12 @@ Route::get('/dashboard/product', function () {
     ]);
 });
 
-Route::get('/dashboard/category', function () {
-    $categories = App\Models\Category::paginate(5);
-    return view('dashboard-category', [
-        'title' => 'Dashboard Kategori',
-        'categories' => $categories
-    ]);
+Route::middleware('auth')->get('/dashboard/profile', function () {
+    return view('dashboard', ['title' => 'Dashboard']);
 });
 
-Route::get('/dashboard/edit', function () {
+
+Route::middleware('auth')->get('/dashboard/edit', function () {
     $categories = App\Models\Category::paginate(5);
     return view('dashboard-edit', [
         'title' => 'Dashboard Edit',
@@ -64,25 +68,7 @@ Route::get('/login/{provider}', function ($provider) {
 Route::resource('/cart', CartController::class);
 
 //login
-Route::get('/login', [LoginController::class, 'index'])->name('login')-> middleware('guest');
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
 //logout
 Route::post('/logout', [LoginController::class, 'logout']);
-
-
-//Middleware Auth
-Route::middleware('auth')->get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
-});
-
-Route::middleware('auth')->get('/dashboard-category', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
-});
-
-Route::middleware('auth')->get('/dashboard-product', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
-});
-
-Route::middleware('auth')->get('/dashboard-profile', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
-});

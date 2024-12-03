@@ -54,9 +54,9 @@
         </li>
         <li>
             <form action="/logout" method="POST">
-            @csrf
-                <button type="submit" class="block px-2 py-1 hover:bg-gray-700 rounded"> Sign out </button>
-        </form>
+                @csrf
+                <button type="submit" class="block px-2 py-1 hover:bg-gray-700 rounded"> Logout </button>
+            </form>
         </li>
     </ul>
 </aside>
