@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', function () {
@@ -44,3 +45,5 @@ Route::get('/forgot-password', function () {
 Route::get('/login/{provider}', function ($provider) {
     return "Login with $provider not implemented yet!";
 })->name('social.login');
+
+Route::resource('/cart', CartController::class);
