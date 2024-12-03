@@ -19,18 +19,19 @@ class LoginController extends Controller
             'active' => 'login'
         ]);
     }
-    public function authenticate(Request $request){
+    public function authenticate(Request $request)
+    {
 
         $credentials = $request->validate([
             // 'email'=>'required|email:dns',
-            'email'=>'required|email',
-            'password'=>'required'
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
         //remember
         $remember = $request->has('remember');
 
-        if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }
@@ -38,7 +39,8 @@ class LoginController extends Controller
         return back()->with('loginError', 'Login failed!');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
 
         // Invalidate session
@@ -46,6 +48,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect ke halaman login
-        return redirect('/login');
+        return redirect('/');
     }
 }
