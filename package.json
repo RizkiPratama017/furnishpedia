@@ -18,6 +18,7 @@
     "dependencies": {
         "alpinejs": "^3.14.5",
         "flowbite": "^2.5.2",
-        "react-daisyui": "^5.0.5"
+        "react-daisyui": "^5.0.5",
+        "apexcharts": "^4.1.0"
     }
 }
