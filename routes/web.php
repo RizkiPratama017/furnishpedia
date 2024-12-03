@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\LoginController;
 
 
 Route::get('/', function () {
@@ -61,3 +62,27 @@ Route::get('/login/{provider}', function ($provider) {
 })->name('social.login');
 
 Route::resource('/cart', CartController::class);
+
+//login
+Route::get('/login', [LoginController::class, 'index'])->name('login')-> middleware('guest');
+Route::post('/login', [LoginController::class, 'authenticate']);
+//logout
+Route::post('/logout', [LoginController::class, 'logout']);
+
+
+//Middleware Auth
+Route::middleware('auth')->get('/dashboard', function () {
+    return view('dashboard', ['title' => 'Dashboard']); 
+});
+
+Route::middleware('auth')->get('/dashboard-category', function () {
+    return view('dashboard', ['title' => 'Dashboard']); 
+});
+
+Route::middleware('auth')->get('/dashboard-product', function () {
+    return view('dashboard', ['title' => 'Dashboard']); 
+});
+
+Route::middleware('auth')->get('/dashboard-profile', function () {
+    return view('dashboard', ['title' => 'Dashboard']); 
+});

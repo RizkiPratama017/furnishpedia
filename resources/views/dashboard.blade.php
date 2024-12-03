@@ -1,5 +1,4 @@
 <x-dashboard-layout>
-
     <x-slot:title>{{ $title }}</x-slot:title>
 
     <div class="flex flex-1 min-h-full">
@@ -8,12 +7,10 @@
 
         {{-- Main --}}
         <main class="flex-1 bg-white overflow-y-auto">
-
             {{-- Navbar --}}
             <div>
                 <x-dashboard-navbar></x-dashboard-navbar>
             </div>
-
             {{-- Chart Line --}}
             <div class="m-10 flex flex-row">
 
@@ -91,12 +88,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
         </main>
     </div>
-
 </x-dashboard-layout>
