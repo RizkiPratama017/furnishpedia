@@ -48,7 +48,7 @@
             <div class="flex gap-4">
                 <a href="{{ route('social.login', 'facebook') }}" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Facebook</a>
                 <a href="{{ route('social.login', 'github') }}" class="flex-1 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800">GitHub</a>
-                <a href="{{ route('social.login', 'google') }}" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Google</a>
+                <a href="{{ route('google-auth') }}" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Google</a>
             </div>
         </div>
     </div>
