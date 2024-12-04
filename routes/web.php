@@ -5,7 +5,11 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 
 Route::get('/', function () {
@@ -53,7 +57,7 @@ Route::get('/profile', function () {
 
 
 Route::view('/login', 'login')->name('login');
-Route::view('/register', 'register')->name('register');
+// Route::view('/register', 'register')->name('register');
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {
@@ -72,3 +76,12 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/login', [LoginController::class, 'authenticate']);
 //logout
 Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');
+Route::post('/register', [RegisterController::class, 'store']);
+
+//google API
+Route::controller(GoogleAuthController::class)->group(function () {
+    Route::get('auth/google', 'redirect')->name('google-auth');
+    Route::get('auth/google/callback', 'callbackGoogle');
+});

@@ -1,1 +1,4 @@
-*.sqlite*
+# *.sqlite*
+
+# Ignoring SQLite database file
+database.sqlite

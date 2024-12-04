@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -14,7 +15,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::with('product')
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', Auth::user()->id)
             ->get();
 
         return view('cart.index', [
@@ -53,7 +54,7 @@ class CartController extends Controller
 
         Cart::updateOrCreate(
             [
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'product_id' => $validated['product_id'],
             ],
             [
