@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 
 Route::get('/', function () {
@@ -35,7 +39,7 @@ Route::get('/profile', function () {
 
 
 Route::view('/login', 'login')->name('login');
-Route::view('/register', 'register')->name('register');
+// Route::view('/register', 'register')->name('register');
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {
@@ -55,20 +59,43 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 //logout
 Route::post('/logout', [LoginController::class, 'logout']);
 
+//register
+Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');
+Route::post('/register', [RegisterController::class, 'store']);
+
 
 //Middleware Auth
-Route::middleware('auth')->get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
+Route::middleware('auth')->group(function () {
+
+    //dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard', ['title' => 'Dashboard']);
+    })->name('dashboard');
+
+    //dashboard-product
+    Route::get('/dashboard-product', function () {
+        $products = App\Models\Product::all();
+        return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
+    });
+
+    //dashboard-category
+    Route::get('/dashboard-category', function () {
+        $categories = App\Models\Category::all();
+        return view('dashboard-category', ['title' => 'Dashboard Kategori', 'categories' => $categories]);
+    });
+
+    //profile
+    Route::get('/dashboard-profile', function () {
+        return view('profile', ['title' => 'Profile']);
+    });
 });
 
-Route::middleware('auth')->get('/dashboard-category', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
+
+
+//google API
+Route::controller(GoogleAuthController::class)->group(function () {
+    Route::get('auth/google', 'redirect')->name('google-auth');
+    Route::get('auth/google/callback', 'callbackGoogle');
 });
 
-Route::middleware('auth')->get('/dashboard-product', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
-});
 
-Route::middleware('auth')->get('/dashboard-profile', function () {
-    return view('dashboard', ['title' => 'Dashboard']); 
-});
