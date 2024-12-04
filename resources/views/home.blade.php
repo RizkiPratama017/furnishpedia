@@ -5,10 +5,9 @@
         <x-navbar></x-navbar>
     </header>
 
-    <body class="container mx-auto flex justify-center ">
+    <div class="container mx-auto px-4">
         {{-- Carousel --}}
-        <div id="default-carousel" class="relative w-full" data-carousel="slide">
-            <!-- Carousel wrapper -->
+        <div id="default-carousel" class="relative w-full mb-10" data-carousel="slide">
             <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                 <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
@@ -79,166 +78,61 @@
         </div>
         {{-- Carousel --}}
 
-
         <div class="text-center p-10 mt-10">
             <h1 class="font-bold text-4xl mb-4">Daftar Produk</h1>
             <h1 class="text-3xl">Produk</h1>
         </div>
 
-
+        {{-- Produk --}}
         <section id="Projects"
             class="w-full max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-4 mx-auto">
+            @foreach ($products as $product)
+                <div
+                    class="w-full md:w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
+                    <a href="{{ route('products.show', $product->id) }}">
+                        <img src="{{ $product->image }}" alt="{{ $product->name }}"
+                            class="h-80 w-full object-cover rounded-t-xl" />
+                        <div class="px-4 py-3">
+                            <span class="text-gray-400 mr-3 uppercase text-xs">{{ $product->category->name }}</span>
+                            <p class="text-lg font-bold text-black truncate block capitalize">{{ $product->name }}</p>
+                            <div class="flex items-center mt-3">
+                                <p class="text-lg font-semibold text-black cursor-auto">
+                                    Rp.{{ number_format($product->price, 0, ',', '.') }}</p>
+                                @if ($product->original_price)
+                                    <del>
+                                        <p class="text-sm text-gray-600 ml-2">
+                                            Rp.{{ number_format($product->original_price, 0, ',', '.') }}</p>
+                                    </del>
+                                @endif
+                                <div class="ml-auto">
+                                    <!-- Tombol Keranjang tanpa stok -->
+                                    <form action="{{ route('cart.store') }}" method="POST" class="flex items-center">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <button type="submit"
+                                            class="flex items-center justify-center w-8 h-8 bg-gray-200 text-white rounded-full transition-all duration-300 hover:bg-gray-300 active:ring-2 active:ring-yellow-400">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+                                            </svg>
+                                        </button>
+                                    </form>
 
-            {{--  mulai produk 1  --}}
-            <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
-                <a href="#">
-                    <img src="https://images.pexels.com/photos/6508346/pexels-photo-6508346.jpeg?auto=compress&cs=tinysrgb&w=600"
-                        alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">IKEO</span>
-                        <p class="text-lg font-bold text-black truncate block capitalize">Lemari</p>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">Rp.150K</p>
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">Rp.199K</p>
-                            </del>
-                            <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                    fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                                    <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                                </svg></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            {{-- akhir produk 1 --}}
-
-            <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
-                <a href="#">
-                    <img src="https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxhbXB8ZW58MHx8MHx8fDA%3D"
-                        alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">Sanex</span>
-                        <p class="text-lg font-bold text-black truncate block capitalize">Lampu</p>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">Rp.49K</p>
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">Rp.100K</p>
-                            </del>
-                            <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                    height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                                    <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                                </svg></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
-                <a href="#">
-                    <img src="https://plus.unsplash.com/premium_photo-1725075084469-b9c0272fdcf1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2xvY2t8ZW58MHx8MHx8fDA%3D"
-                        alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">sumsang</span>
-                        <p class="text-lg font-bold text-black truncate block capitalize">Jam Dinding</p>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">Rp.100K</p>
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">Rp.150K</p>
-                            </del>
-                            <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                    height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                                    <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                                </svg></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
-                <a href="#">
-                    <img src="https://images.unsplash.com/photo-1499933374294-4584851497cc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fGZ1cm5pdHVyZXxlbnwwfHwwfHx8MA%3D%3D"
-                        alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">IKEO</span>
-                        <p class="text-lg font-bold text-black truncate block capitalize">Meja</p>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">Rp.99K</p>
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">Rp.199K</p>
-                            </del>
-                            <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                    height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                                    <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                                </svg></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
-                <a href="#">
-                    <img src="https://images.unsplash.com/photo-1506898667547-42e22a46e125?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGZ1cm5pdHVyZXxlbnwwfHwwfHx8MA%3D%3D"
-                        alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">IKEO</span>
-                        <p class="text-lg font-bold text-black truncate block capitalize">Sofa Single</p>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">Rp.149K</p>
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">Rp.200K</p>
-                            </del>
-                            <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                    height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                                    <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                                </svg></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
-                <a href="#">
-                    <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnVybml0dXJlfGVufDB8fDB8fHww"
-                        alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">IKEO</span>
-                        <p class="text-lg font-bold text-black truncate block capitalize">Sofa Double</p>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">Rp.249K</p>
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">Rp.399K</p>
-                            </del>
-                            <div class="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                    height="20" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                                    <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                                </svg></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-
+                    </a>
+                </div>
+            @endforeach
         </section>
 
-    </body>
+
+
+    </div>
+
 
     <x-footer></x-footer>
 </x-layout>

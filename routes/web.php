@@ -13,7 +13,11 @@ use Illuminate\Http\Request;
 
 
 Route::get('/', function () {
-    return view('home', ['title' => 'Home Page']);
+    $products = App\Models\Product::take(6)->get();
+    return view('home', [
+        'title' => 'Home Page',
+        'products' => $products
+    ]);
 });
 
 Route::middleware('auth')->get('/dashboard', function () {
@@ -55,10 +59,6 @@ Route::get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
 
-
-Route::view('/login', 'login')->name('login');
-// Route::view('/register', 'register')->name('register');
-
 // Form Lupa Password
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
@@ -85,3 +85,5 @@ Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
     Route::get('auth/google/callback', 'callbackGoogle');
 });
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
