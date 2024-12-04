@@ -9,7 +9,11 @@ use App\Http\Controllers\LoginController;
 
 
 Route::get('/', function () {
-    return view('home', ['title' => 'Home Page']);
+    $products = App\Models\Product::take(6)->get();
+    return view('home', [
+        'title' => 'Home Page',
+        'products' => $products
+    ]);
 });
 
 Route::middleware('auth')->get('/dashboard', function () {
@@ -52,7 +56,6 @@ Route::get('/profile', function () {
 });
 
 
-Route::view('/login', 'login')->name('login');
 Route::view('/register', 'register')->name('register');
 
 // Form Lupa Password
@@ -72,3 +75,6 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/login', [LoginController::class, 'authenticate']);
 //logout
 Route::post('/logout', [LoginController::class, 'logout']);
+
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');

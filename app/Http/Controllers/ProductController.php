@@ -9,8 +9,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
 
-        return view('products.index', compact('products'));
+        $products = Product::with('category')->take(6)->get();
+
+        return view('home', compact('products'));
     }
 }
