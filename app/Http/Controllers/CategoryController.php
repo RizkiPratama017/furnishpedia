@@ -30,4 +30,16 @@ class CategoryController extends Controller
         // Redirect ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Kategori berhasil ditambahkan!');
     }
+
+    public function destroy($id)
+    {
+        // Temukan category berdasarkan ID
+        $category = category::findOrFail($id);
+
+        // Hapus category
+        $category->delete();
+
+        // Redirect dengan pesan sukses
+        return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
+    }
 }

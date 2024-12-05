@@ -31,6 +31,7 @@ Route::middleware('auth')->get('/dashboard/category', function () {
         'categories' => $categories
     ]);
 });
+
 Route::middleware('auth')->get('/dashboard/product', function () {
     $products = App\Models\Product::paginate(5);
     $categories = \App\Models\Category::all();
@@ -45,19 +46,44 @@ Route::middleware('auth')->get('/dashboard/profile', function () {
     return view('dashboard', ['title' => 'Dashboard']);
 });
 
-
 Route::middleware('auth')->get('/dashboard/edit', function () {
     $categories = App\Models\Category::paginate(5);
-    return view('dashboard-edit', [
+    return view('category-edit', [
         'title' => 'Dashboard Edit',
         'categories' => $categories
     ]);
 });
 
-Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
-Route::get('/profile', function () {
+Route::middleware('auth')->get('/dashboard/category/{id}', function ($id) {
+    // Ambil data kategori berdasarkan ID yang dikirimkan di URL
+    $categories = App\Models\Category::findOrFail($id);
+
+    return view('category-edit', [
+        'title' => 'Dashboard Edit',
+        'category' => $categories, // Hanya satu kategori berdasarkan ID
+    ]);
+});
+
+Route::middleware('auth')->get('/dashboard/product/{id}', function ($id) {
+    // Ambil data kategori berdasarkan ID yang dikirimkan di URL
+    $products = App\Models\Product::findOrFail($id);
+    $categories = \App\Models\Category::all();
+
+    return view('product-edit', [
+        'title' => 'Dashboard Edit',
+        'product' => $products, // Hanya satu Product berdasarkan ID
+        'categories' => $categories
+    ]);
+});
+
+
+Route::middleware('auth')->get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
+
+// fungsi CRUD Category
+Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {
