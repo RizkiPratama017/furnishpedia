@@ -81,9 +81,15 @@ Route::middleware('auth')->get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
 
+
 // fungsi CRUD Category
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+// VIEW
+Route::view('/login', 'login')->name('login');
+// Route::view('/register', 'register')->name('register');
+
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {
@@ -112,4 +118,14 @@ Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google/callback', 'callbackGoogle');
 });
 
+
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+
+// Route::controller(FacebookAuthController::class)->group(function () {
+//     Route::get('auth/facebook', 'redirect')->name('facebook-auth');
+//     Route::get('auth/facebook/callback', 'callbackFacebook');
+// });
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
