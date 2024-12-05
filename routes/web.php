@@ -115,7 +115,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 //google API
 Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
-    Route::get('auth/google/callback', 'callbackGoogle');
+    Route::get('auth/google/callback', 'callbackGoogle')->name('google-callback');
 });
 
 
