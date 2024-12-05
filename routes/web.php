@@ -95,10 +95,5 @@ Route::middleware('auth')->group(function () {
 //google API
 Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
-    Route::get('auth/google/callback', 'callbackGoogle');
+    Route::get('auth/google/callback', 'callbackGoogle')->name('google-callback');
 });
-
-// Route::controller(FacebookAuthController::class)->group(function () {
-//     Route::get('auth/facebook', 'redirect')->name('facebook-auth');
-//     Route::get('auth/facebook/callback', 'callbackFacebook');
-// });

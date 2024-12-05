@@ -50,7 +50,7 @@
                                     {{ Str::limit($product->description, 20) }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $product->price }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $product->stock }}</td>
-                                <td class="px-6 py-4 border-b border-gray-300">{{ $product->category_id }}</td>
+                                <td class="px-6 py-4 border-b border-gray-300">{{ $product->category->name }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">
                                     <button class="text-blue-500 hover:underline">Ubah</button>
                                     <button class="text-red-500 hover:underline ml-4">Hapus</button>

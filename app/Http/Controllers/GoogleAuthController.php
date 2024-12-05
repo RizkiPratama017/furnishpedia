@@ -14,12 +14,14 @@ class GoogleAuthController extends Controller
 {
     public function redirect()
     {
+        // dd('masuk redirect');
         return Socialite::driver('google')->redirect();
     }
 
     public function callbackGoogle()
 {
     try {
+        // dd('masuk callback');
         $googleUser = Socialite::driver('google')->user();
         //cek
         // dd($googleUser->getId());
@@ -43,7 +45,7 @@ class GoogleAuthController extends Controller
             // dd($user); 
             Auth::login($user);  // Login pengguna baru
             Log::info('User registered and logged in: ' . $user->name);
-            return redirect('/dashboard');
+            return redirect('/login')->with('success', 'Register Success!');
         } else {
             Auth::login($user);  // Login pengguna yang sudah ada
             Log::info('User logged in: ' . $user->name);
