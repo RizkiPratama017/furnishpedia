@@ -37,7 +37,7 @@ Route::get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
 
-
+// VIEW
 Route::view('/login', 'login')->name('login');
 // Route::view('/register', 'register')->name('register');
 
@@ -98,4 +98,7 @@ Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google/callback', 'callbackGoogle');
 });
 
-
+// Route::controller(FacebookAuthController::class)->group(function () {
+//     Route::get('auth/facebook', 'redirect')->name('facebook-auth');
+//     Route::get('auth/facebook/callback', 'callbackFacebook');
+// });
