@@ -59,6 +59,10 @@ Route::get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
 
+// VIEW
+Route::view('/login', 'login')->name('login');
+// Route::view('/register', 'register')->name('register');
+
 // Form Lupa Password
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
@@ -86,4 +90,11 @@ Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google/callback', 'callbackGoogle');
 });
 
+
+// Route::controller(FacebookAuthController::class)->group(function () {
+//     Route::get('auth/facebook', 'redirect')->name('facebook-auth');
+//     Route::get('auth/facebook/callback', 'callbackFacebook');
+// });
+
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
