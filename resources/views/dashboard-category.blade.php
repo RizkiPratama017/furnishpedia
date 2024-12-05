@@ -18,9 +18,25 @@
                     <h1 class="text-2xl font-bold">Data Kategori</h1>
                 </div>
 
-                <div class="px-6 mb-3" data-modal-target="modal_add" data-modal-toggle="modal_add" type="button">
-                    <button class="px-2 py-2 bg-green-400 rounded-md text-white text-lg shadow-md">Tambah</button>
+                <div class="px-6 mb-3">
+                    <button class="px-2 py-2 bg-green-500 rounded-md text-white text-lg shadow-md"
+                        data-modal-target="modal_add" data-modal-toggle="modal_add" type="button">Tambah
+                    </button>
                 </div>
+
+                @if (session('success'))
+                    <div class="p-4 mb-4 mx-6 text-sm text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                        role="alert">
+                        <span class="px-2 py-2 font-medium">{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if (session('failed'))
+                    <div class="p-4 mb-4 mx-6 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        <span class="px-2 py-2 font-medium">{{ session('failed') }}</span>
+                    </div>
+                @endif
             </div>
 
             <!-- Table -->
@@ -41,25 +57,36 @@
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $category->name }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $category->slug }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">
-                                    <button class="text-blue-500 hover:underline" title="Edit"
-                                        data-modal-target="modal_edit" data-modal-toggle="modal_edit">
-                                        <svg class="w-6 h-6 text-blue-500 dark:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                        </svg>
+                                    {{-- Button Edit --}}
+                                    <button class="text-blue-500 hover:underline" title="Edit"><a
+                                            href="/dashboard/category/{{ $category->id }}">
+                                            <svg class="w-6
+                                        h-6 text-blue-500 dark:text-white"
+                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                                height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                            </svg>
+                                        </a>
+
                                     </button>
-                                    <button class="text-red-500 hover:underline ml-4" title="Delete">
-                                        <svg class="w-6 h-6 text-red-500 dark:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                        </svg>
-                                    </button>
+                                    {{-- Button Delete --}}
+                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                        class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:underline ml-4" title="Delete"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
+                                            <svg class="w-6 h-6 text-red-500 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                            </svg>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -69,7 +96,6 @@
 
             {{-- Pagination --}}
             <div class="py-3 grid place-items-center">
-                {{-- <x-pagination></x-pagination> --}}
                 {{ $categories->links() }}
             </div>
 
@@ -135,6 +161,8 @@
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
+
 </x-dashboard-layout>
