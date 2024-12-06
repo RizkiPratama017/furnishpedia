@@ -129,7 +129,8 @@
 
                         <!-- Modal body -->
                         <div class="p-4 md:p-5 space-y-4">
-                            <form class="max-w mx-auto" method="POST" action="">
+                            <form class="max-w mx-auto" method="POST" action="{{ route('products.store') }}"
+                                enctype="multipart/form-data">
                                 @csrf <!-- Token CSRF untuk keamanan -->
                                 <input type="hidden" id="product-id" name="id">
                                 <div class="mb-5">

@@ -33,7 +33,8 @@ Route::middleware('auth')->get('/dashboard/category', function () {
 });
 
 Route::middleware('auth')->get('/dashboard/product', function () {
-    $products = App\Models\Product::paginate(5);
+    $products = App\Models\Product::where('user_id', auth()->id())->paginate(5);
+
     $categories = \App\Models\Category::all();
     return view('dashboard-product', [
         'title' => 'Dashboard Produk',
@@ -41,6 +42,7 @@ Route::middleware('auth')->get('/dashboard/product', function () {
         'categories' => $categories
     ]);
 });
+
 
 Route::middleware('auth')->get('/dashboard/profile', function () {
     return view('dashboard', ['title' => 'Dashboard']);
@@ -82,6 +84,7 @@ Route::middleware('auth')->get('/profile', function () {
 });
 
 
+Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 // fungsi CRUD Category
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
@@ -128,4 +131,3 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 // });
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-
