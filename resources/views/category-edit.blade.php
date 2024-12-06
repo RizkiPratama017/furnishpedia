@@ -38,8 +38,10 @@
 
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        <form class="max-w mx-auto" method="POST" action="">
+                        <form class="max-w mx-auto" method="POST"
+                            action="{{ route('category.update', $category->id) }}">
                             @csrf <!-- Token CSRF untuk keamanan -->
+                            @method('PUT')
                             <input type="hidden" id="product-id" name="id" value="{{ $category->id }}">
                             <div class="mb-5">
                                 <label for="nama"
