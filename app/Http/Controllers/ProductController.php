@@ -70,6 +70,27 @@ class ProductController extends Controller
         $product->delete();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
+        return redirect()->back()->with('success', 'produk berhasil dihapus!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        // Temukan produk berdasarkan ID
+        $product = Product::findOrFail($id);
+
+        // Perbarui data produk
+        $product->update($validatedData);
+
+        // Redirect dengan pesan sukses
+        return redirect('/dashboard/product')->with('success', 'produk berhasil diperbarui!');
     }
 }

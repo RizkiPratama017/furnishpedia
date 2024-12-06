@@ -83,8 +83,11 @@ Route::middleware('auth')->get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
 
-
+//fungsi CRUD produk
 Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
+
+
 // fungsi CRUD Category
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
