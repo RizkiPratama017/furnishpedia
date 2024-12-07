@@ -2,95 +2,95 @@
 
 namespace App\Http\Controllers;
 
-use Storage;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        dd(auth()->user());
-
-        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
-
-        // Mengambil produk milik pengguna yang sedang login
+        $user = auth()->user();
         $products = Product::where('user_id', $user->id)->get();
-
-        // Ambil semua kategori untuk dropdown
         $categories = Category::all();
-
         return view('products.index', compact('products', 'categories'));
     }
 
-
     public function store(Request $request)
     {
-        // Validasi input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
+            'description' => 'required|string|max:500',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $validatedData['user_id'] = Auth::id();
+        if ($request->hasFile('image')) {
+            $validatedData['image'] = $request->file('image')->store('img', 'public');
+        }
 
-
-        // Simpan gambar produk
-        // $imagePath = $request->file('image')->store('products', 'public');
-
-        // Simpan data produk ke database
-        Product::create([
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'stock' => $validatedData['stock'],
-            'category_id' => $validatedData['category_id'],
-            // 'image' => $imagePath,
-            'user_id' => auth()->id(), // Pastikan user yang login ditambahkan.
-        ]);
-
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'produk berhasil ditambahkan!');
+        Product::create($validatedData);
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
     }
-
 
     public function destroy($id)
     {
-        // Temukan produk berdasarkan ID
         $product = Product::findOrFail($id);
 
-        // Hapus gambar produk
-
-
-        // Hapus produk dari database
+        if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
+            Storage::disk('public')->delete($product->image);
+        }
         $product->delete();
-
-        // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'produk berhasil dihapus!');
+        return redirect()->back()->with('success', 'Produk berhasil dihapus!');
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi input
-        $validatedData = $request->validate([
+        $product = Product::findOrFail($id);
+
+
+        $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
+            'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_url' => 'nullable|url',
         ]);
 
-        // Temukan produk berdasarkan ID
-        $product = Product::findOrFail($id);
+        // Update field produk
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->category_id = $request->category_id;
 
-        // Perbarui data produk
-        $product->update($validatedData);
+        //gambar
+        if ($request->hasFile('image')) {
 
-        // Redirect dengan pesan sukses
-        return redirect('/dashboard/product')->with('success', 'produk berhasil diperbarui!');
+            if ($request->old_image && !filter_var($request->old_image, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($request->old_image);
+            }
+
+            $product->image = $request->file('image')->store('img', 'public');
+        } elseif ($request->filled('image_url')) {
+
+            if ($request->old_image && !filter_var($request->old_image, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($request->old_image);
+            }
+
+            $product->image = $request->image_url;
+        }
+
+
+        $product->save();
+
+        return redirect('/dashboard/product')->with('success', 'Produk berhasil diperbarui!');
     }
 }
