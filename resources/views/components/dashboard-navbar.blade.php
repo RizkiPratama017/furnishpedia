@@ -17,7 +17,7 @@
         <div class="hidden w-full" id="navbar-hamburger">
             <ul class="flex flex-col font-medium mt-4 rounded-lg bg-gray-800 text-white">
                 <li>
-                    <a href="/home" class="block py-2 px-3 text-white hover:bg-gray-100 hover:text-black"
+                    <a href="/" class="block py-2 px-3 text-white hover:bg-gray-100 hover:text-black"
                         aria-current="page">Home</a>
                 </li>
                 <li>

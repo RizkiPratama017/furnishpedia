@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Models\Product;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BukaTokoController;
 
 
 Route::get('/', function () {
@@ -34,7 +35,8 @@ Route::middleware('auth')->get('/dashboard/category', function () {
 });
 
 Route::middleware('auth')->get('/dashboard/product', function () {
-    $products = App\Models\Product::paginate(5);
+    $products = App\Models\Product::where('user_id', auth()->id())->paginate(5);
+
     $categories = \App\Models\Category::all();
     return view('dashboard-product', [
         'title' => 'Dashboard Produk',
@@ -42,6 +44,7 @@ Route::middleware('auth')->get('/dashboard/product', function () {
         'categories' => $categories
     ]);
 });
+
 
 Route::middleware('auth')->get('/dashboard/profile', function () {
     return view('dashboard', ['title' => 'Dashboard']);
@@ -82,13 +85,22 @@ Route::middleware('auth')->get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
 });
 
+//fungsi CRUD produk
+Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
+Route::delete('/dashboard/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('auth');
+Route::get('/product', [ProductController::class, 'search'])->name('products.search');
+
 // fungsi CRUD Category
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 Route::get('/category', [CategoryController::class, 'search'])->name('categories.search');
+Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::get('/dashboard/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 
-// fungsi CRUD Product
-Route::get('/product', [ProductController::class, 'search'])->name('products.search');
+// VIEW
+Route::view('/login', 'login')->name('login');
+// Route::view('/register', 'register')->name('register');
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {
@@ -106,7 +118,7 @@ Route::resource('/cart', CartController::class);
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
 //logout
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
@@ -114,7 +126,20 @@ Route::post('/register', [RegisterController::class, 'store']);
 //google API
 Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
-    Route::get('auth/google/callback', 'callbackGoogle');
+    Route::get('auth/google/callback', 'callbackGoogle')->name('google-callback');
 });
 
+
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+
+// Route::controller(FacebookAuthController::class)->group(function () {
+//     Route::get('auth/facebook', 'redirect')->name('facebook-auth');
+//     Route::get('auth/facebook/callback', 'callbackFacebook');
+// });
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+
+//buka toko
+Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')->middleware('auth');

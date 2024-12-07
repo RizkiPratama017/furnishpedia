@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
+            $table->string('password');
             $table->string('google_id')->nullable();
-            $table->enum('role', ['admin', 'seller', 'buyer'])->default('buyer'); // Add default value
+            $table->enum('role', ['admin', 'seller', 'buyer'])->default('buyer'); 
             $table->boolean('is_active')->default(true);
             $table->string('remember_token', 100)->nullable();
             $table->string('image')->nullable();

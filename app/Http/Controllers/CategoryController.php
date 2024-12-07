@@ -43,6 +43,7 @@ class CategoryController extends Controller
         return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
     }
 
+
     public function search(Request $request)
     {
         $query = $request->input('search'); // Ambil input pencarian
@@ -55,5 +56,32 @@ class CategoryController extends Controller
             'categories' => $categories,
             'searchQuery' => $query // Kirim query untuk digunakan di tampilan
         ]);
+
+    public function update(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:categories,slug,' . $id,
+        ]);
+
+        // Temukan kategori berdasarkan ID
+        $category = Category::findOrFail($id);
+
+        // Update kategori
+        $category->update([
+            'name' => $request->name,
+            'slug' => $request->slug,
+        ]);
+
+        // Redirect ke halaman sebelumnya dengan pesan sukses
+        return redirect('/dashboard/category')->with('success', 'kategori berhasil diperbarui!');
+    }
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('categories.edit', compact('category'));
+
     }
 }
