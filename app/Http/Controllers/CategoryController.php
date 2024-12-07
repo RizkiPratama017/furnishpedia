@@ -56,6 +56,7 @@ class CategoryController extends Controller
             'categories' => $categories,
             'searchQuery' => $query // Kirim query untuk digunakan di tampilan
         ]);
+    }
 
     public function update(Request $request, $id)
     {
@@ -82,6 +83,5 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         return view('categories.edit', compact('category'));
-
     }
 }
