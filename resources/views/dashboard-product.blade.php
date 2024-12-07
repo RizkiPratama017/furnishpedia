@@ -87,8 +87,10 @@
                         @foreach ($products as $product)
                             <tr class="hover:bg-gray-100">
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $product->id }}</td>
-                                <td class="px-6 py-4 border-b border-gray-300"><img src="{{ $product->image }}"
-                                        class="h-8" alt="Ruma.id Logo" /></td>
+                                <td class="px-6 py-4 border-b border-gray-300">
+                                    <img src="{{ filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset('storage/' . $product->image) }}"
+                                        class="h-8" alt="Product Image" />
+                                </td>
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $product->name }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">
                                     {{ Str::limit($product->description, 20) }}</td>
@@ -220,7 +222,7 @@
                                     </label>
                                     <input type="file" id="gambar" name="image"
                                         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                        required />
+                                        accept="image/*" />
                                 </div>
 
                         </div>

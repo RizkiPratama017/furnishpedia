@@ -89,6 +89,7 @@ Route::middleware('auth')->get('/profile', function () {
 Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
 Route::delete('/dashboard/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('auth');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/product', [ProductController::class, 'search'])->name('products.search');
 
 // fungsi CRUD Category
@@ -138,7 +139,6 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 //     Route::get('auth/facebook/callback', 'callbackFacebook');
 // });
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 
 //buka toko
