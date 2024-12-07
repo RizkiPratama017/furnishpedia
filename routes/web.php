@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Models\Product;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BukaTokoController;
@@ -88,19 +89,18 @@ Route::middleware('auth')->get('/profile', function () {
 Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
 Route::delete('/dashboard/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('auth');
+Route::get('/product', [ProductController::class, 'search'])->name('products.search');
 
 // fungsi CRUD Category
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::get('/category', [CategoryController::class, 'search'])->name('categories.search');
 Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::get('/dashboard/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
-
-
 
 // VIEW
 Route::view('/login', 'login')->name('login');
 // Route::view('/register', 'register')->name('register');
-
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {

@@ -43,6 +43,20 @@ class CategoryController extends Controller
         return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
     }
 
+
+    public function search(Request $request)
+    {
+        $query = $request->input('search'); // Ambil input pencarian
+        $categories = Category::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('slug', 'LIKE', "%{$query}%")
+            ->paginate(5);
+
+        return view('dashboard-category', [
+            'title' => 'Dashboard Kategori',
+            'categories' => $categories,
+            'searchQuery' => $query // Kirim query untuk digunakan di tampilan
+        ]);
+
     public function update(Request $request, $id)
     {
         // Validasi input
@@ -68,5 +82,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         return view('categories.edit', compact('category'));
+
     }
 }
