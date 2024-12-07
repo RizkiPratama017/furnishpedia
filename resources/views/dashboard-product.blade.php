@@ -172,7 +172,7 @@
                                 </div>
 
                                 <!-- Select Option Category -->
-                                <div>
+                                <div class="mb-5">
                                     <label for="kategori"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label>
                                     <select id="kategori" name="category_id"
@@ -183,6 +183,15 @@
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+
+                                <div>
+                                    <label for="gambar"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gambar
+                                    </label>
+                                    <input type="file" id="gambar" name="image"
+                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        required />
                                 </div>
 
                         </div>
