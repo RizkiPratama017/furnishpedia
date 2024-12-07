@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Models\Product;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 
@@ -84,6 +85,10 @@ Route::middleware('auth')->get('/profile', function () {
 // fungsi CRUD Category
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+Route::get('/category', [CategoryController::class, 'search'])->name('categories.search');
+
+// fungsi CRUD Product
+Route::get('/product', [ProductController::class, 'search'])->name('products.search');
 
 // Form Lupa Password
 Route::get('/forgot-password', function () {

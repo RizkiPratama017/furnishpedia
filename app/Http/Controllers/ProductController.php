@@ -14,4 +14,19 @@ class ProductController extends Controller
 
         return view('home', compact('products'));
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('search'); // Ambil input pencarian
+        $categories = \App\Models\Category::all();
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+            ->paginate(5);
+
+        return view('dashboard-product', [
+            'title' => 'Dashboard Product',
+            'products' => $products,
+            'categories' => $categories,
+            'searchQuery' => $query // Kirim query untuk digunakan di tampilan
+        ]);
+    }
 }

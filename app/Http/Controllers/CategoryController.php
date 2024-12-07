@@ -42,4 +42,18 @@ class CategoryController extends Controller
         // Redirect dengan pesan sukses
         return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('search'); // Ambil input pencarian
+        $categories = Category::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('slug', 'LIKE', "%{$query}%")
+            ->paginate(5);
+
+        return view('dashboard-category', [
+            'title' => 'Dashboard Kategori',
+            'categories' => $categories,
+            'searchQuery' => $query // Kirim query untuk digunakan di tampilan
+        ]);
+    }
 }
