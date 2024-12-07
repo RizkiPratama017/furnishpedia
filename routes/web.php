@@ -10,6 +10,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BukaTokoController;
 
 
 Route::get('/', function () {
@@ -117,7 +118,7 @@ Route::resource('/cart', CartController::class);
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate']);
 //logout
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
@@ -138,3 +139,7 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 // });
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+
+//buka toko
+Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')->middleware('auth');

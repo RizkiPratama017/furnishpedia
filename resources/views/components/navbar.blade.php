@@ -118,28 +118,62 @@
 
                 <div id="dropdownUser"
                     class="hidden z-10 w-56 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-600">
-                    <ul class="p-2 space-y-2 text-sm text-gray-900 dark:text-white">
-                        <li>
-                            <a href="#" class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
-                                My Account
+                    @if (Auth::check())
+                        <ul class="p-2 space-y-2 text-sm text-gray-900 dark:text-white">
+                            <li>
+                                <a href="#"
+                                    class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    My Account
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    My Orders
+                                </a>
+                            </li>
+                            <li>
+                                @if (Auth::check() && Auth::user()->role === 'buyer')
+                                    <a href="/bukatoko"
+                                        class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Buka Toko
+                                    </a>
+                                @endif
+                            </li>
+
+                            @if (Auth::user()->role === 'seller')
+                                <li>
+                                    <a href="/dashboard"
+                                        class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Dashboard Seller
+                                    </a>
+                                </li>
+                            @elseif (Auth::user()->role === 'admin')
+                                <li>
+                                    <a href="/dashboard"
+                                        class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
+                                        Dashboard Admin
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                        <div class="p-2">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="block w-full p-2 text-center text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+                                    Log Out
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="p-2">
+                            <a href="{{ route('login') }}"
+                                class="block w-full p-2 text-center text-white bg-blue-600 hover:bg-blue-700 rounded-md">
+                                Login
                             </a>
-                        </li>
-                        <li>
-                            <a href="#" class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
-                                My Orders
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
-                                Settings
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="p-2">
-                        <a href="#"
-                            class="block w-full p-2 text-center text-white bg-blue-600 hover:bg-blue-700 rounded-md">Log
-                            Out</a>
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

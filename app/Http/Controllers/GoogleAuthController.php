@@ -19,43 +19,41 @@ class GoogleAuthController extends Controller
     }
 
     public function callbackGoogle()
-{
-    try {
-        // dd('masuk callback');
-        $googleUser = Socialite::driver('google')->user();
-        //cek
-        // dd($googleUser->getId());
-        // Cek apakah pengguna sudah ada
-        $user = User::where('google_id', $googleUser->getId())->first();
-        
-        if (!$user) {
-            // Pengguna baru, buat akun baru
-            $user = User::create([
-                'name' => $googleUser->getName(),
-                'password' => Hash::make(Str::random(16)), // Sandi acak untuk akun baru
-                'email' => $googleUser->getEmail(),
-                'email_verified_at' => now(),
-                'google_id' => $googleUser->getId(),
-                'role' => 'buyer',
-                'is_active' => true,
-                'remember_token' => $googleUser->token,
-                'image' => $googleUser->getAvatar(),
-            ]);
+    {
+        try {
+            // dd('masuk callback');
+            $googleUser = Socialite::driver('google')->user();
+            //cek
+            // dd($googleUser->getId());
+            // Cek apakah pengguna sudah ada
+            $user = User::where('google_id', $googleUser->getId())->first();
 
-            // dd($user); 
-            Auth::login($user);  // Login pengguna baru
-            Log::info('User registered and logged in: ' . $user->name);
-            return redirect('/login')->with('success', 'Register Success!');
-        } else {
-            Auth::login($user);  // Login pengguna yang sudah ada
-            Log::info('User logged in: ' . $user->name);
-            return redirect('/dashboard');
+            if (!$user) {
+                // Pengguna baru, buat akun baru
+                $user = User::create([
+                    'name' => $googleUser->getName(),
+                    'password' => Hash::make(Str::random(16)), // Sandi acak untuk akun baru
+                    'email' => $googleUser->getEmail(),
+                    'email_verified_at' => now(),
+                    'google_id' => $googleUser->getId(),
+                    'role' => 'buyer',
+                    'is_active' => true,
+                    'remember_token' => $googleUser->token,
+                    'image' => $googleUser->getAvatar(),
+                ]);
+
+                // dd($user); 
+                Auth::login($user);  // Login pengguna baru
+                Log::info('User registered and logged in: ' . $user->name);
+                return redirect('/login')->with('success', 'Register Success!');
+            } else {
+                Auth::login($user);  // Login pengguna yang sudah ada
+                Log::info('User logged in: ' . $user->name);
+                return redirect('/');
+            }
+        } catch (\Throwable $th) {
+            Log::error('Google Auth Error: ' . $th->getMessage());
+            return redirect('/login')->with('error', 'Terjadi kesalahan saat autentikasi.');
         }
-
-    } catch (\Throwable $th) {
-        Log::error('Google Auth Error: ' . $th->getMessage());
-        return redirect('/login')->with('error', 'Terjadi kesalahan saat autentikasi.');
     }
-}
-
 }
