@@ -143,3 +143,7 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 //buka toko
 Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')->middleware('auth');
+
+//live search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
