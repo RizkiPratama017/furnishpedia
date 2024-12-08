@@ -19,11 +19,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('google_id')->nullable();
-            $table->enum('role', ['admin', 'seller', 'buyer'])->default('buyer'); 
+            $table->enum('role', ['admin', 'seller', 'buyer'])->default('buyer');
             $table->boolean('is_active')->default(true);
             $table->string('remember_token', 100)->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
+            $table->string('address')->nullable();
         });
 
         // Tabel Password Reset Tokens
@@ -41,7 +42,6 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
-            
         });
     }
 
