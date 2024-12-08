@@ -14,6 +14,7 @@ class ProductController extends Controller
     {
         $user = auth()->user();
         $products = Product::where('user_id', $user->id)->get();
+        $products = Product::with('category')->get();
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }

@@ -53,6 +53,7 @@ class ProductFactory extends Factory
             "price" => fake()->randomFloat(0, 10000, 10000000),
             "stock" => fake()->numberBetween(1, 50),
             "image" => fake()->imageUrl(),
+            "weight" => fake()->randomFloat(0, 1, 1000),
         ];
     }
 }

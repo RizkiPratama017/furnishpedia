@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->string('image')->nullable();
             $table->timestamps();
+            $table->decimal('weight', 8, 2)->nullable();
         });
     }
 
