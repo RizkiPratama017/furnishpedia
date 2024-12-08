@@ -179,3 +179,31 @@
         </div>
     </div>
 </nav>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#search').on('keyup', function () {
+            let query = $(this).val();
+            if (query.length > 2) {
+                $.ajax({
+                    url: '{{ route('search') }}',
+                    type: 'GET',
+                    data: { q: query },
+                    success: function (data) {
+                        $('#results').empty();
+                        if (data.length) {
+                            data.forEach(item => {
+                                $('#results').append(`<a href="#" class="list-group-item">${item.column_name}</a>`);
+                            });
+                        } else {
+                            $('#results').append('<p class="list-group-item">No results found</p>');
+                        }
+                    }
+                });
+            } else {
+                $('#results').empty();
+            }
+        });
+    });
+</script>
