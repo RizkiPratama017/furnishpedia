@@ -12,6 +12,7 @@ use App\Models\Product;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BukaTokoController;
+use App\Http\Controllers\CariController;
 
 
 Route::get('/', function () {
@@ -145,5 +146,5 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')->middleware('auth');
 
 //live search
-Route::get('/search', [SearchController::class, 'search'])->name('search');
-
+Route::get('/search', [CariController::class, 'search'])->name('search');
+Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
