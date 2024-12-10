@@ -13,6 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BukaTokoController;
 use App\Http\Controllers\CariController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
@@ -24,7 +25,13 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
+    $categories = \App\Models\Category::all();
+    $products = \App\Models\Product::all();
+    return view('dashboard', [
+        'title' => 'Dashboard',
+        'products' => $products,
+        'categories' => $categories
+    ]);
 });
 
 Route::middleware('auth')->get('/dashboard/category', function () {
@@ -46,11 +53,12 @@ Route::middleware('auth')->get('/dashboard/product', function () {
     ]);
 });
 
-
+// halaman profile
 Route::middleware('auth')->get('/dashboard/profile', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
+    return view('dashboard-profile', ['title' => 'Profile']);
 });
 
+//
 Route::middleware('auth')->get('/dashboard/edit', function () {
     $categories = App\Models\Category::paginate(5);
     return view('category-edit', [

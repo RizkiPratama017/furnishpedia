@@ -16,6 +16,8 @@
 
     <div class="h-screen">
         {{-- <x-navbar></x-navbar> --}}
+        <x-dashboard-navbar></x-dashboard-navbar>
+
 
         <main class="h-screen">
             {{ $slot }}
