@@ -148,3 +148,7 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 //live search
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
+
+
+//filter 
+Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');

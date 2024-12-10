@@ -109,4 +109,28 @@ class ProductController extends Controller
             'searchQuery' => $query // Kirim query untuk digunakan di tampilan
         ]);
     }
+
+    public function filter(Request $request)
+{
+    $query = Product::query();
+
+    // Filter berdasarkan kategori
+    if ($request->has('category_id')) {
+        $query->where('category_id', $request->category_id);
+    }
+
+    // Filter berdasarkan harga
+    if ($request->has('price_min')) {
+        $query->where('price', '>=', $request->price_min);
+    }
+
+    if ($request->has('price_max')) {
+        $query->where('price', '<=', $request->price_max);
+    }
+
+    $products = $query->with('category')->paginate(10);
+    $categories = Category::all();
+
+    return view('products.filter', compact('products', 'categories'));
+}
 }
