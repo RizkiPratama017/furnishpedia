@@ -14,7 +14,7 @@
                 @endforeach
             </select>
         </div>
-
+// commit bareng yang berdasarkan harga
         <div class="form-group">
             <label for="price_min">Harga Minimum</label>
             <input type="number" name="price_min" id="price_min" class="form-control" placeholder="0">
