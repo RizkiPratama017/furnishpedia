@@ -18,11 +18,11 @@
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Edit Produk
+                            Edit Profile
                         </h3>
                         <button type="button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <a href="/dashboard/product">
+                            <a href="/dashboard/">
                                 <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -35,70 +35,50 @@
 
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        <form class="max-w mx-auto" method="POST" action="{{ route('products.update', $product->id) }}"
-                            enctype="multipart/form-data">
+                        <form class="max-w mx-auto" method="POST" action="" enctype="multipart/form-data">
                             @csrf <!-- Token CSRF untuk keamanan -->
                             @method('PUT')
-                            <input type="hidden" id="product-id" name="id" value="{{ $product->id }}">
+                            <input type="hidden" id="id" name="id" value="">
                             <div class="mb-5">
-                                <label for="namaproduk"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                    Produk</label>
-                                <input type="text" id="namaproduk" name="name" value="{{ $product->name }}"
+                                <label for="email"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                <input type="text" id="email" name="email" value="" disabled
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi nama produk" required />
+                                    placeholder="email@example.com" required />
                             </div>
                             <div class="mb-5">
-                                <label for="deskripsi"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
-                                <input type="text" id="deskripsi" name="description"
-                                    value="{{ $product->description }}"
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                <input type="text" id="name" name="name" value=""
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi deskripsi" required />
+                                    placeholder="John Doe" required />
                             </div>
                             <div class="mb-5">
-                                <label for="harga"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
-                                <input type="number" id="harga" name="price" value="{{ $product->price }}"
+                                <label for="password"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                <input type="password" id="password" name="password" value=""
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi harga" required />
+                                    placeholder="******" required />
                             </div>
                             <div class="mb-5">
-                                <label for="stok"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stok</label>
-                                <input type="number" id="stok" name="stock" value="{{ $product->stock }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi stok" required />
+                                <label for="address"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                                <textarea id="address" rows="4" name="address" value="" required
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Jl. Example No. 10C"></textarea>
                             </div>
 
-                            <!-- Select Option Category -->
                             <div class="mb-5">
-                                <label for="kategori"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label>
-                                <select id="kategori" name="category_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    required>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $category->id == $product->category_id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-
-                            <div>
                                 <label for="gambar"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Gambar
+                                    Gambar Profile
                                 </label>
-                                @if ($product->image)
+                                {{-- @if ($user->image)
                                     <div class="mb-3">
-                                        <img src="{{ filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset('storage/' . $product->image) }}"
+                                        <img src="{{ filter_var($user->image, FILTER_VALIDATE_URL) ? $user->image : asset('storage/' . $product->image) }}"
                                             class="h-8" alt="Product Image" />
                                     </div>
-                                @endif
+                                @endif --}}
                                 <input type="file" id="gambar" name="image"
                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                     accept="image/*">
