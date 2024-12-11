@@ -152,3 +152,7 @@ Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.
 
 //filter 
 Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
+
+// Kategori
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
