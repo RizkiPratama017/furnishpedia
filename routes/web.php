@@ -152,3 +152,8 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 //live search
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
+
+// Kategori
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
