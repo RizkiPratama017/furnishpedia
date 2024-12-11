@@ -10,7 +10,13 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all(); // Ambil semua kategori
-    return view('categories.index', compact('categories'));
+        return view('categories.index', ['title' => 'kategori', 'categories' => $categories], compact('categories'));
+    }
+
+    public function detail()
+    {
+        $categories = Category::all(); // Ambil semua kategori
+        return view('categories.index', ['title' => 'kategori', 'categories' => $categories], compact('categories'));
     }
 
     public function store(Request $request)
@@ -85,12 +91,15 @@ class CategoryController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-public function show($slug)
-{
-    $category = Category::where('slug', $slug)->firstOrFail();
-    $products = $category->products; // Ambil produk berdasarkan kategori
-    return view('categories.show', compact('category', 'products'));
-}
+    public function show($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $products = $category->products;
+        return view('categories.show', [
+            'title' => 'Kategori',
+            'category' => $category,
+            'products' => $products,
 
-    
+        ]);
+    }
 }
