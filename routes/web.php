@@ -13,6 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BukaTokoController;
 use App\Http\Controllers\CariController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
@@ -24,7 +25,13 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
+    $categories = \App\Models\Category::all();
+    $products = \App\Models\Product::all();
+    return view('dashboard', [
+        'title' => 'Dashboard',
+        'products' => $products,
+        'categories' => $categories
+    ]);
 });
 
 Route::middleware('auth')->get('/dashboard/category', function () {
@@ -46,11 +53,12 @@ Route::middleware('auth')->get('/dashboard/product', function () {
     ]);
 });
 
-
+// halaman profile
 Route::middleware('auth')->get('/dashboard/profile', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
+    return view('dashboard-profile', ['title' => 'Profile']);
 });
 
+//
 Route::middleware('auth')->get('/dashboard/edit', function () {
     $categories = App\Models\Category::paginate(5);
     return view('category-edit', [
@@ -87,18 +95,15 @@ Route::middleware('auth')->get('/profile', function () {
 });
 
 //fungsi CRUD produk
-Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
-Route::delete('/dashboard/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('auth');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::resource('products', ProductController::class)->middleware('auth');
 Route::get('/product', [ProductController::class, 'search'])->name('products.search');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
 
 // fungsi CRUD Category
-Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-Route::get('/category', [CategoryController::class, 'search'])->name('categories.search');
+Route::resource('categories', CategoryController::class)->middleware('auth');
+Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
 Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update');
-Route::get('/dashboard/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 
 // VIEW
 Route::view('/login', 'login')->name('login');
@@ -132,7 +137,6 @@ Route::controller(GoogleAuthController::class)->group(function () {
 });
 
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 
 // Route::controller(FacebookAuthController::class)->group(function () {
@@ -149,10 +153,7 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
 
-
-//filter 
-Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
-
 // Kategori
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
