@@ -111,26 +111,42 @@ class ProductController extends Controller
     }
 
     public function filter(Request $request)
-{
-    $query = Product::query();
+    {
+        $query = Product::query();
 
-    // Filter berdasarkan kategori
-    if ($request->has('category_id')) {
-        $query->where('category_id', $request->category_id);
+        // Filter berdasarkan kategori
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Filter berdasarkan harga minimum
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', $request->price_min);
+        }
+
+        // Filter berdasarkan harga maksimum
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        $products = $query->paginate(9);
+
+        return view('products.filter', [
+            'title' => 'Filter Produk',
+            'products' => $products,
+            'categories' => Category::all(),
+        ]);
     }
 
-    // Filter berdasarkan harga
-    if ($request->has('price_min')) {
-        $query->where('price', '>=', $request->price_min);
+
+
+    public function show($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+
+        return view('products.show', [
+            'product' => $product,
+            'title' => $product->name,
+        ]);
     }
-
-    if ($request->has('price_max')) {
-        $query->where('price', '<=', $request->price_max);
-    }
-
-    $products = $query->with('category')->paginate(10);
-    $categories = Category::all();
-
-    return view('products.filter', compact('products', 'categories'));
-}
 }
