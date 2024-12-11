@@ -34,6 +34,7 @@
                             About
                         </a>
                     </li>
+                    <li><a href="{{ route('products.filter') }}" class="nav-link">Filter Produk</a></li>
                 </ul>
             </div>
 
