@@ -1,19 +1,25 @@
-@extends('layouts.app')
+<x-layout>
+    <x-slot:title>{{ $title }}</x-slot:title>
 
-@section('content')
-<div class="container">
-    <h1 class="text-center">Kategori</h1>
-    <div class="row">
-        @foreach($categories as $category)
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $category->name }}</h5>
-                        <a href="{{ route('categories.show', $category->slug) }}" class="btn btn-primary">Lihat Produk</a>
+    <header>
+        <x-navbar></x-navbar>
+    </header>
+
+    <div class="container mx-auto py-10 px-4">
+        <h1 class="text-3xl font-bold text-center mb-8">Kategori</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($categories as $category)
+                <a href="{{ route('categories.show', $category->slug) }}" class="block group">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition hover:scale-105">
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold text-gray-800 group-hover:text-green-600 transition">
+                                {{ $category->name }}
+                            </h2>
+                        </div>
                     </div>
-                </div>
-            </div>
-        @endforeach
+                </a>
+            @endforeach
+        </div>
     </div>
-</div>
-@endsection
+
+</x-layout>

@@ -101,9 +101,11 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
 
 // fungsi CRUD Category
-Route::resource('categories', CategoryController::class)->middleware('auth');
+Route::get('/categories/detail', [CategoryController::class, 'detail'])->name('categories.detail');
+Route::resource('categories', CategoryController::class)->middleware('auth')->except('show');
 Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
-Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update')->middleware('auth');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
 // VIEW
 Route::view('/login', 'login')->name('login');
@@ -119,7 +121,7 @@ Route::get('/login/{provider}', function ($provider) {
     return "Login with $provider not implemented yet!";
 })->name('social.login');
 
-Route::resource('/cart', CartController::class);
+Route::resource('/cart', CartController::class)->middleware('auth');
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -152,8 +154,3 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 //live search
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
-
-// Kategori
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
-
