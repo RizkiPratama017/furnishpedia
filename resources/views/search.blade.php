@@ -15,8 +15,8 @@
         @foreach ($products as $product)
             <div class="w-full md:w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mb-10">
                 <a href="{{ route('products.show', $product->id) }}">
-                    <img src="{{ $product->image }}" alt="{{ $product->name }}"
-                        class="h-80 w-full object-cover rounded-t-xl" />
+                    <img src="{{ filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset('storage/' . $product->image) }}"
+                        alt="{{ $product->name }}" class="h-80 w-full object-cover rounded-t-xl" />
                     <div class="px-4 py-3">
                         <span class="text-gray-400 mr-3 uppercase text-xs">{{ $product->category->name }}</span>
                         <p class="text-lg font-bold text-black truncate block capitalize">{{ $product->name }}</p>

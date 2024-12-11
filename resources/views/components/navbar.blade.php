@@ -17,7 +17,7 @@
 
                 <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
                     <li>
-                        <a href="#" title=""
+                        <a href="/" title=""
                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
                             Home
                         </a>
@@ -28,13 +28,10 @@
                             Category
                         </a>
                     </li>
-                    <li class="shrink-0">
-                        <a href="#" title=""
-                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
-                            About
-                        </a>
+                    <li>
+                        <a href="{{ route('products.filter') }}"
+                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Product</a>
                     </li>
-                    <li><a href="{{ route('products.filter') }}" class="nav-link">Filter Produk</a></li>
                 </ul>
             </div>
 
