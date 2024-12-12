@@ -36,7 +36,7 @@
             </a>
         </li>
         <li>
-            <a href="/dashboard/profile" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
+            <a href="/profile" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
                 <svg class="w-6 h-6 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-width="2"

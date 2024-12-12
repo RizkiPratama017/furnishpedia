@@ -53,11 +53,6 @@ Route::middleware('auth')->get('/dashboard/product', function () {
     ]);
 });
 
-// halaman profile
-Route::middleware('auth')->get('/dashboard/profile', function () {
-    return view('dashboard-profile', ['title' => 'Profile']);
-});
-
 //
 Route::middleware('auth')->get('/dashboard/edit', function () {
     $categories = App\Models\Category::paginate(5);
@@ -154,3 +149,8 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 //live search
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
+
+
+// profile
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
