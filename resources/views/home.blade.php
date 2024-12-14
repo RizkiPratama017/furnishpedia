@@ -78,6 +78,27 @@
         </div>
         {{-- Carousel --}}
 
+        {{-- hero --}}
+        <section class="px-5 py-10 bg-neutral-100 lg:py-20 min-h-screen flex items-center justify-center">
+            <div class="grid lg:grid-cols-2 items-center justify-items-center gap-10 max-w-7xl w-full">
+                <!-- Text Section -->
+                <div class="order-2 lg:order-1 flex flex-col justify-center items-center text-center">
+                    <p class="text-4xl font-bold md:text-7xl text-orange-600">25% OFF</p>
+                    <p class="text-4xl font-bold md:text-7xl">SUMMER SALE</p>
+                    <p class="mt-2 text-sm md:text-lg">For limited time only!</p>
+                    <button class="text-lg md:text-2xl bg-black text-white py-3 px-8 mt-10 hover:bg-zinc-800">
+                        Shop Now
+                    </button>
+                </div>
+                <!-- Image Section -->
+                <div class="order-1 lg:order-2">
+                    <img class="h-96 w-96 object-cover lg:w-[600px] lg:h-[600px]" src="https://media.dekoruma.com/catalogue/TNZ-466474.jpg?auto=webp&bg-color=ffffff&dpr=1&fit=bounds&optimize=high&pad=0&quality=20&trim-color=auto" alt="">
+                </div>
+            </div>
+        </section>
+
+        {{-- hero --}}
+
         <div class="text-center p-10 mt-10">
             <h1 class="font-bold text-4xl mb-4">Daftar Produk</h1>
             <h1 class="text-3xl">Produk</h1>
