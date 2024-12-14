@@ -1,10 +1,9 @@
-<x-dashboard-layout>
+<x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
-
+    <header>
+        <x-navbar></x-navbar>
+    </header>
     <div class="flex flex-1 min-h-full">
-        {{-- Sidebar --}}
-        <x-sidebar></x-sidebar>
-
         <main class="flex-1 bg-white overflow-y-auto">
             <div class="container mx-auto mt-5">
                 <div class="flex justify-center">
@@ -30,7 +29,7 @@
                                 <div class="flex">
                                     <div class="w-1/3">
                                         @if ($user->image)
-                                            <img src="{{ asset('img/' . $user->image) }}"
+                                            <img src="{{ filter_var($user->image, FILTER_VALIDATE_URL) ? $user->image : asset('storage/' . $user->image) }}"
                                                 class="rounded mx-auto w-32 h-32 object-cover"
                                                 alt="{{ $user->image }}">
                                         @else
@@ -115,4 +114,4 @@
         </main>
     </div>
 
-</x-dashboard-layout>
+</x-layout>

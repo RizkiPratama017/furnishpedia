@@ -50,17 +50,18 @@ class ProfileController extends Controller
 
         if ($request->hasFile('image')) {
             // Hapus file lama jika ada
-            if ($user->image && Storage::exists('public/img/' . $user->image)) {
-                Storage::delete('public/img/' . $user->image);
+            if ($request->old_image && !filter_var($request->old_image, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($request->old_image);
             }
 
-            // Simpan file baru
-            $file = $request->file('image');
-            $fileName = time() . '_' . $file->getClientOriginalName(); // Nama unik berdasarkan waktu
-            $file->move(public_path('img'), $fileName);
+            $user->image = $request->file('image')->store('img', 'public');
+        } elseif ($request->filled('image_url')) {
 
-            // Simpan nama file ke database
-            $user->image = $fileName;
+            if ($request->old_image && !filter_var($request->old_image, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($request->old_image);
+            }
+
+            $user->image = $request->image_url;
         }
 
 

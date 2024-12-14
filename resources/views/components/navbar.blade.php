@@ -121,7 +121,7 @@
                     @if (Auth::check())
                         <ul class="p-2 space-y-2 text-sm text-gray-900 dark:text-white">
                             <li>
-                                <a href="#"
+                                <a href="/profile"
                                     class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
                                     My Account
                                 </a>
