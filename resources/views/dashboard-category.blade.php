@@ -154,20 +154,32 @@
 
                         <!-- Modal body -->
                         <div class="p-4 md:p-5 space-y-4">
+                            <form class="max-w mx-auto">
+                               
                             <form id="modal-form" method="POST" action="{{ route('categories.store') }}">
                                 @csrf <!-- Token CSRF untuk keamanan -->
                                 <input type="hidden" id="category-id" name="id">
                                 <div class="mb-5">
                                     <label for="nama"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Nama
                                         Kategori</label>
+                                    <input type="text" id="nama" name='nama'
                                     <input type="text" id="nama" name="name"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Isi nama kategori" required />
+                                        placeholder="Isi nama kategori" value="{{ old('nama') }}" required />
                                 </div>
                                 <div class="mb-5">
                                     <label for="slug"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
+                                    <input type="text" id="slug" name='slug'
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 
+                                        @error('slug') is-invalid @enderror"
+                                        placeholder="Isi slug" required value="{{ old('slug') }}"/>
+                                        @error('slug')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     <input type="text" id="slug" name="slug"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         placeholder="Isi slug" required />
@@ -193,5 +205,7 @@
 
         </main>
     </div>
+
+@vite('resources/js/category.js')
 
 </x-dashboard-layout>

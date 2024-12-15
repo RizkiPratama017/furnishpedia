@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->timestamps();
             $table->string('address')->nullable();
+            $table->string('otp')->nullable(); // Tambahkan OTP
+            $table->dateTime('otp_expires_at')->nullable(); // Tambahkan waktu kadaluarsa OTP
         });
 
         // Tabel Password Reset Tokens
