@@ -10,6 +10,17 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <!-- Glide.js CSS -->
     <link rel="stylesheet" href="node_modules/@glidejs/glide/dist/css/glide.core.min.css">
+
+    <style>
+        #results {
+            max-height: 300px;
+            overflow-y: auto;
+            position: absolute;
+            z-index: 1000;
+            background-color: white;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body class="h-full m-0">

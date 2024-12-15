@@ -8,8 +8,6 @@
 
         {{-- Main --}}
         <main class="flex-1 bg-white overflow-y-auto">
-            {{-- Navbar --}}
-            <x-dashboard-navbar></x-dashboard-navbar>
 
             {{-- Modal Edit Product --}}
             <div class="relative p-4 w-full max-w-2xl max-h-full">

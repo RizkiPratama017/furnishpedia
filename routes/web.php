@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BukaTokoController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\OtpController;
+use App\Http\Controllers\CariController;
+use App\Http\Controllers\UserController;
+
 
 
 Route::get('/', function () {
@@ -27,7 +30,13 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
+    $categories = \App\Models\Category::all();
+    $products = \App\Models\Product::all();
+    return view('dashboard', [
+        'title' => 'Dashboard',
+        'products' => $products,
+        'categories' => $categories
+    ]);
 });
 
 Route::middleware('auth')->get('/dashboard/category', function () {
@@ -49,11 +58,7 @@ Route::middleware('auth')->get('/dashboard/product', function () {
     ]);
 });
 
-
-Route::middleware('auth')->get('/dashboard/profile', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
-});
-
+//
 Route::middleware('auth')->get('/dashboard/edit', function () {
     $categories = App\Models\Category::paginate(5);
     return view('category-edit', [
@@ -90,18 +95,17 @@ Route::middleware('auth')->get('/profile', function () {
 });
 
 //fungsi CRUD produk
-Route::post('/products/store', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
-Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
-Route::delete('/dashboard/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('auth');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::resource('products', ProductController::class)->middleware('auth');
 Route::get('/product', [ProductController::class, 'search'])->name('products.search');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
 
 // fungsi CRUD Category
-Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-Route::get('/category', [CategoryController::class, 'search'])->name('categories.search');
-Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update');
-Route::get('/dashboard/category/{id}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+Route::get('/categories/detail', [CategoryController::class, 'detail'])->name('categories.detail');
+Route::resource('categories', CategoryController::class)->middleware('auth')->except('show');
+Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
+Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update')->middleware('auth');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
 // VIEW
 Route::view('/login', 'login')->name('login');
@@ -117,7 +121,7 @@ Route::get('/login/{provider}', function ($provider) {
     return "Login with $provider not implemented yet!";
 })->name('social.login');
 
-Route::resource('/cart', CartController::class);
+Route::resource('/cart', CartController::class)->middleware('auth');
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -163,7 +167,6 @@ Route::controller(GoogleAuthController::class)->group(function () {
 });
 
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 
 // Route::controller(FacebookAuthController::class)->group(function () {
@@ -177,12 +180,17 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')->middleware('auth');
 
 //live search
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search', [CariController::class, 'search'])->name('search');
+Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
 
 //otp
 // Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
 Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.otp');
-
 //Reez
 // Route::post('/testing', [OtpController::class, 'testing']);
+
+// profile
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+

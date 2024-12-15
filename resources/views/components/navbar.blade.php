@@ -17,29 +17,27 @@
 
                 <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
                     <li>
-                        <a href="#" title=""
+                        <a href="/" title=""
                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
                             Home
                         </a>
                     </li>
                     <li class="shrink-0">
-                        <a href="#" title=""
+                        <a href="{{ route('categories.detail') }}" title=""
                             class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
                             Category
                         </a>
                     </li>
-                    <li class="shrink-0">
-                        <a href="#" title=""
-                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
-                            About
-                        </a>
+                    <li>
+                        <a href="{{ route('products.filter') }}"
+                            class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">Product</a>
                     </li>
                 </ul>
             </div>
 
-            <form class="max-w-md mx-auto">
+            <form method="GET" action="{{ route('search') }}" class="max-w-md mx-auto" id="search-form">
                 <label for="default-search"
-                    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Pencarian</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -48,11 +46,11 @@
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input type="search" id="default-search"
+                    <input type="search" name="q" id="search"
                         class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Cari Barang" required />
                     <button type="submit"
-                        class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                        class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cari</button>
                 </div>
             </form>
 
@@ -123,7 +121,7 @@
                     @if (Auth::check())
                         <ul class="p-2 space-y-2 text-sm text-gray-900 dark:text-white">
                             <li>
-                                <a href="#"
+                                <a href="/profile"
                                     class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
                                     My Account
                                 </a>
@@ -180,31 +178,3 @@
         </div>
     </div>
 </nav>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#search').on('keyup', function () {
-            let query = $(this).val();
-            if (query.length > 2) {
-                $.ajax({
-                    url: '{{ route('search') }}',
-                    type: 'GET',
-                    data: { q: query },
-                    success: function (data) {
-                        $('#results').empty();
-                        if (data.length) {
-                            data.forEach(item => {
-                                $('#results').append(`<a href="#" class="list-group-item">${item.column_name}</a>`);
-                            });
-                        } else {
-                            $('#results').append('<p class="list-group-item">No results found</p>');
-                        }
-                    }
-                });
-            } else {
-                $('#results').empty();
-            }
-        });
-    });
-</script>

@@ -1,15 +1,9 @@
 <aside class="bg-gray-800 text-white w-64 p-4 flex flex-col">
-    <div class="flex text-sm bg-gray-800 rounded-full md:me-0" id="user-menu-button" aria-expanded="false"
-        data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-        <span class="sr-only">Open user menu</span>
-        <img class="w-8 h-8 rounded-full" src="{{ asset('img/r.jpg') }}" alt="user photo">
-        <h2 class="text-xl font-semibold mb-5 mx-2 my-1">User Penjual</h2>
-    </div>
     <ul class="space-y-2">
         <li>
             <a href="/dashboard" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
-                <svg class="w-6 h-6 text-white  dark:text-gray-800" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-white  dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 6.025A7.5 7.5 0 1 0 17.975 14H10V6.025Z" />
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -42,7 +36,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
+            <a href="/profile" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
                 <svg class="w-6 h-6 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-width="2"
