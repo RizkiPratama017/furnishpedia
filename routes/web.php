@@ -9,11 +9,16 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Models\Product;
+use App\Http\Controllers\DashboardCategoryController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BukaTokoController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\OtpController;
 use App\Http\Controllers\CariController;
 use App\Http\Controllers\UserController;
+
 
 
 Route::get('/', function () {
@@ -43,7 +48,7 @@ Route::middleware('auth')->get('/dashboard/category', function () {
 });
 
 Route::middleware('auth')->get('/dashboard/product', function () {
-    $products = App\Models\Product::where('user_id', auth()->id())->paginate(5);
+    $products = App\Models\Product::where('user_id', Auth::user()->id)->paginate(5);
 
     $categories = \App\Models\Category::all();
     return view('dashboard-product', [
@@ -127,6 +132,34 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->
 Route::get('/register', [RegisterController::class, 'index'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
 
+
+//Middleware Auth
+Route::middleware('auth')->group(function () {
+
+    //dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard', ['title' => 'Dashboard']);
+    })->name('dashboard');
+
+    //dashboard-product
+    Route::get('/dashboard-product', function () {
+        $products = App\Models\Product::all();
+        return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
+    });
+
+    //dashboard-category
+    Route::get('/dashboard-category', function () {
+        $categories = App\Models\Category::all();
+        return view('dashboard-category', ['title' => 'Dashboard Kategori', 'categories' => $categories]);
+    });
+
+    //profile
+    Route::get('/dashboard-profile', function () {
+        return view('profile', ['title' => 'Profile']);
+    });
+});
+
+
 //google API
 Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
@@ -150,7 +183,14 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
 
+//otp
+// Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
+Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
+Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.otp');
+//Reez
+// Route::post('/testing', [OtpController::class, 'testing']);
 
 // profile
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
 Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
