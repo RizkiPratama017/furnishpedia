@@ -8,71 +8,142 @@
         {{-- Main --}}
         <main class="flex-1 bg-white overflow-y-auto">
 
-            {{-- welcome card --}}
-            <div class="m-10">
-                <div
-                    class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Dashboard Admin</h5>
-                    <p class="font-normal text-gray-700 dark:text-gray-400">Selamat Datang di Dashboard.</p>
+            <div class="p-6 grid grid-cols-3 gap-6">
+                <!-- Cards -->
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-gray-500">Total Revenue</h2>
+                    <p class="text-2xl font-bold">IDR 10,215,845</p>
+                    <p class="text-green-500 text-sm mt-2">↑ 33.87% from last week</p>
                 </div>
-            </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-gray-500">Total Items Sold</h2>
+                    <p class="text-2xl font-bold">128,980</p>
+                    <p class="text-red-500 text-sm mt-2">↓ 33.87% from last week</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-gray-500">Total Visitor</h2>
+                    <p class="text-2xl font-bold">2,905,897</p>
+                    <p class="text-green-500 text-sm mt-2">↑ 33.87% from last week</p>
+                </div>
 
-            <div class="m-10 flex flex-row">
+                <!-- Chart and Table -->
+                <div class="col-span-2 bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-xl font-bold mb-4">Report Statistics</h2>
+                    <div class="h-96 bg-gray-200 flex items-center justify-center rounded">
+                        <!-- Placeholder for Chart -->
 
-                <div class="max-w-sm w-full mr-5 bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                    <div class="">
-                        <div>
-                            <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
-                            <p class="text-base font-normal text-gray-500 dark:text-gray-400">Users this week</p>
-                        </div>
-                        <div
-                            class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                            12%
-                            <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                            </svg>
-                        </div>
+                        <span class="text-gray-400">[Chart Placeholder]</span>
                     </div>
                 </div>
 
-                <div class="max-w-sm w-full mr-5 bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                    <div class="">
-                        <div>
-                            <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
-                            <p class="text-base font-normal text-gray-500 dark:text-gray-400">Users this week</p>
-                        </div>
-                        <div
-                            class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                            12%
-                            <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                            </svg>
-                        </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-xl font-bold mb-4">Latest Transactions</h2>
+                    <div class="flow-root">
+                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('/img/r.jpg') }}"
+                                            alt="Neil image">
+                                    </div>
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Neil Sims
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                            email@windster.com
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        $320
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center ">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('/img/r.jpg') }}"
+                                            alt="Bonnie image">
+                                    </div>
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Bonnie Green
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                            email@windster.com
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        $3467
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('/img/r.jpg') }}"
+                                            alt="Michael image">
+                                    </div>
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Michael Gough
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                            email@windster.com
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        $67
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="py-3 sm:py-4">
+                                <div class="flex items-center ">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('/img/r.jpg') }}"
+                                            alt="Lana image">
+                                    </div>
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Lana Byrd
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                            email@windster.com
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        $367
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="pt-3 pb-0 sm:pt-4">
+                                <div class="flex items-center ">
+                                    <div class="flex-shrink-0">
+                                        <img class="w-8 h-8 rounded-full" src="{{ asset('/img/r.jpg') }}"
+                                            alt="Thomas image">
+                                    </div>
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                            Thomes Lean
+                                        </p>
+                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                            email@windster.com
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                        $2367
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                    <div class="">
-                        <div>
-                            <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
-                            <p class="text-base font-normal text-gray-500 dark:text-gray-400">Users this week</p>
-                        </div>
-                        <div
-                            class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                            12%
-                            <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </main>
