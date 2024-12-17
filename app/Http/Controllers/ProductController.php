@@ -129,7 +129,7 @@ class ProductController extends Controller
             $query->where('price', '<=', $request->price_max);
         }
 
-        $products = $query->paginate(9);
+        $products = $query->inRandomOrder()->paginate(9);
 
         return view('products.filter', [
             'title' => 'Filter Produk',

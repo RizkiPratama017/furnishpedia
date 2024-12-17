@@ -22,7 +22,7 @@ use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
-    $products = App\Models\Product::take(6)->get();
+    $products = App\Models\Product::inRandomOrder()->take(6)->get();
     return view('home', [
         'title' => 'Home Page',
         'products' => $products
@@ -193,4 +193,3 @@ Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.ot
 // profile
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
 Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-

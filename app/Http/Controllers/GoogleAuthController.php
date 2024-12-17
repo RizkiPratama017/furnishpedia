@@ -45,7 +45,7 @@ class GoogleAuthController extends Controller
                 // dd($user); 
                 Auth::login($user);  // Login pengguna baru
                 Log::info('User registered and logged in: ' . $user->name);
-                return redirect('/login')->with('success', 'Register Success!');
+                return redirect('/')->with('success', 'Register Success!');
             } else {
                 Auth::login($user);  // Login pengguna yang sudah ada
                 Log::info('User logged in: ' . $user->name);

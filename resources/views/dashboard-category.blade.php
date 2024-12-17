@@ -45,7 +45,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
 
             {{-- Alert --}}
@@ -72,7 +71,7 @@
                         <tr class="bg-gray-200 text-left">
                             <th class="px-6 py-3 border-b border-gray-300">Id</th>
                             <th class="px-6 py-3 border-b border-gray-300">Nama</th>
-                            <th class="px-6 py-3 border-b border-gray-300">slug</th>
+                            <th class="px-6 py-3 border-b border-gray-300">Slug</th>
                             <th class="px-6 py-3 border-b border-gray-300">Actions</th>
                         </tr>
                     </thead>
@@ -84,19 +83,16 @@
                                 <td class="px-6 py-4 border-b border-gray-300">{{ $category->slug }}</td>
                                 <td class="px-6 py-4 border-b border-gray-300">
                                     {{-- Button Edit --}}
-                                    <button class="text-blue-500 hover:underline" title="Edit"><a
-                                            href="/dashboard/category/{{ $category->id }}">
-                                            <svg class="w-6
-                                        h-6 text-blue-500 dark:text-white"
-                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                height="24" fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                            </svg>
-                                        </a>
-
-                                    </button>
+                                    <a href="/dashboard/category/{{ $category->id }}"
+                                        class="text-blue-500 hover:underline" title="Edit">
+                                        <svg class="w-6 h-6 text-blue-500 dark:text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                        </svg>
+                                    </a>
                                     {{-- Button Delete --}}
                                     <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
                                         class="inline">
@@ -151,35 +147,25 @@
 
                         <!-- Modal body -->
                         <div class="p-4 md:p-5 space-y-4">
-                            <form class="max-w mx-auto">
-                               
                             <form id="modal-form" method="POST" action="{{ route('categories.store') }}">
-                                @csrf <!-- Token CSRF untuk keamanan -->
-                                <input type="hidden" id="category-id" name="id">
+                                @csrf
                                 <div class="mb-5">
-                                    <label for="nama"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Nama
+                                    <label for="name"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                         Kategori</label>
-                                    <input type="text" id="nama" name='nama'
-                                    <input type="text" id="nama" name="name"
+                                    <input type="text" id="name" name="name"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Isi nama kategori" value="{{ old('nama') }}" required />
+                                        placeholder="Isi nama kategori" value="{{ old('name') }}" required />
                                 </div>
                                 <div class="mb-5">
                                     <label for="slug"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
-                                    <input type="text" id="slug" name='slug'
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 
-                                        @error('slug') is-invalid @enderror"
-                                        placeholder="Isi slug" required value="{{ old('slug') }}"/>
-                                        @error('slug')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     <input type="text" id="slug" name="slug"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Isi slug" required />
+                                        placeholder="Isi slug" value="{{ old('slug') }}" required />
+                                    @error('slug')
+                                        <div class="text-sm text-red-600">{{ $message }}</div>
+                                    @enderror
                                 </div>
                         </div>
 
@@ -203,6 +189,6 @@
         </main>
     </div>
 
-@vite('resources/js/category.js')
+    @vite('resources/js/category.js')
 
 </x-dashboard-layout>
