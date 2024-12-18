@@ -77,7 +77,7 @@
                                     </td>
                                     <td class="px-4 py-2 border">{{ $product->name }}</td>
                                     <td class="px-4 py-2 border">{{ Str::limit($product->description, 20) }}</td>
-                                    <td class="px-4 py-2 border">Rp {{ number_format($product->price, 0, ',', '.') }}
+                                    <td class="px-4 py-2 border">Rp{{ number_format($product->price, 0, ',', '.') }}
                                     </td>
                                     <td class="px-4 py-2 border">{{ $product->stock }}</td>
                                     <td class="px-4 py-2 border">{{ $product->category->name ?? 'Tidak ada' }}</td>
