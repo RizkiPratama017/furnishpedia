@@ -7,118 +7,91 @@
         <x-sidebar></x-sidebar>
 
         {{-- Main --}}
-        <main class="flex-1 bg-white overflow-y-auto">
+        <main class="flex-1 overflow-y-auto">
 
-            {{-- Modal Edit Product --}}
-            <div class="relative p-4 w-full max-w-2xl max-h-full">
+            {{-- Form --}}
+            <div class="flex-1 bg-white overflow-y-auto m-5 shadow-lg rounded-lg p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit Produk</h1>
+                <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="product-id" name="id" value="{{ $product->id }}">
 
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    {{-- Nama Produk --}}
+                    <div class="mb-5">
+                        <label for="name" class="block text-gray-700 mb-2 font-medium">Nama Produk</label>
+                        <input type="text" id="name" name="name" value="{{ $product->name }}"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Nama Produk" required />
+                    </div>
 
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Edit Produk
-                        </h3>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <a href="/dashboard/product">
-                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                </svg>
-                            </a>
-                            <span class="sr-only">Tutup</span>
+                    {{-- Deskripsi --}}
+                    <div class="mb-5">
+                        <label for="description" class="block text-gray-700 mb-2 font-medium">Deskripsi</label>
+                        <input type="text" id="description" name="description" value="{{ $product->description }}"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Deskripsi Produk" required />
+                    </div>
+
+                    {{-- Harga --}}
+                    <div class="mb-5">
+                        <label for="price" class="block text-gray-700 mb-2 font-medium">Harga</label>
+                        <input type="number" id="price" name="price" value="{{ $product->price }}"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Harga Produk" required />
+                    </div>
+
+                    {{-- Stok --}}
+                    <div class="mb-5">
+                        <label for="stock" class="block text-gray-700 mb-2 font-medium">Stok</label>
+                        <input type="number" id="stock" name="stock" value="{{ $product->stock }}"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Stok Produk" required />
+                    </div>
+
+                    {{-- Kategori --}}
+                    <div class="mb-5">
+                        <label for="category_id" class="block text-gray-700 mb-2 font-medium">Kategori</label>
+                        <select id="category_id" name="category_id"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            required>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ $category->id == $product->category_id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Gambar --}}
+                    <div class="mb-5">
+                        <label for="image" class="block mb-2 text-gray-700 font-medium">Gambar Produk</label>
+                        @if ($product->image)
+                            <div class="mb-3">
+                                <img src="{{ filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset('storage/' . $product->image) }}"
+                                    class="h-20 object-cover" alt="Product Image" />
+                            </div>
+                        @endif
+                        <input type="file" id="image" name="image"
+                            class="w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer"
+                            accept="image/*">
+                    </div>
+
+                    {{-- Tombol --}}
+                    <div class="flex justify-end space-x-3">
+                        <a href="/dashboard/category"
+                            class="px-5 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100 transition">
+                            Kembali
+                        </a>
+                        <button type="submit"
+                            class="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                            Simpan
                         </button>
                     </div>
-
-                    <!-- Modal body -->
-                    <div class="p-4 md:p-5 space-y-4">
-                        <form class="max-w mx-auto" method="POST" action="{{ route('products.update', $product->id) }}"
-                            enctype="multipart/form-data">
-                            @csrf <!-- Token CSRF untuk keamanan -->
-                            @method('PUT')
-                            <input type="hidden" id="product-id" name="id" value="{{ $product->id }}">
-                            <div class="mb-5">
-                                <label for="namaproduk"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                    Produk</label>
-                                <input type="text" id="namaproduk" name="name" value="{{ $product->name }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi nama produk" required />
-                            </div>
-                            <div class="mb-5">
-                                <label for="deskripsi"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
-                                <input type="text" id="deskripsi" name="description"
-                                    value="{{ $product->description }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi deskripsi" required />
-                            </div>
-                            <div class="mb-5">
-                                <label for="harga"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Harga</label>
-                                <input type="number" id="harga" name="price" value="{{ $product->price }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi harga" required />
-                            </div>
-                            <div class="mb-5">
-                                <label for="stok"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stok</label>
-                                <input type="number" id="stok" name="stock" value="{{ $product->stock }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi stok" required />
-                            </div>
-
-                            <!-- Select Option Category -->
-                            <div class="mb-5">
-                                <label for="kategori"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label>
-                                <select id="kategori" name="category_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    required>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ $category->id == $product->category_id ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-
-                            <div>
-                                <label for="gambar"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Gambar
-                                </label>
-                                @if ($product->image)
-                                    <div class="mb-3">
-                                        <img src="{{ filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset('storage/' . $product->image) }}"
-                                            class="h-8" alt="Product Image" />
-                                    </div>
-                                @endif
-                                <input type="file" id="gambar" name="image"
-                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    accept="image/*">
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div
-                                class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                <button type="submit" id="modal-submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
-                                <button type="button"
-                                    class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                                    <a href="/dashboard/product">Kembali</a>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
+                </form>
             </div>
+
         </main>
     </div>
 

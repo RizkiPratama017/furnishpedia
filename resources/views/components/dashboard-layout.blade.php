@@ -12,14 +12,12 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="h-full m-0">
+<body class="h-full m-0 bg-gray-100">
 
-    <div class="h-screen">
-        {{-- <x-navbar></x-navbar> --}}
+    <div>
         <x-dashboard-navbar></x-dashboard-navbar>
 
-
-        <main class="h-screen">
+        <main>
             {{ $slot }}
         </main>
     </div>

@@ -18,8 +18,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\CariController;
 use App\Http\Controllers\UserController;
-
-
+use App\Http\Controllers\OrderController;
+use App\Models\Category;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
@@ -39,56 +39,13 @@ Route::middleware('auth')->get('/dashboard', function () {
     ]);
 });
 
-Route::middleware('auth')->get('/dashboard/category', function () {
-    $categories = App\Models\Category::paginate(5);
-    return view('dashboard-category', [
-        'title' => 'Dashboard Kategori',
-        'categories' => $categories
-    ]);
-});
+// route dashboard kategori
+Route::middleware('auth')->get('/dashboard/category', [CategoryController::class, 'index'])->name('dashboard.category');
+Route::middleware('auth')->get('/dashboard/category/{id}', [CategoryController::class, 'viewEdit'])->name('category.edit');
 
-Route::middleware('auth')->get('/dashboard/product', function () {
-    $products = App\Models\Product::where('user_id', Auth::user()->id)->paginate(5);
-
-    $categories = \App\Models\Category::all();
-    return view('dashboard-product', [
-        'title' => 'Dashboard Produk',
-        'products' => $products,
-        'categories' => $categories
-    ]);
-});
-
-//
-Route::middleware('auth')->get('/dashboard/edit', function () {
-    $categories = App\Models\Category::paginate(5);
-    return view('category-edit', [
-        'title' => 'Dashboard Edit',
-        'categories' => $categories
-    ]);
-});
-
-Route::middleware('auth')->get('/dashboard/category/{id}', function ($id) {
-    // Ambil data kategori berdasarkan ID yang dikirimkan di URL
-    $categories = App\Models\Category::findOrFail($id);
-
-    return view('category-edit', [
-        'title' => 'Dashboard Edit',
-        'category' => $categories, // Hanya satu kategori berdasarkan ID
-    ]);
-});
-
-Route::middleware('auth')->get('/dashboard/product/{id}', function ($id) {
-    // Ambil data kategori berdasarkan ID yang dikirimkan di URL
-    $products = App\Models\Product::findOrFail($id);
-    $categories = \App\Models\Category::all();
-
-    return view('product-edit', [
-        'title' => 'Dashboard Edit',
-        'product' => $products, // Hanya satu Product berdasarkan ID
-        'categories' => $categories
-    ]);
-});
-
+// route dashboard produk
+Route::middleware('auth')->get('/dashboard/product', [ProductController::class, 'index'])->name('dashboard.product');
+Route::middleware('auth')->get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
 
 Route::middleware('auth')->get('/profile', function () {
     return view('profile', ['title' => 'Profile']);
@@ -99,12 +56,14 @@ Route::resource('products', ProductController::class)->middleware('auth');
 Route::get('/product', [ProductController::class, 'search'])->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
+Route::put('/dashboard/product/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
+Route::post('/dashboard/product', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 
 // fungsi CRUD Category
 Route::get('/categories/detail', [CategoryController::class, 'detail'])->name('categories.detail');
 Route::resource('categories', CategoryController::class)->middleware('auth')->except('show');
 Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
-Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('category.update')->middleware('auth');
+Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('categories.update')->middleware('auth');
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
 // VIEW

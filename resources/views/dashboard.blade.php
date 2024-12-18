@@ -6,28 +6,28 @@
         <x-sidebar></x-sidebar>
 
         {{-- Main --}}
-        <main class="flex-1 bg-white overflow-y-auto">
+        <main class="flex-1 bg-white overflow-y-auto ">
 
             <div class="p-6 grid grid-cols-3 gap-6">
                 <!-- Cards -->
-                <div class="bg-white p-6 rounded-lg shadow">
+                <div class="bg-white p-6 rounded-lg shadow hover:bg-gray-100">
                     <h2 class="text-gray-500">Total Revenue</h2>
                     <p class="text-2xl font-bold">IDR 10,215,845</p>
                     <p class="text-green-500 text-sm mt-2">↑ 33.87% from last week</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
+                <div class="bg-white p-6 rounded-lg shadow hover:bg-gray-100">
                     <h2 class="text-gray-500">Total Items Sold</h2>
                     <p class="text-2xl font-bold">128,980</p>
                     <p class="text-red-500 text-sm mt-2">↓ 33.87% from last week</p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
+                <div class="bg-white p-6 rounded-lg shadow hover:bg-gray-100">
                     <h2 class="text-gray-500">Total Visitor</h2>
                     <p class="text-2xl font-bold">2,905,897</p>
                     <p class="text-green-500 text-sm mt-2">↑ 33.87% from last week</p>
                 </div>
 
                 <!-- Chart and Table -->
-                <div class="col-span-2 bg-white p-6 rounded-lg shadow">
+                <div class="col-span-2 bg-white p-6 rounded-lg shadow ">
                     <h2 class="text-xl font-bold mb-4">Report Statistics</h2>
                     <div class="h-96 bg-gray-200 flex items-center justify-center rounded">
                         <!-- Placeholder for Chart -->

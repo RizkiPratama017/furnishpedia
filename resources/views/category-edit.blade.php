@@ -3,74 +3,49 @@
     <x-slot:title>{{ $title }}</x-slot:title>
 
 
-    <div class="flex flex-1 min-h-full">
+    <div class="flex flex-1 h-screen">
         {{-- Sidebar --}}
         <x-sidebar></x-sidebar>
 
         {{-- Main --}}
-        <main class="flex-1 bg-white overflow-y-auto">
+        <main class="flex-1 overflow-y-auto">
 
             {{-- form --}}
-            <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <div class="flex-1 bg-white overflow-y-auto m-5 shadow-lg rounded-lg p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit</h1>
+                <form method="POST" action="{{ route('categories.update', $category->id) }}">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="category-id" name="id" value="{{ $category->id }}">
+                    <div class="mb-6">
+                        <label for="name" class="block text-gray-700 mb-2 font-medium">Nama Kategori</label>
+                        <input type="text" id="name" name="name" value="{{ $category->name }}"
+                            class="w-full p-3 border
+                            border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Nama kategori" required />
+                    </div>
+                    <div class="mb-6">
+                        <label for="slug" class="block text-gray-700 mb-2 font-medium">Slug</label>
+                        <input type="text" id="slug" name="slug" value="{{ $category->slug }}"
+                            class="w-full p-3 border
+                            border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Slug kategori" required />
+                    </div>
 
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Edit Kategori
-                        </h3>
+                    {{-- Buttons --}}
+                    <div class="flex justify-end space-x-3">
                         <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <a href="/dashboard/category">
-                                <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                </svg>
-                            </a>
-                            <span class="sr-only">Tutup</span>
+                            class="px-5 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100 transition">
+                            <a href="/dashboard/category">Kembali</a>
+                        </button>
+                        <button type="submit"
+                            class="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                            Simpan
                         </button>
                     </div>
-
-                    <!-- Modal body -->
-                    <div class="p-4 md:p-5 space-y-4">
-                        <form class="max-w mx-auto" method="POST"
-                            action="{{ route('category.update', $category->id) }}">
-                            @csrf <!-- Token CSRF untuk keamanan -->
-                            @method('PUT')
-                            <input type="hidden" id="product-id" name="id" value="{{ $category->id }}">
-                            <div class="mb-5">
-                                <label for="nama"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                    Kategori</label>
-                                <input type="text" id="nama" name="name" value="{{ $category->name }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi nama kategori" required />
-                            </div>
-                            <div class="mb-5">
-                                <label for="slug"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
-                                <input type="text" id="slug" name="slug" value="{{ $category->slug }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Isi slug" required />
-                            </div>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button type="submit" id="modal-submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
-                        <button type="button"
-                            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                            <a href="/dashboard/category">
-                                Kembali
-                            </a></button>
-                        </form>
-                    </div>
-                </div>
+                </form>
             </div>
+
         </main>
     </div>
 
