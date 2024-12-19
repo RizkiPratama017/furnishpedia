@@ -12,11 +12,26 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
-        $products = Product::where('user_id', $user->id)->get();
-        $products = Product::with('category')->get();
+        $products = Product::where('user_id', Auth::user()->id)->paginate(5);
         $categories = Category::all();
-        return view('products.index', compact('products', 'categories'));
+
+        return view('dashboard-product', [
+            'title' => 'Dashboard Produk',
+            'products' => $products,
+            'categories' => $categories
+        ]);
+    }
+
+    public function viewEdit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+
+        return view('product-edit', [
+            'title' => 'Edit Produk',
+            'product' => $product,
+            'categories' => $categories
+        ]);
     }
 
     public function store(Request $request)
@@ -27,7 +42,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validatedData['user_id'] = Auth::id();
@@ -53,7 +68,6 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-
 
         $request->validate([
             'name' => 'required|string|max:255',

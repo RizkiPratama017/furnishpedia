@@ -1,194 +1,148 @@
 <x-dashboard-layout>
-
     <x-slot:title>{{ $title }}</x-slot:title>
 
-    <div class="flex flex-1 min-h-full">
+    <div class="flex min-h-screen">
         {{-- Sidebar --}}
         <x-sidebar></x-sidebar>
 
-        {{-- Main --}}
-        <main class="flex-1 bg-white overflow-y-auto">
-
-            {{-- Title & Add Button --}}
-            <div class="text-center pt-6">
-                <h1 class="text-2xl font-bold">Data Kategori</h1>
-            </div>
-
-            <div class="mb-3 pt-3 grid grid-cols-3">
-                {{-- button add --}}
-                <div class="px-6 w-32">
-                    <button class="px-3 py-3 bg-green-500 rounded-md text-white text-lg shadow-md"
-                        data-modal-target="modal_add" data-modal-toggle="modal_add" type="button">Tambah
+        {{-- Main  --}}
+        <main class="flex-1 bg-white overflow-y-auto m-5 shadow-md rounded">
+            <div class="container mx-auto px-4 py-6">
+                {{-- Header --}}
+                <div class="flex flex-wrap justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Kategori</h1>
+                    <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                        data-modal-target="modal_add" data-modal-toggle="modal_add" type="button">
+                        Tambah
                     </button>
                 </div>
 
-                {{-- Search bar --}}
-                <div class="col-span-2">
-                    <form method="GET" action="{{ route('categories.search') }}" class="max-w-md">
-                        <label for="default-search"
-                            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                {{-- Alert --}}
+                <div>
+                    @if (session('success'))
+                        <div class="p-4 mb-4 text-sm text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                            role="alert">
+                            <span class="px-2 py-2 font-medium">{{ session('success') }}</span>
+                        </div>
+                    @endif
+
+                    @if (session('failed'))
+                        <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                            role="alert">
+                            <span class="px-2 py-2 font-medium">{{ session('failed') }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Search Bar --}}
+                <div class="mb-6">
+                    <form method="GET" action="{{ route('categories.search') }}" class="w-full md:w-1/2 mx-auto">
                         <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            <input type="search" name="search"
+                                class="w-full p-3 pl-10 text-gray-700 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                                placeholder="Cari kategori..." value="{{ request('search') }}" required />
+                            <span class="absolute left-3 top-3 text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" />
                                 </svg>
-                            </div>
-                            <input type="search" id="default-search" name="search"
-                                class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Cari Kategori..." value="{{ request('search') }}" required />
-                            <button type="submit"
-                                class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Search
-                            </button>
+                            </span>
                         </div>
                     </form>
                 </div>
-            </div>
 
-            {{-- Alert --}}
-            <div>
-                @if (session('success'))
-                    <div class="p-4 mb-4 mx-6 text-sm text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                        role="alert">
-                        <span class="px-2 py-2 font-medium">{{ session('success') }}</span>
-                    </div>
-                @endif
-
-                @if (session('failed'))
-                    <div class="p-4 mb-4 mx-6 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                        role="alert">
-                        <span class="px-2 py-2 font-medium">{{ session('failed') }}</span>
-                    </div>
-                @endif
-            </div>
-
-            <!-- Table -->
-            <div class="overflow-x-auto px-6 pb-3">
-                <table class="min-w-full bg-white border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-200 text-left">
-                            <th class="px-6 py-3 border-b border-gray-300">Id</th>
-                            <th class="px-6 py-3 border-b border-gray-300">Nama</th>
-                            <th class="px-6 py-3 border-b border-gray-300">Slug</th>
-                            <th class="px-6 py-3 border-b border-gray-300">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($categories as $category)
-                            <tr class="hover:bg-gray-100">
-                                <td class="px-6 py-4 border-b border-gray-300">{{ $category->id }}</td>
-                                <td class="px-6 py-4 border-b border-gray-300">{{ $category->name }}</td>
-                                <td class="px-6 py-4 border-b border-gray-300">{{ $category->slug }}</td>
-                                <td class="px-6 py-4 border-b border-gray-300">
-                                    {{-- Button Edit --}}
-                                    <a href="/dashboard/category/{{ $category->id }}"
-                                        class="text-blue-500 hover:underline" title="Edit">
-                                        <svg class="w-6 h-6 text-blue-500 dark:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                        </svg>
-                                    </a>
-                                    {{-- Button Delete --}}
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
-                                        class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:underline ml-4" title="Delete"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')">
-                                            <svg class="w-6 h-6 text-red-500 dark:text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="none" viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </td>
+                {{-- Table --}}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+                        <thead class="bg-gray-800 text-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left border">Id</th>
+                                <th class="px-4 py-2 text-left border">Nama</th>
+                                <th class="px-4 py-2 text-left border">Slug</th>
+                                <th class="px-4 py-2 text-center border">Aksi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach ($categories as $category)
+                                <tr class="hover:bg-gray-100 text-gray-700">
+                                    <td class="px-4 py-2 border">{{ $category->id }}</td>
+                                    <td class="px-4 py-2 border">{{ $category->name }}</td>
+                                    <td class="px-4 py-2 border">{{ $category->slug }}</td>
+                                    <td class="px-4 py-2 border text-center">
+                                        {{-- Button Edit --}}
+                                        <a href="/dashboard/category/{{ $category->id }}"
+                                            class="text-blue-500 hover:text-blue-700 mx-2">
+                                            Edit
+                                        </a>
 
-            {{-- Pagination --}}
-            <div class="py-3 grid place-items-center">
-                {{ $categories->links() }}
-            </div>
+                                        {{-- Button Delete --}}
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                            class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:text-red-700 mx-2"
+                                                onclick="return confirm('Yakin ingin menghapus kategori ini?')">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-            {{-- Modal Add Category --}}
-            <div id="modal_add" tabindex="-1" aria-hidden="true"
-                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-4 w-full max-w-2xl max-h-full">
-                    <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <!-- Modal header -->
-                        <div
-                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
-                                Tambah Kategori
-                            </h3>
-                            <button type="button"
-                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-hide="modal_add">
-                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                </svg>
-                                <span class="sr-only">Tutup</span>
+                {{-- Pagination --}}
+                <div class="mt-6 flex justify-center">
+                    {{ $categories->links() }}
+                </div>
+
+                {{-- Modal --}}
+                <div id="modal_add" tabindex="-1" aria-hidden="true"
+                    class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                        {{-- Header --}}
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-bold">Tambah Kategori</h2>
+                            <button data-modal-hide="modal_add" class="text-gray-500 hover:text-gray-700">
+                                ✖
                             </button>
                         </div>
 
-                        <!-- Modal body -->
-                        <div class="p-4 md:p-5 space-y-4">
-                            <form id="modal-form" method="POST" action="{{ route('categories.store') }}">
-                                @csrf
-                                <div class="mb-5">
-                                    <label for="name"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                        Kategori</label>
-                                    <input type="text" id="name" name="name"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Isi nama kategori" value="{{ old('name') }}" required />
-                                </div>
-                                <div class="mb-5">
-                                    <label for="slug"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
-                                    <input type="text" id="slug" name="slug"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Isi slug" value="{{ old('slug') }}" required />
-                                    @error('slug')
-                                        <div class="text-sm text-red-600">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                        </div>
+                        {{-- Form --}}
+                        <form method="POST" action="{{ route('categories.store') }}">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-700 mb-2">Nama Kategori</label>
+                                <input type="text" id="name" name="name"
+                                    class="w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
+                                    placeholder="Nama kategori" required />
+                            </div>
+                            <div class="mb-4">
+                                <label for="slug" class="block text-gray-700 mb-2">Slug</label>
+                                <input type="text" id="slug" name="slug"
+                                    class="w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
+                                    placeholder="Slug kategori" required />
+                            </div>
 
-                        <!-- Modal footer -->
-                        <div
-                            class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                            <button type="submit" id="modal-submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Simpan
-                            </button>
-                            </form>
-                            <button data-modal-hide="modal_add" type="button"
-                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                                Batal
-                            </button>
-                        </div>
+                            {{-- Buttons --}}
+                            <div class="flex justify-end">
+                                <button type="button" data-modal-hide="modal_add"
+                                    class="mr-2 px-4 py-2 text-gray-600 border rounded-md hover:bg-gray-200">
+                                    Batal
+                                </button>
+                                <button type="submit"
+                                    class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                    Simpan
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
 
     @vite('resources/js/category.js')
-
 </x-dashboard-layout>

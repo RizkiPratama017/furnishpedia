@@ -9,8 +9,28 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all(); // Ambil semua kategori
-        return view('categories.index', ['title' => 'kategori', 'categories' => $categories], compact('categories'));
+        $categories = Category::paginate(5); // Ambil kategori sesuai jumlah paginasi
+
+        return view('dashboard-category', [
+            'title' => 'Dashboard Kategori',
+            'categories' => $categories
+        ]);
+    }
+
+    public function viewEdit($id)
+    {
+        $categories = Category::findOrFail($id);
+
+        return view('category-edit', [
+            'title' => 'Dashboard Edit',
+            'category' => $categories, // Hanya satu kategori berdasarkan ID
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('categories.edit', compact('category'));
     }
 
     public function detail()
@@ -85,11 +105,7 @@ class CategoryController extends Controller
         return redirect('/dashboard/category')->with('success', 'kategori berhasil diperbarui!');
     }
 
-    public function edit($id)
-    {
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
-    }
+
 
     public function show($slug)
     {
