@@ -16,6 +16,7 @@
                                 {{ $category->name }}
                             </h2>
                         </div>
+
                     </div>
                 </a>
             @endforeach

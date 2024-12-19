@@ -12,46 +12,134 @@
                     alt="{{ $product->name }}" class="w-full rounded-lg shadow-lg">
             </div>
 
-            <!-- Product Information -->
             <div class="md:w-1/2">
                 <h1 class="text-3xl font-bold mb-4">{{ $product->name }}</h1>
                 <p class="text-2xl font-semibold text-green-600 mb-2">Rp
                     {{ number_format($product->price, 0, ',', '.') }}</p>
                 <p class="text-sm text-gray-500 mb-4">Stok Tersisa: <span class="font-bold">{{ $product->stock }}</span>
                 </p>
-                <p class="text-sm  mb-4">{{ $product->description }}</p>
+                <p class="text-sm mb-4">{{ $product->description }}</p>
 
-                <!-- Quantity and Cart -->
-                @if ($product->stock > 0)
-                    <form action="{{ route('cart.store') }}" method="POST" class="flex items-center gap-4">
+                <!-- Rating dengan Bintang -->
+                <div class="mb-4">
+                    <span class="font-semibold">Rating: </span>
+                    @if ($product->ratings->count() > 0)
+                        <div class="flex items-center">
+                            @php
+                                $averageRating = $product->averageRating();
+                            @endphp
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path
+                                        d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                                </svg>
+                            @endfor
+                            <span class="ml-2">{{ number_format($averageRating, 1) }} / 5</span>
+                        </div>
+                    @else
+                        <span>Belum Ada Rating</span>
+                    @endif
+                </div>
+
+                @auth
+                    <form action="{{ route('ratings.store') }}" method="POST" class="mb-4">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <div class="flex items-center border border-gray-300 rounded-md">
-                            <button type="button" class="px-3 py-2 text-gray-500 hover:bg-gray-100"
-                                onclick="this.nextElementSibling.stepDown()">−</button>
-                            <input type="number" name="quantity" value="1" min="1"
-                                max="{{ $product->stock }}"
-                                class="w-16 h-10 text-center border-none focus:outline-none">
-                            <button type="button" class="px-3 py-2 text-gray-500 hover:bg-gray-100"
-                                onclick="this.previousElementSibling.stepUp()">+</button>
+                        <div class="flex items-center">
+                            <label for="rating" class="mr-2">Berikan Rating:</label>
+                            <select name="rating" id="rating" class="border rounded-md p-2">
+                                <option value="1">1 Bintang</option>
+                                <option value="2">2 Bintang</option>
+                                <option value="3">3 Bintang</option>
+                                <option value="4">4 Bintang</option>
+                                <option value="5">5 Bintang</option>
+                            </select>
                         </div>
-                        <button type="submit"
-                            class="flex items-center justify-center w-8 h-8 bg-gray-200 text-white rounded-full transition-all duration-300 hover:bg-gray-300 active:ring-2 active:ring-yellow-400">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
-                            </svg>
-                        </button>
+                        <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md">Submit
+                            Rating</button>
                     </form>
                 @else
-                    <button type="button" disabled
-                        class="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed">Stok Habis</button>
-                @endif
+                    <p class="text-sm text-gray-500"></p>
+                @endauth
             </div>
         </div>
+
+        <!-- Produk dari Toko Ini -->
+        <div class="mt-10">
+            <h2 class="text-2xl font-semibold mb-4">Produk yang Dijual di Toko Ini</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                @foreach ($storeProducts as $storeProduct)
+                    <a href="{{ route('products.show', $storeProduct->id) }}" class="block">
+                        <div class="bg-white shadow rounded-lg p-4">
+                            <img src="{{ filter_var($storeProduct->image, FILTER_VALIDATE_URL) ? $storeProduct->image : asset('storage/' . $storeProduct->image) }}"
+                                alt="{{ $storeProduct->name }}" class="w-full h-40 object-cover rounded">
+                            <h3 class="mt-2 font-semibold">{{ $storeProduct->name }}</h3>
+                            <p class="text-green-600 font-bold">Rp
+                                {{ number_format($storeProduct->price, 0, ',', '.') }}</p>
+
+                            <!-- Rating dengan Bintang -->
+                            <div class="flex items-center mt-2">
+                                @php
+                                    $averageRating =
+                                        $storeProduct->ratings->count() > 0 ? $storeProduct->averageRating() : 0;
+                                @endphp
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                                    </svg>
+                                @endfor
+                                <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} /
+                                    5</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+
+        <!-- Rekomendasi Item Serupa -->
+        <div class="mt-10">
+            <h2 class="text-2xl font-semibold mb-4">Rekomendasi Item Serupa</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                @foreach ($relatedProducts as $relatedProduct)
+                    <a href="{{ route('products.show', $relatedProduct->id) }}" class="block">
+                        <div class="bg-white shadow rounded-lg p-4">
+                            <img src="{{ filter_var($relatedProduct->image, FILTER_VALIDATE_URL) ? $relatedProduct->image : asset('storage/' . $relatedProduct->image) }}"
+                                alt="{{ $relatedProduct->name }}" class="w-full h-40 object-cover rounded">
+                            <h3 class="mt-2 font-semibold">{{ $relatedProduct->name }}</h3>
+                            <p class="text-green-600 font-bold">Rp
+                                {{ number_format($relatedProduct->price, 0, ',', '.') }}</p>
+
+                            <!-- Rating dengan Bintang -->
+                            <div class="flex items-center mt-2">
+                                @php
+                                    $averageRating =
+                                        $relatedProduct->ratings->count() > 0 ? $relatedProduct->averageRating() : 0;
+                                @endphp
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                                    </svg>
+                                @endfor
+                                <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} /
+                                    5</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+
     </div>
 
     <x-footer></x-footer>

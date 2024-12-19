@@ -65,6 +65,22 @@
                                 </div>
 
                             </div>
+                            <!-- Rating dengan Bintang -->
+                            <div class="flex items-center mt-3">
+                                @php
+                                    $averageRating = $product->averageRating();
+                                @endphp
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                                    </svg>
+                                @endfor
+                                <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} /
+                                    5</span>
+                            </div>
                         </div>
                     </a>
                 </div>
