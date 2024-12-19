@@ -92,7 +92,9 @@
                 </div>
                 <!-- Image Section -->
                 <div class="order-1 lg:order-2">
-                    <img class="h-96 w-96 object-cover lg:w-[600px] lg:h-[600px]" src="https://media.dekoruma.com/catalogue/TNZ-466474.jpg?auto=webp&bg-color=ffffff&dpr=1&fit=bounds&optimize=high&pad=0&quality=20&trim-color=auto" alt="">
+                    <img class="h-96 w-96 object-cover lg:w-[600px] lg:h-[600px]"
+                        src="https://media.dekoruma.com/catalogue/TNZ-466474.jpg?auto=webp&bg-color=ffffff&dpr=1&fit=bounds&optimize=high&pad=0&quality=20&trim-color=auto"
+                        alt="">
                 </div>
             </div>
         </section>
@@ -159,6 +161,22 @@
                                     @endif
                                 </div>
 
+                            </div>
+                            <!-- Rating dengan Bintang -->
+                            <div class="flex items-center mt-3">
+                                @php
+                                    $averageRating = $product->averageRating();
+                                @endphp
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                                    </svg>
+                                @endfor
+                                <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} /
+                                    5</span>
                             </div>
                         </div>
                     </a>

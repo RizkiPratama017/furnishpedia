@@ -10,15 +10,31 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::where('user_id', Auth::user()->id)->paginate(5);
-        $categories = Category::all();
+        $query = Product::query();
 
-        return view('dashboard-product', [
-            'title' => 'Dashboard Produk',
+        // Filter berdasarkan kategori
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Filter berdasarkan harga minimum
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', $request->price_min);
+        }
+
+        // Filter berdasarkan harga maksimum
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        $products = $query->inRandomOrder()->paginate(9);
+
+        return view('products.index', [
+            'title' => 'Produk',
             'products' => $products,
-            'categories' => $categories
+            'categories' => Category::all(),
         ]);
     }
 
@@ -46,13 +62,16 @@ class ProductController extends Controller
         ]);
 
         $validatedData['user_id'] = Auth::id();
+
         if ($request->hasFile('image')) {
             $validatedData['image'] = $request->file('image')->store('img', 'public');
         }
 
         Product::create($validatedData);
+
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
     }
+
 
     public function destroy($id)
     {
@@ -124,31 +143,15 @@ class ProductController extends Controller
         ]);
     }
 
-    public function filter(Request $request)
+    public function dproduk()
     {
-        $query = Product::query();
+        $products = Product::where('user_id', Auth::user()->id)->paginate(5);
+        $categories = Category::all();
 
-        // Filter berdasarkan kategori
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
-        // Filter berdasarkan harga minimum
-        if ($request->filled('price_min')) {
-            $query->where('price', '>=', $request->price_min);
-        }
-
-        // Filter berdasarkan harga maksimum
-        if ($request->filled('price_max')) {
-            $query->where('price', '<=', $request->price_max);
-        }
-
-        $products = $query->inRandomOrder()->paginate(9);
-
-        return view('products.filter', [
-            'title' => 'Filter Produk',
+        return view('dashboard-product', [
+            'title' => 'Dashboard Produk',
             'products' => $products,
-            'categories' => Category::all(),
+            'categories' => $categories
         ]);
     }
 
@@ -156,11 +159,25 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('category')->findOrFail($id);
+        $product = Product::with('category', 'ratings.user')->findOrFail($id);
+
+
+        $storeProducts = Product::where('user_id', $product->user_id)
+            ->where('id', '!=', $product->id)
+            ->take(4)
+            ->get();
+
+
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->take(4)
+            ->get();
 
         return view('products.show', [
             'product' => $product,
             'title' => $product->name,
+            'storeProducts' => $storeProducts,
+            'relatedProducts' => $relatedProducts,
         ]);
     }
 }

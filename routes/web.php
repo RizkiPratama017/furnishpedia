@@ -1,25 +1,26 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\LoginController;
 use App\Models\Product;
-use App\Http\Controllers\DashboardCategoryController;
-use Laravel\Socialite\Facades\Socialite;
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\BukaTokoController;
-use App\Http\Controllers\SearchController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\CariController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderController;
-use App\Models\Category;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BukaTokoController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\DashboardCategoryController;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
@@ -44,7 +45,7 @@ Route::middleware('auth')->get('/dashboard/category', [CategoryController::class
 Route::middleware('auth')->get('/dashboard/category/{id}', [CategoryController::class, 'viewEdit'])->name('category.edit');
 
 // route dashboard produk
-Route::middleware('auth')->get('/dashboard/product', [ProductController::class, 'index'])->name('dashboard.product');
+Route::middleware('auth')->get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
 Route::middleware('auth')->get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
 
 Route::middleware('auth')->get('/profile', function () {
@@ -52,10 +53,10 @@ Route::middleware('auth')->get('/profile', function () {
 });
 
 //fungsi CRUD produk
-Route::resource('products', ProductController::class)->middleware('auth');
+Route::resource('products', ProductController::class)->except(['index'])->middleware('auth');
+Route::get('products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product', [ProductController::class, 'search'])->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/filter', [ProductController::class, 'filter'])->name('products.filter');
 Route::put('/dashboard/product/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
 Route::post('/dashboard/product', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 
@@ -141,6 +142,8 @@ Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')-
 //live search
 Route::get('/search', [CariController::class, 'search'])->name('search');
 Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
+Route::get('/search/suggestions', [CariController::class, 'getSuggestions']);
+
 
 //otp
 // Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
@@ -152,3 +155,6 @@ Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.ot
 // profile
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
 Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
+//rating
+Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');

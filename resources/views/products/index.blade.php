@@ -7,7 +7,7 @@
     <div class="container mx-auto px-4 py-6">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Filter Produk</h1>
 
-        <form action="{{ route('products.filter') }}" method="GET" class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <form action="{{ route('products.index') }}" method="GET" class="bg-white shadow-md rounded-lg p-6 mb-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="form-group">
                     <label for="category_id" class="block text-sm font-medium text-gray-700">Kategori</label>
@@ -46,7 +46,7 @@
             </div>
         </form>
 
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Hasil Pencarian </h2>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Hasil Pencarian</h2>
 
         @if ($products->isEmpty())
             <p class="text-gray-500">Tidak ada produk yang sesuai dengan filter.</p>
@@ -73,6 +73,39 @@
                                                 Rp.{{ number_format($product->original_price, 0, ',', '.') }}</p>
                                         </del>
                                     @endif
+
+                                    <!-- Tampilkan rating produk dengan Heroicons -->
+                                    <div class="ml-auto">
+                                        <div class="flex items-center">
+                                            @if ($product->ratings->count() > 0)
+                                                <div class="flex items-center text-yellow-500">
+                                                    <!-- Bintang penuh -->
+                                                    @for ($i = 0; $i < floor($product->averageRating()); $i++)
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M10 15l-3.4 2.2 1-4.8L3 7.7l4.8-.4L10 3l2.2 4.5 4.8.4-3.6 4.7 1 4.8L10 15z" />
+                                                        </svg>
+                                                    @endfor
+
+                                                    <!-- Bintang setengah -->
+                                                    @if ($product->averageRating() > floor($product->averageRating()))
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M10 15l-3.4 2.2 1-4.8L3 7.7l4.8-.4L10 3l2.2 4.5 4.8.4-3.6 4.7 1 4.8L10 15z" />
+                                                        </svg>
+                                                    @endif
+                                                </div>
+                                                <span
+                                                    class="ml-2 text-sm">{{ number_format($product->averageRating(), 1) }}
+                                                    / 5</span>
+                                            @else
+                                                <span class="text-gray-500">No ratings yet</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="ml-auto">
                                         <!-- Tombol Keranjang -->
                                         @if ($product->stock > 0)
@@ -115,8 +148,6 @@
                     </div>
                 @endforeach
             </section>
-
-
 
         @endif
     </div>
