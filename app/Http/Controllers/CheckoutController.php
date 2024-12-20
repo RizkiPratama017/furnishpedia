@@ -52,10 +52,18 @@ class CheckoutController extends Controller
         return redirect()->route('checkout.success');
     }
 
-    public function success()
+    public function notification($status)
     {
-        return view('checkout-success');
+        // Pastikan status adalah 'pending', 'success', atau 'failed'
+        if (!in_array($status, ['pending', 'success', 'failed'])) {
+            abort(404);
+        }
+
+        return view('checkout-status', [
+            'status' => $status
+        ]);
     }
+
 
     public function showOrderDetails()
     {

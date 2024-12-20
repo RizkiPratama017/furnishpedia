@@ -163,6 +163,5 @@ Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store
 // checkout
 Route::middleware('auth')->get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::middleware('auth')->post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-Route::middleware('auth')->get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
-
+Route::middleware('auth')->get('/checkout/{status}', [CheckoutController::class, 'notification'])->name('checkout.status');
 Route::middleware('auth')->get('/order', [CheckoutController::class, 'showOrderDetails'])->name('order.details');

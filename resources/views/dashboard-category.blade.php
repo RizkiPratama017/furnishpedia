@@ -40,7 +40,7 @@
                         <div class="relative">
                             <input type="search" name="search"
                                 class="w-full p-3 pl-10 text-gray-700 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                                placeholder="Cari kategori..." value="{{ request('search') }}" required />
+                                placeholder="Cari kategori..." value="{{ request('search') }}" />
                             <span class="absolute left-3 top-3 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
