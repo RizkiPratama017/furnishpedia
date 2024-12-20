@@ -115,7 +115,7 @@
                                         <div class="w-full max-w-4xl mt-8">
                                             <div id="osm-map" style="height: 300px;"></div>
                                         </div>
-                                        
+
 
                                         <div class="grid grid-cols-3 items-center gap-4">
                                             <label for="image" class="font-medium text-gray-700 text-right">
@@ -147,20 +147,20 @@
     <script>
         // Create Leaflet map.
         var map = L.map('osm-map').setView([0, 0], 2); // Default view (world)
-    
+
         // Add OSM tile layer to the Leaflet map.
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-    
+
         // Marker variable
         var marker;
-    
+
         // Function to update the map based on coordinates
         function updateMap(lat, lon) {
             // Update map view
             map.setView([lat, lon], 14);
-    
+
             // Add or move marker
             if (marker) {
                 marker.setLatLng([lat, lon]);
@@ -168,18 +168,18 @@
                 marker = L.marker([lat, lon]).addTo(map);
             }
         }
-    
+
         // Function to fetch coordinates from an address
         function getCoordinates(address) {
             if (!address) return;
-    
+
             fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && data[0]) {
                         var lat = data[0].lat;
                         var lon = data[0].lon;
-    
+
                         // Update map
                         updateMap(lat, lon);
                     }
@@ -189,25 +189,25 @@
                     // Do nothing on error
                 });
         }
-    
+
         // Event listener for address input
-        document.getElementById('address').addEventListener('input', function (e) {
+        document.getElementById('address').addEventListener('input', function(e) {
             var address = e.target.value;
             getCoordinates(address);
         });
-    
+
         // Reverse geocoding: Get address from coordinates
-        map.on('click', function (e) {
+        map.on('click', function(e) {
             var lat = e.latlng.lat;
             var lon = e.latlng.lng;
-    
+
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.display_name) {
                         // Update address field
                         document.getElementById('address').value = data.display_name;
-    
+
                         // Update marker
                         updateMap(lat, lon);
                     }
@@ -218,7 +218,7 @@
                 });
         });
     </script>
-    
-    
-    
+
+
+
 </x-layout>
