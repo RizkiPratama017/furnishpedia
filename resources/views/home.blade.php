@@ -126,6 +126,7 @@
                                             Rp.{{ number_format($product->original_price, 0, ',', '.') }}</p>
                                     </del>
                                 @endif
+                                </a>
                                 <div class="ml-auto">
                                     <!-- Tombol Keranjang -->
                                     @if ($product->stock > 0)
@@ -179,7 +180,7 @@
                                     5</span>
                             </div>
                         </div>
-                    </a>
+                    
                 </div>
             @endforeach
         </section>

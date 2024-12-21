@@ -1,6 +1,6 @@
 @php
     $cartItems = \App\Models\Cart::with('product')->where('user_id', auth()->id())->get();
-    $totalItems = $cartItems->sum('quantity');
+    $totalItems = $cartItems->sum('quantity') ?? 0;
 @endphp
 
 <nav class="bg-white dark:bg-gray-800 sticky top-0 z-50">
@@ -96,7 +96,7 @@
                     </ul>
                     <div class="p-2">
                         {{-- <a href="{{ route('checkout.index') }}" --}}
-                        <a href="#"
+                        <a href="{{ route('checkout.index') }}"
                             class="block w-full text-center text-white bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-700">
                             Proceed to Checkout
                         </a>
