@@ -59,7 +59,7 @@ class OrderFactory extends Factory
             'payment_method' => $this->faker->randomElement(['bank_transfer', 'credit_card', 'cod']),
             'payment_status' => $paymentStatus,
             'shipping_status' => $shippingStatus,
-            'created_at' => $this->faker->dateTimeBetween('-12 month', 'now'), // nilai created_at berbeda 
+            'created_at' => $this->faker->dateTimeBetween('-12 month', 'now'),
             'updated_at' => now(),
         ];
     }
