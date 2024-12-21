@@ -40,7 +40,8 @@
                         <div class="relative">
                             <input type="search" name="search"
                                 class="w-full p-3 pl-10 text-gray-700 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                                placeholder="Cari kategori..." value="{{ request('search') }}" required />
+                                placeholder="Cari produk..." value="{{ request('search') }}" id="search-input"
+                                autocomplete="off" />
                             <span class="absolute left-3 top-3 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +68,7 @@
                                 <th class="px-4 py-2 text-center border">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="product-list">
                             @foreach ($products as $product)
                                 <tr class="hover:bg-gray-100 text-gray-700">
                                     <td class="px-4 py-2 border">{{ $product->id }}</td>
@@ -84,9 +85,7 @@
                                     <td class="px-4 py-2 border text-center">
                                         {{-- Button Edit --}}
                                         <a href="/dashboard/product/{{ $product->id }}"
-                                            class="text-blue-500 hover:text-blue-700 mx-2">
-                                            Edit
-                                        </a>
+                                            class="text-blue-500 hover:text-blue-700 mx-2">Edit</a>
 
                                         {{-- Button Delete --}}
                                         <form action="{{ route('products.destroy', $product->id) }}" method="POST"
@@ -94,9 +93,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-500 hover:text-red-700 mx-2"
-                                                onclick="return confirm('Yakin ingin menghapus produk ini?')">
-                                                Hapus
-                                            </button>
+                                                onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -182,4 +179,28 @@
             </div>
         </main>
     </div>
+
+    {{-- Livesearch AJAX --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search-input').on('keyup', function() {
+                let keyword = $(this).val(); // Ambil nilai dari input pencarian
+                $.ajax({
+                    url: "{{ route('products.search') }}", // URL untuk route pencarian
+                    type: "GET",
+                    data: {
+                        search: keyword
+                    },
+                    success: function(data) {
+                        // Update daftar produk dengan data yang diterima dari server
+                        $('#product-list').html(data);
+                    },
+                    error: function(xhr) {
+                        console.error("Terjadi kesalahan: ", xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </x-dashboard-layout>

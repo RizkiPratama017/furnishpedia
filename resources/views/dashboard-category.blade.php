@@ -40,7 +40,8 @@
                         <div class="relative">
                             <input type="search" name="search"
                                 class="w-full p-3 pl-10 text-gray-700 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
-                                placeholder="Cari kategori..." value="{{ request('search') }}" />
+                                placeholder="Cari kategori..." value="{{ request('search') }}" id="search-input"
+                                autocomplete="off" />
                             <span class="absolute left-3 top-3 text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -63,7 +64,7 @@
                                 <th class="px-4 py-2 text-center border">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="category-list">
                             @foreach ($categories as $category)
                                 <tr class="hover:bg-gray-100 text-gray-700">
                                     <td class="px-4 py-2 border">{{ $category->id }}</td>
@@ -144,5 +145,27 @@
         </main>
     </div>
 
-    @vite('resources/js/category.js')
+    {{-- Livesearch AJAX --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search-input').on('keyup', function() {
+                let keyword = $(this).val(); // Ambil nilai dari input pencarian
+                $.ajax({
+                    url: "{{ route('categories.search') }}", // URL untuk route pencarian
+                    type: "GET",
+                    data: {
+                        search: keyword
+                    },
+                    success: function(data) {
+                        // Update kategori list dengan data yang didapat dari server
+                        $('#category-list').html(data);
+                    },
+                    error: function(xhr) {
+                        console.error("Terjadi kesalahan: ", xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </x-dashboard-layout>

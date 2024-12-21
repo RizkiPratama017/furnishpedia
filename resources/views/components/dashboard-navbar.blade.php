@@ -1,5 +1,5 @@
 <nav class=" bg-gray-800 text-white">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
+    <div class="flex flex-wrap items-center justify-between p-4">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="{{ asset('img/fp.jpg') }}" class="h-8 rounded" alt="Ruma.id Logo" />
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Furnishpedia</span>
