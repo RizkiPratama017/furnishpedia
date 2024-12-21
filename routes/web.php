@@ -22,22 +22,13 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DashboardCategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
     return view('home', [
         'title' => 'Home Page',
         'products' => $products
-    ]);
-});
-
-Route::middleware('auth')->get('/dashboard', function () {
-    $categories = \App\Models\Category::all();
-    $products = \App\Models\Product::all();
-    return view('dashboard', [
-        'title' => 'Dashboard',
-        'products' => $products,
-        'categories' => $categories
     ]);
 });
 
@@ -97,10 +88,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 //Middleware Auth
 Route::middleware('auth')->group(function () {
 
-    //dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard', ['title' => 'Dashboard']);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //dashboard-product
     Route::get('/dashboard-product', function () {
