@@ -101,6 +101,6 @@ class CheckoutController extends Controller
             return $item->subtotal;
         }, $orderItems));
 
-        return view('order-detail', compact('order', 'orderItems', 'total'));
+        return view('dashboard-order', compact('order', 'orderItems', 'total'));
     }
 }
