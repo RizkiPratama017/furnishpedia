@@ -18,15 +18,17 @@ class OrderDetailFactory extends Factory
      */
     public function definition(): array
     {
-        return [
+        // Ambil produk secara acak, pastikan produk ini berasal dari seller yang sesuai
+        $product = Product::inRandomOrder()->first();
 
-        'order_id' => Order::inRandomOrder()->first()->id,
-        'product_id' => Product::inRandomOrder()->first()->id,
-        'quantity' => $this->faker->numberBetween(1, 100),
-        'price' => $this->faker->randomFloat(2, 1, 1000),
-        'subtotal' => function (array $attributes) {
-            return $attributes['quantity'] * $attributes['price'];
-        },
+        return [
+            'order_id' => Order::inRandomOrder()->first()->id,
+            'product_id' => $product->id,
+            'quantity' => $this->faker->numberBetween(1, 10),
+            'price' => $product->price, // Ambil harga dari produk untuk sinkronisasi
+            'subtotal' => function (array $attributes) {
+                return $attributes['quantity'] * $attributes['price'];
+            },
         ];
     }
 }

@@ -11,17 +11,27 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'seller_id',
         'status',
         'total_price',
         'shipping_cost',
         'shipping_address',
+        'seller_address',
         'payment_method',
         'payment_status',
+        'shipping_status'
     ];
 
-    public function user()
+    // Menambahkan observer untuk memeriksa status pembayaran dan pembatalan pengiriman
+    protected static function booted()
     {
-        return $this->belongsTo(User::class);
+        static::updating(function ($order) {
+            // Cek jika payment_status diubah menjadi "failed"
+            if ($order->isDirty('payment_status') && $order->payment_status === 'failed') {
+                // Ubah shipping_status menjadi 'batal' jika payment_status gagal
+                $order->shipping_status = 'batal';  // Ganti dengan status yang sesuai jika perlu
+            }
+        });
     }
 
     public function orderDetails()
