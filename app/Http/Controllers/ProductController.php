@@ -40,18 +40,26 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('search'); // Ambil input pencarian
+        $query = $request->input('search');
         $categories = \App\Models\Category::all();
-        $products = Product::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('description', 'LIKE', "%{$query}%")
+
+
+        $userId = auth()->id();
+
+        // Filter produk berdasarkan user_id dan query pencarian
+        $products = Product::where('user_id', $userId) // Filter produk milik pengguna yang login
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('description', 'LIKE', "%{$query}%");
+            })
             ->paginate(5);
 
         if ($request->ajax()) {
-            // Jika permintaan AJAX, return hanya bagian tabel produk
+
             return view('dashboard-product-table', compact('products'));
         }
 
-        // Untuk permintaan biasa, return halaman penuh
+
         return view('dashboard-product', [
             'title' => 'Dashboard Produk',
             'products' => $products,
@@ -59,6 +67,7 @@ class ProductController extends Controller
             'searchQuery' => $query
         ]);
     }
+
 
 
     public function viewEdit($id)
@@ -187,5 +196,17 @@ class ProductController extends Controller
             'storeProducts' => $storeProducts,
             'relatedProducts' => $relatedProducts,
         ]);
+    }
+
+    public function getCarouselItems()
+    {
+
+        $products = \App\Models\Product::with('category')
+            ->inRandomOrder()
+            ->get()
+            ->unique('category_id')
+            ->take(5);
+
+        return view('your-view-name', compact('products'));
     }
 }
