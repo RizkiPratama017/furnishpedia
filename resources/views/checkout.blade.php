@@ -22,16 +22,27 @@
                             <tr class="bg-gray-50 hover:bg-gray-100">
                                 <td class="border border-gray-300 px-4 py-2">
                                     <div class="flex items-center space-x-4">
+                                        @php
+                                            $product = \App\Models\Product::find($item['product_id']);
+                                        @endphp
                                         <img src="{{ $item['image'] ?? asset('img/default-product.jpg') }}"
                                             alt="Gambar Produk" class="w-12 h-12 object-cover rounded-md">
-                                        <span>{{ $item['name'] }}</span>
+                                        <span>{{ $product->name }}</span>
+                                   
+                                    
                                     </div>
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-center">{{ $item['quantity'] }}</td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
-                                    Rp{{ number_format($item['price'], 0, ',', '.') }}</td>
+                                    {{-- Rp{{ number_format($item['price'], 0, ',', '.') }} --}}
+                                @php
+                                    $product = \App\Models\Product::find($item['product_id']);
+                                @endphp
+                                Rp{{ number_format($product->price, 0, ',', '.') }}
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
-                                    Rp{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}</td>
+                                    Rp{{ number_format($product->price * $item['quantity'], 0, ',', '.') }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -39,7 +50,7 @@
 
                 {{-- Total --}}
                 <div class="text-right text-lg font-semibold mb-6">
-                    Total: Rp{{ number_format($total, 0, ',', '.') }}
+                    Total: Rp{{ number_format($cartItems->sum(fn($item) => \App\Models\Product::find($item['product_id'])->price * $item['quantity']), 0, ',', '.') }}
                 </div>
 
                 {{-- Form Pembayaran --}}

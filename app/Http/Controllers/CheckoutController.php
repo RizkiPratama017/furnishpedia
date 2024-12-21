@@ -4,31 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
-        $cartItems = [
-            [
-                'name' => 'Produk A',
-                'quantity' => 2,
-                'price' => 150000,
-                'image' => 'img/default-picture.png',
-            ],
-            [
-                'name' => 'Produk B',
-                'quantity' => 1,
-                'price' => 250000,
-                'image' => 'img/default-picture.png',
-            ],
-            [
-                'name' => 'Produk C',
-                'quantity' => 3,
-                'price' => 100000,
-                'image' => 'img/default-picture.png',
-            ],
-        ];
+        // $cartItems = [
+        //     [
+        //         'name' => 'Produk A',
+        //         'quantity' => 2,
+        //         'price' => 150000,
+        //         'image' => 'img/default-picture.png',
+        //     ],
+        //     [
+        //         'name' => 'Produk B',
+        //         'quantity' => 1,
+        //         'price' => 250000,
+        //         'image' => 'img/default-picture.png',
+        //     ],
+        //     [
+        //         'name' => 'Produk C',
+        //         'quantity' => 3,
+        //         'price' => 100000,
+        //         'image' => 'img/default-picture.png',
+        //     ],
+        // ];
+
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+
 
         $total = 0;
         foreach ($cartItems as $item) {
