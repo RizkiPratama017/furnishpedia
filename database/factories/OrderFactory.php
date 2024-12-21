@@ -59,6 +59,8 @@ class OrderFactory extends Factory
             'payment_method' => $this->faker->randomElement(['bank_transfer', 'credit_card', 'cod']),
             'payment_status' => $paymentStatus,
             'shipping_status' => $shippingStatus,
+            'created_at' => $this->faker->dateTimeBetween('-1 month', 'now'), // nilai created_at berbeda 
+            'updated_at' => now(),
         ];
     }
 
@@ -79,7 +81,7 @@ class OrderFactory extends Factory
                     'addressdetails' => 1
                 ],
                 'headers' => [
-                    'User-Agent' => 'MyApp/1.0 (contact@myapp.com)'  // Pastikan mencantumkan nama aplikasi dan email untuk keperluan support
+                    'User-Agent' => 'MyApp/1.0 (contact@myapp.com)'
                 ]
             ]);
 
@@ -92,11 +94,9 @@ class OrderFactory extends Factory
                 ];
             }
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan saat mengambil data, kembalikan koordinat default
             return ['lat' => 0, 'lon' => 0];
         }
 
-        // Jika tidak ditemukan, kembalikan koordinat default
         return ['lat' => 0, 'lon' => 0];
     }
 
@@ -122,10 +122,8 @@ class OrderFactory extends Factory
 
             $data = json_decode($response->getBody()->getContents(), true);
 
-            // Mengambil jarak dalam meter
             return $data['durations'][0][1] / 1000; // Jarak dalam kilometer
         } catch (\Exception $e) {
-            // Jika ada masalah dengan API, kembalikan jarak 0
             return 0;
         }
     }
@@ -141,23 +139,20 @@ class OrderFactory extends Factory
         $ratePerKm = 5000; // Tarif per kilometer dalam IDR
         $shippingCost = $distance * $ratePerKm;
 
-        // Jika ongkir terlalu kecil, gunakan biaya minimum (misalnya Rp 10.000)
         return max($shippingCost, 10000);
     }
 
     public function configure()
     {
         return $this->afterCreating(function ($order) {
-            // Ambil produk dari seller yang sama
             $sellerProducts = Product::where('user_id', $order->user_id)->inRandomOrder()->take(rand(1, 5))->get();
 
-            // Tambahkan detail pesanan untuk setiap produk dari seller tersebut
             foreach ($sellerProducts as $product) {
                 \App\Models\OrderDetail::factory()
                     ->create([
                         'order_id' => $order->id,
                         'product_id' => $product->id,
-                        'price' => $product->price, // Pastikan harga produk digunakan
+                        'price' => $product->price,
                         'quantity' => rand(1, 10),
                         'subtotal' => function (array $attributes) {
                             return $attributes['quantity'] * $attributes['price'];
@@ -165,7 +160,6 @@ class OrderFactory extends Factory
                     ]);
             }
 
-            // Hitung total harga berdasarkan subtotal orderDetails
             $orderDetails = \App\Models\OrderDetail::where('order_id', $order->id)->get();
             $totalPrice = $orderDetails->sum('subtotal') + $order->shipping_cost;
 
