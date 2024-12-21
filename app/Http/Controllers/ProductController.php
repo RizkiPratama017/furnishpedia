@@ -38,6 +38,29 @@ class ProductController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('search'); // Ambil input pencarian
+        $categories = \App\Models\Category::all();
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->paginate(5);
+
+        if ($request->ajax()) {
+            // Jika permintaan AJAX, return hanya bagian tabel produk
+            return view('dashboard-product-table', compact('products'));
+        }
+
+        // Untuk permintaan biasa, return halaman penuh
+        return view('dashboard-product', [
+            'title' => 'Dashboard Produk',
+            'products' => $products,
+            'categories' => $categories,
+            'searchQuery' => $query
+        ]);
+    }
+
+
     public function viewEdit($id)
     {
         $product = Product::findOrFail($id);
@@ -126,21 +149,6 @@ class ProductController extends Controller
         $product->save();
 
         return redirect('/dashboard/product')->with('success', 'Produk berhasil diperbarui!');
-    }
-
-    public function search(Request $request)
-    {
-        $query = $request->input('search'); // Ambil input pencarian
-        $categories = \App\Models\Category::all();
-        $products = Product::where('name', 'LIKE', "%{$query}%")
-            ->paginate(5);
-
-        return view('dashboard-product', [
-            'title' => 'Dashboard Product',
-            'products' => $products,
-            'categories' => $categories,
-            'searchQuery' => $query // Kirim query untuk digunakan di tampilan
-        ]);
     }
 
     public function dproduk()

@@ -17,6 +17,25 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('search'); // Ambil input pencarian
+        $categories = Category::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('slug', 'LIKE', "%{$query}%")
+            ->paginate(5);  // Tambahkan paginasi
+
+        if ($request->ajax()) {
+            // Jika permintaan AJAX, return hanya bagian tabel
+            return view('dashboard-category-table', compact('categories'));
+        }
+
+        // Untuk permintaan biasa, return halaman lengkap
+        return view('dashboard-category', [
+            'title' => 'Dashboard Kategori',
+            'categories' => $categories
+        ]);
+    }
+
     public function viewEdit($id)
     {
         $categories = Category::findOrFail($id);
@@ -67,21 +86,6 @@ class CategoryController extends Controller
 
         // Redirect dengan pesan sukses
         return redirect()->back()->with('success', 'Kategori berhasil dihapus!');
-    }
-
-
-    public function search(Request $request)
-    {
-        $query = $request->input('search'); // Ambil input pencarian
-        $categories = Category::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('slug', 'LIKE', "%{$query}%")
-            ->paginate(5);
-
-        return view('dashboard-category', [
-            'title' => 'Dashboard Kategori',
-            'categories' => $categories,
-            'searchQuery' => $query // Kirim query untuk digunakan di tampilan
-        ]);
     }
 
     public function update(Request $request, $id)
