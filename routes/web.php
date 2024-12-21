@@ -21,6 +21,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DashboardCategoryController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
@@ -158,3 +159,9 @@ Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'u
 
 //rating
 Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
+
+// checkout
+Route::middleware('auth')->get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::middleware('auth')->post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::middleware('auth')->get('/checkout/{status}', [CheckoutController::class, 'notification'])->name('checkout.status');
+Route::middleware('auth')->get('/order', [CheckoutController::class, 'showOrderDetails'])->name('order.details');
