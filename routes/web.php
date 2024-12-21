@@ -150,8 +150,7 @@ Route::get('/search/suggestions', [CariController::class, 'getSuggestions']);
 // Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
 Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.otp');
-//Reez
-// Route::post('/testing', [OtpController::class, 'testing']);
+
 
 // profile
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
