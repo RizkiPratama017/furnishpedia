@@ -131,7 +131,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="/cart"
                                     class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
                                     My Orders
                                 </a>

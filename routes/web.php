@@ -156,3 +156,6 @@ Route::middleware('auth')->get('/checkout/{status}', [CheckoutController::class,
 //order
 Route::middleware('auth')->get('/dashboard/order', [OrderController::class, 'sellerOrders'])->name('order.details');
 Route::put('/orders/{order}/update-shipping-status', [OrderController::class, 'updateShippingStatus'])->name('orders.updateShippingStatus');
+
+//cart
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
