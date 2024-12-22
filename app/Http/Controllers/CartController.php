@@ -16,6 +16,7 @@ class CartController extends Controller
             ->get();
 
         return view('home', compact('cartItems'));
+        return view('cart.index', compact('cartItems')); 
     }
 
     public function store(Request $request)
@@ -68,4 +69,6 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
+
+    
 }
