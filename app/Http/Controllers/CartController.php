@@ -15,9 +15,23 @@ class CartController extends Controller
             ->where('user_id', Auth::id())
             ->get();
 
+
         return view('home', compact('cartItems'));
-        return view('cart.index', compact('cartItems')); 
     }
+
+    public function indexCart()
+    {
+        $cartItems = Cart::with('product')
+            ->where('user_id', Auth::id())
+            ->get();
+
+        $title = "Cart";
+
+
+
+        return view('cart.index', compact('cartItems', 'title'));
+    }
+
 
     public function store(Request $request)
     {
@@ -69,6 +83,4 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
-
-    
 }

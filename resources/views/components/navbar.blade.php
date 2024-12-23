@@ -80,6 +80,10 @@
                 <!-- Cart Items Dropdown -->
                 <div id="dropdownCart"
                     class="hidden z-10 w-64 bg-white rounded-lg shadow divide-y divide-gray-100 dark:bg-gray-700 dark:divide-gray-600">
+                    <a href="{{ route('cart.index') }}"
+                        class="block w-full text-center text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-100 dark:hover:bg-gray-500">
+                        View Cart
+                    </a>
                     <ul class="p-2 space-y-2 text-sm text-gray-900 dark:text-gray-100">
                         @foreach ($cartItems as $item)
                             <li class="flex items-center p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -131,7 +135,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/cart"
+                                <a href="/order"
                                     class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
                                     My Orders
                                 </a>

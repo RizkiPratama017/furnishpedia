@@ -25,20 +25,20 @@
                                         @php
                                             $product = \App\Models\Product::find($item['product_id']);
                                         @endphp
-                                        <img src="{{ $item['image'] ?? asset('img/default-product.jpg') }}"
+                                        <img src="{{ filter_var($item->product->image, FILTER_VALIDATE_URL) ? $item->product->image : asset('storage/' . $item->product->image) }}"
                                             alt="Gambar Produk" class="w-12 h-12 object-cover rounded-md">
                                         <span>{{ $product->name }}</span>
-                                   
-                                    
+
+
                                     </div>
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-center">{{ $item['quantity'] }}</td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
                                     {{-- Rp{{ number_format($item['price'], 0, ',', '.') }} --}}
-                                @php
-                                    $product = \App\Models\Product::find($item['product_id']);
-                                @endphp
-                                Rp{{ number_format($product->price, 0, ',', '.') }}
+                                    @php
+                                        $product = \App\Models\Product::find($item['product_id']);
+                                    @endphp
+                                    Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
                                     Rp{{ number_format($product->price * $item['quantity'], 0, ',', '.') }}
@@ -50,7 +50,8 @@
 
                 {{-- Total --}}
                 <div class="text-right text-lg font-semibold mb-6">
-                    Total: Rp{{ number_format($cartItems->sum(fn($item) => \App\Models\Product::find($item['product_id'])->price * $item['quantity']), 0, ',', '.') }}
+                    Total:
+                    Rp{{ number_format($cartItems->sum(fn($item) => \App\Models\Product::find($item['product_id'])->price * $item['quantity']), 0, ',', '.') }}
                 </div>
 
                 {{-- Form Pembayaran --}}
