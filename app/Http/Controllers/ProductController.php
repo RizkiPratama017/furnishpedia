@@ -202,7 +202,6 @@ class ProductController extends Controller
     {
 
         $products = \App\Models\Product::with('category')
-            ->inRandomOrder()
             ->get()
             ->unique('category_id')
             ->take(5);
