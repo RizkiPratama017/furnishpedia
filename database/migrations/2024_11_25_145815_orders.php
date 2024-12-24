@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Pembeli
             $table->enum('status', ['pending', 'paid', 'shipped'])->default('pending');
+            $table->decimal('shipping_cost', 10, 2);
             $table->decimal('total_price', 10, 2);
-            $table->decimal('shipping_cost', 10, 2)->default(0);
-            $table->text('shipping_address'); // Alamat pembeli
-            $table->text('seller_address');
-            $table->enum('payment_method', ['bank_transfer', 'credit_card', 'cod']);
+            $table->text('shipping_address'); 
+            $table->enum('payment_method', ['bank_transfer', 'credit_card', 'cash_on_delivery']);
             $table->enum('payment_status', ['pending', 'completed', 'failed'])->default('pending');
             $table->enum('shipping_status', ['dipacking', 'dikirim', 'diterima', 'batal'])->default('dipacking');
             $table->timestamps();

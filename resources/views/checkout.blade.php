@@ -41,25 +41,33 @@
                                     Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
-                                    Rp{{ number_format($product->price * $item['quantity'], 0, ',', '.') }}
+                                    Rp.{{ number_format($totals['totalPriceOfGoods'], 0, ',', '.') }}
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
 
+                {{-- shipping cost by weight --}}
+                <div class="text-right text-md font-semibold mb-3">
+                    Biaya Antar:
+                 
+                    Rp.{{ number_format($totals['shippingCost'], 0, ',', '.') }}
+                </div>
                 {{-- Total --}}
                 <div class="text-right text-lg font-semibold mb-6">
                     Total:
-                    Rp{{ number_format($cartItems->sum(fn($item) => \App\Models\Product::find($item['product_id'])->price * $item['quantity']), 0, ',', '.') }}
+                    
+                    
+                    Rp.{{ number_format($totals['totalAmount'], 0, ',', '.') }}
                 </div>
 
                 {{-- Form Pembayaran --}}
                 <form action="{{ route('checkout.store') }}" method="POST" class="space-y-6">
                     @csrf
                     <div>
-                        <label for="address" class="block text-gray-700 font-medium mb-2">Alamat Pengiriman</label>
-                        <textarea id="address" name="address" rows="3"
+                        <label for="shipping_address" class="block text-gray-700 font-medium mb-2">Alamat Pengiriman</label>
+                        <textarea id="shipping_address" name="shipping_address" rows="3"
                             class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
                             placeholder="Masukkan alamat pengiriman (jika alamat kosong)" required></textarea>
                     </div>
