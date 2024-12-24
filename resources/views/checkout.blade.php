@@ -57,8 +57,6 @@
                 {{-- Total --}}
                 <div class="text-right text-lg font-semibold mb-6">
                     Total:
-                    
-                    
                     Rp.{{ number_format($totals['totalAmount'], 0, ',', '.') }}
                 </div>
 
