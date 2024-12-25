@@ -75,6 +75,7 @@ Route::get('/login/{provider}', function ($provider) {
 })->name('social.login');
 
 Route::resource('/cart', CartController::class)->middleware('auth');
+Route::get('/cart', [CartController::class, 'indexCart'])->name('cart.index');
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -86,17 +87,13 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register')-
 Route::post('/register', [RegisterController::class, 'store']);
 
 
+
 //Middleware Auth
 Route::middleware(['auth'])->group(function () {
 
-    
+
     //dashboard
-    Route::get('/dashboard', function () {
-        if (Auth::user()->role == 'buyer') {
-            return redirect('/');
-        }
-        return view('dashboard', ['title' => 'Dashboard']);
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //dashboard-product
     Route::get('/dashboard-product', function () {
