@@ -1,65 +1,80 @@
-<x-layout>
-    <x-slot:title>Checkout</x-slot:title>
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
 
-    <div class="min-h-screen bg-gray-100 py-10">
-        <div class="max-w-2xl mx-auto px-2">
-            <div class="bg-white shadow-md rounded-lg p-6">
-                <h1 class="text-2xl font-bold text-gray-800 mb-6">Checkout</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Checkout</title>
 
-                {{-- Tabel Produk  --}}
-                <table class="w-full border-collapse border border-gray-300 mb-6">
-                    <thead class="bg-gray-800 text-white">
-                        <tr>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Nama Produk</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Kuantitas</th>
-                            <th class="border border-gray-300 px-4 py-2 text-right">Harga</th>
-                            <th class="border border-gray-300 px-4 py-2 text-right">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- ambil data carts --}}
-                        @foreach ($cartItems as $item)
-                            <tr class="bg-gray-50 hover:bg-gray-100">
-                                <td class="border border-gray-300 px-4 py-2">
-                                    <div class="flex items-center space-x-4">
-                                        @php
-                                            $product = \App\Models\Product::find($item['product_id']);
-                                        @endphp
-                                        <img src="{{ filter_var($item->product->image, FILTER_VALIDATE_URL) ? $item->product->image : asset('storage/' . $item->product->image) }}"
-                                            alt="Gambar Produk" class="w-12 h-12 object-cover rounded-md">
-                                        <span>{{ $product->name }}</span>
-                                    </div>
-                                </td>
-                                <td class="border border-gray-300 px-4 py-2 text-center">{{ $item['quantity'] }}</td>
-                                <td class="border border-gray-300 px-4 py-2 text-right">
-                                    Rp{{ number_format($product->price, 0, ',', '.') }}
-                                </td>
-                                <td class="border border-gray-300 px-4 py-2 text-right">
-                                    Rp.{{ number_format($totals['totalPriceOfGoods'], 0, ',', '.') }}
-                                </td>
+    @vite('resources/css/app.css')
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+</head>
+
+<body class="h-full m-0 bg-gray-100">
+
+    <div class="min-h-screen py-10">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="bg-white shadow-md rounded-lg p-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Checkout</h1>
+
+                <div class="overflow-x-auto mb-8">
+                    <table class="min-w-max w-full border-collapse border border-gray-300">
+                        <thead class="bg-gray-800 text-white text-sm uppercase tracking-wide">
+                            <tr>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Produk</th>
+                                <th class="border border-gray-300 px-4 py-2 text-center">Kuantitas</th>
+                                <th class="border border-gray-300 px-4 py-2 text-right">Harga</th>
+                                <th class="border border-gray-300 px-4 py-2 text-right">Subtotal</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                {{-- Shipping cost by weight --}}
-                <div class="text-right text-md font-semibold mb-3">
-                    Biaya Antar: Rp.{{ number_format($totals['shippingCost'], 0, ',', '.') }}
+                        </thead>
+                        <tbody>
+                            @foreach ($cartItems as $item)
+                                <tr class="bg-gray-50 hover:bg-gray-100 text-sm">
+                                    <td class="border border-gray-300 px-4 py-3">
+                                        <div class="flex items-center space-x-4">
+                                            @php
+                                                $product = \App\Models\Product::find($item['product_id']);
+                                            @endphp
+                                            <img src="{{ filter_var($item->product->image, FILTER_VALIDATE_URL) ? $item->product->image : asset('storage/' . $item->product->image) }}"
+                                                alt="Produk" class="w-10 h-10 object-cover rounded-md">
+                                            <span>{{ $product->name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="border border-gray-300 px-4 py-3 text-center">{{ $item['quantity'] }}
+                                    </td>
+                                    <td class="border border-gray-300 px-4 py-3 text-right">
+                                        Rp{{ number_format($product->price, 0, ',', '.') }}
+                                    </td>
+                                    <td class="border border-gray-300 px-4 py-3 text-right">
+                                        Rp{{ number_format($totals['totalPriceOfGoods'], 0, ',', '.') }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                {{-- Total --}}
-                <div class="text-right text-lg font-semibold mb-6">
-                    Total: Rp.{{ number_format($totals['totalAmount'], 0, ',', '.') }}
+
+
+                <div class="space-y-2 text-right">
+                    <div class="text-md font-medium">Biaya Antar:
+                        <span
+                            class="text-gray-700 font-semibold">Rp{{ number_format($totals['shippingCost'], 0, ',', '.') }}</span>
+                    </div>
+                    <div class="text-lg font-semibold">Total:
+                        <span class="text-blue-500">Rp{{ number_format($totals['totalAmount'], 0, ',', '.') }}</span>
+                    </div>
                 </div>
 
-                {{-- Form Pembayaran --}}
-                <form action="{{ route('checkout.store') }}" method="POST" class="space-y-6">
+                <form action="{{ route('checkout.store') }}" method="POST" class="mt-6 space-y-6">
                     @csrf
                     <div>
                         <label for="shipping_address" class="block text-gray-700 font-medium mb-2">Alamat
                             Pengiriman</label>
                         <textarea id="shipping_address" name="shipping_address" rows="3"
                             class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-                            placeholder="Masukkan alamat pengiriman (jika alamat kosong)" required>{{ old('shipping_address', auth()->user()->address ?? '') }}</textarea>
+                            placeholder="Masukkan alamat pengiriman" required>{{ old('shipping_address', auth()->user()->address ?? '') }}</textarea>
                     </div>
 
                     <div>
@@ -74,7 +89,6 @@
                         </select>
                     </div>
 
-                    {{-- Tombol --}}
                     <div class="flex justify-end">
                         <a href="/cart"
                             class="px-4 py-2 mr-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-200">
@@ -90,4 +104,7 @@
         </div>
     </div>
 
-</x-layout>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>
