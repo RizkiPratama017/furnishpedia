@@ -1,4 +1,4 @@
-<x-dashboard-layout>
+<x-layout>
     <x-slot:title>Checkout</x-slot:title>
 
     <div class="min-h-screen bg-gray-100 py-10">
@@ -28,16 +28,10 @@
                                         <img src="{{ filter_var($item->product->image, FILTER_VALIDATE_URL) ? $item->product->image : asset('storage/' . $item->product->image) }}"
                                             alt="Gambar Produk" class="w-12 h-12 object-cover rounded-md">
                                         <span>{{ $product->name }}</span>
-
-
                                     </div>
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-center">{{ $item['quantity'] }}</td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
-                                    {{-- Rp{{ number_format($item['price'], 0, ',', '.') }} --}}
-                                    @php
-                                        $product = \App\Models\Product::find($item['product_id']);
-                                    @endphp
                                     Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2 text-right">
@@ -48,26 +42,24 @@
                     </tbody>
                 </table>
 
-                {{-- shipping cost by weight --}}
+                {{-- Shipping cost by weight --}}
                 <div class="text-right text-md font-semibold mb-3">
-                    Biaya Antar:
-                 
-                    Rp.{{ number_format($totals['shippingCost'], 0, ',', '.') }}
+                    Biaya Antar: Rp.{{ number_format($totals['shippingCost'], 0, ',', '.') }}
                 </div>
                 {{-- Total --}}
                 <div class="text-right text-lg font-semibold mb-6">
-                    Total:
-                    Rp.{{ number_format($totals['totalAmount'], 0, ',', '.') }}
+                    Total: Rp.{{ number_format($totals['totalAmount'], 0, ',', '.') }}
                 </div>
 
                 {{-- Form Pembayaran --}}
                 <form action="{{ route('checkout.store') }}" method="POST" class="space-y-6">
                     @csrf
                     <div>
-                        <label for="shipping_address" class="block text-gray-700 font-medium mb-2">Alamat Pengiriman</label>
+                        <label for="shipping_address" class="block text-gray-700 font-medium mb-2">Alamat
+                            Pengiriman</label>
                         <textarea id="shipping_address" name="shipping_address" rows="3"
                             class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-                            placeholder="Masukkan alamat pengiriman (jika alamat kosong)" required></textarea>
+                            placeholder="Masukkan alamat pengiriman (jika alamat kosong)" required>{{ old('shipping_address', auth()->user()->address ?? '') }}</textarea>
                     </div>
 
                     <div>
@@ -98,4 +90,4 @@
         </div>
     </div>
 
-</x-dashboard-layout>
+</x-layout>

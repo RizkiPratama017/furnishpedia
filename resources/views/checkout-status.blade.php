@@ -1,4 +1,4 @@
-<x-dashboard-layout>
+<x-layout>
     <x-slot:title>Checkout</x-slot:title>
     <div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
         <div class="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
@@ -43,4 +43,4 @@
             </div>
         </div>
     </div>
-</x-dashboard-layout>
+</x-layout>
