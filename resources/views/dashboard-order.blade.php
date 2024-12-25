@@ -14,6 +14,8 @@
                     {{-- Rincian Pesanan --}}
                     <div class="mb-6 border border-gray-300 p-4 rounded">
                         <h3 class="text-lg font-semibold text-gray-700">Pesanan #{{ $loop->iteration }}</h3>
+                        <p><strong>Nama Pembeli:</strong> {{ $order->user->name }}</p>
+                        <p><strong>Email Pembeli:</strong> {{ $order->user->email }}</p>
                         <p><strong>Status Pembayaran:</strong> {{ $order->payment_status }}</p>
                         <p><strong>Alamat Pengiriman:</strong> {{ $order->shipping_address }}</p>
                         <p><strong>Status Pengiriman:</strong> {{ $order->shipping_status }}</p>
