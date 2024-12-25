@@ -29,6 +29,7 @@ class OrderDetailFactory extends Factory
             'subtotal' => function (array $attributes) {
                 return $attributes['quantity'] * $attributes['price'];
             },
+            'seller_address' => $product->user->address,
         ];
     }
 }

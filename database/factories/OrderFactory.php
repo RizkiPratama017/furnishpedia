@@ -55,8 +55,8 @@ class OrderFactory extends Factory
             'total_price' => 0, // Akan dihitung ulang setelah pesanan dibuat
             'shipping_cost' => $shippingCost,
             'shipping_address' => $buyer->address,
-            'seller_address' => $seller->address,
-            'payment_method' => $this->faker->randomElement(['bank_transfer', 'credit_card', 'cod']),
+            // 'seller_address' => $seller->address,
+            'payment_method' => $this->faker->randomElement(['bank_transfer', 'credit_card', 'cash_on_delivery']),
             'payment_status' => $paymentStatus,
             'shipping_status' => $shippingStatus,
             'created_at' => $this->faker->dateTimeBetween('-12 month', 'now'),

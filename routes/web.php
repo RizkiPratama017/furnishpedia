@@ -23,6 +23,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DashboardCategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\RoleMiddleware;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
@@ -86,18 +87,31 @@ Route::post('/register', [RegisterController::class, 'store']);
 
 
 //Middleware Auth
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    //dashboard
+    Route::get('/dashboard', function () {
+        if (Auth::user()->role == 'buyer') {
+            return redirect('/');
+        }
+        return view('dashboard', ['title' => 'Dashboard']);
+    })->name('dashboard');
 
     //dashboard-product
     Route::get('/dashboard-product', function () {
+        if (Auth::user()->role == 'buyer') {
+            return redirect('/');
+        }
         $products = App\Models\Product::all();
         return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
     });
 
     //dashboard-category
     Route::get('/dashboard-category', function () {
+        if (Auth::user()->role == 'buyer') {
+            return redirect('/');
+        }
         $categories = App\Models\Category::all();
         return view('dashboard-category', ['title' => 'Dashboard Kategori', 'categories' => $categories]);
     });
@@ -106,7 +120,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard-profile', function () {
         return view('profile', ['title' => 'Profile']);
     });
+
+    //buka toko
+    Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko');
 });
+
+
+
+
 
 
 //google API
@@ -125,8 +146,7 @@ Route::controller(GoogleAuthController::class)->group(function () {
 
 
 
-//buka toko
-Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko')->middleware('auth');
+
 
 //live search
 Route::get('/search', [CariController::class, 'search'])->name('search');
@@ -152,14 +172,11 @@ Route::middleware('auth')->get('/checkout', [CheckoutController::class, 'index']
 Route::middleware('auth')->post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::middleware('auth')->get('/checkout/{status}', [CheckoutController::class, 'notification'])->name('checkout.status');
 // Route::middleware('auth')->get('/dashboard/order', [CheckoutController::class, 'showOrderDetails'])->name('order.details');
+Route::get('/checkout/success', function () {
+    return view('checkout-success', ['title' => 'Checkout Sukses']);
+})->name('checkout.success');
+
 
 //order
 Route::middleware('auth')->get('/dashboard/order', [OrderController::class, 'sellerOrders'])->name('order.details');
 Route::put('/orders/{order}/update-shipping-status', [OrderController::class, 'updateShippingStatus'])->name('orders.updateShippingStatus');
-
-//cart
-Route::get('/cart', [CartController::class, 'indexCart'])->name('cart.index');
-
-//checkout
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');

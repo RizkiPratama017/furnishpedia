@@ -28,6 +28,7 @@ class CartFactory extends Factory
         'user_id' => User::inRandomOrder()->first()->id,
         'product_id' => Product::inRandomOrder()->first()->id,
         'quantity' => $this->faker->numberBetween(1, 10),
+        'price' => $this->faker->numberBetween(1000, 100000),
         ];
     }
 }

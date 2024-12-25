@@ -11,15 +11,13 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'seller_id',
         'status',
         'total_price',
-        'shipping_cost',
+        // 'shipping_cost',
         'shipping_address',
-        'seller_address',
         'payment_method',
         'payment_status',
-        'shipping_status'
+        'shipping_status',
     ];
 
     // Menambahkan observer untuk memeriksa status pembayaran dan pembatalan pengiriman
@@ -38,4 +36,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+        public function orderItems()
+    {
+        return $this->hasMany(OrderDetail::class, 'order_id');
+    }
+
 }

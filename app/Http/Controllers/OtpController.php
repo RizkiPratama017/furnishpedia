@@ -55,11 +55,12 @@ public function verifyOTP(Request $request)
     // }
 
     if ($user->otp !== $request->otp) {
-        return response()->json(['error' => 'Invalid OTP'], 400);
+        return view('/bukatoko', ['error' => 'Invalid OTP']);
     }
 
-    if (Carbon::now()->gt($user->otp_expires_at)) {
-        return response()->json(['error' => 'OTP expired'], 400);
+    if (Carbon::now()->get($user->otp_expires_at)) {
+        // return response()->json(['error' => 'OTP expired'], 400);
+        return view('/bukatoko');
     }
 
     // Update role menjadi seller

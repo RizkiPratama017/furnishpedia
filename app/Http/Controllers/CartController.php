@@ -39,6 +39,7 @@ class CartController extends Controller
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
+            
         ]);
 
 
@@ -52,12 +53,12 @@ class CartController extends Controller
         // Cek item dikeranjang sudah ada
         $cart = Cart::firstOrNew(
             ['user_id' => Auth::id(), 'product_id' => $validated['product_id']],
-            ['quantity' => 0]
+            ['quantity' => 0, 'price' => $product->price] 
         );
 
 
         $cart->quantity += $validated['quantity'];
-
+        $cart->price = $product->price;
 
         $cart->save();
 
