@@ -50,9 +50,10 @@ class OrderFactory extends Factory
             : 'batal';
 
         return [
-            'user_id' => $seller->id, // Mengaitkan pesanan dengan seller tertentu
+            'buyer_id' => $buyer->id,
+            'seller_id' => $seller->id,
             'status' => $this->faker->randomElement(['pending', 'paid', 'shipped']),
-            'total_price' => 0, // Akan dihitung ulang setelah pesanan dibuat
+            'total_price' => 0,
             'shipping_cost' => $shippingCost,
             'shipping_address' => $buyer->address,
             // 'seller_address' => $seller->address,

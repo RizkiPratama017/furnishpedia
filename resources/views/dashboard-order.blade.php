@@ -10,7 +10,7 @@
             <div class="container mx-auto px-4 py-6">
                 <h1 class="text-2xl font-bold text-gray-800 mb-6">Daftar Pesanan Penjual</h1>
 
-                @foreach ($orders as $order)
+                @forelse ($orders as $order)
                     {{-- Rincian Pesanan --}}
                     <div class="mb-6 border border-gray-300 p-4 rounded">
                         <h3 class="text-lg font-semibold text-gray-700">Pesanan #{{ $loop->iteration }}</h3>
@@ -20,7 +20,6 @@
 
                         {{-- Form untuk mengedit status pengiriman --}}
                         @if ($order->shipping_status != 'diterima')
-                            <!-- Hanya tampilkan form jika status bukan 'diterima' -->
                             <form action="{{ route('orders.updateShippingStatus', $order->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
@@ -39,8 +38,6 @@
                                 <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Perbarui
                                     Status Pengiriman</button>
                             </form>
-                        @else
-                            <p class="mt-2 text-green-600"></p>
                         @endif
 
                         <p class="mt-2"><strong>Total Pembayaran:</strong>
@@ -57,24 +54,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($order->orderDetails as $item)
+                                @forelse ($order->orderDetails as $item)
                                     <tr class="hover:bg-gray-100 text-gray-700">
-                                        {{-- Ambil nama produk dari relasi --}}
-                                        <td class="px-4 py-2 border">{{ $item->product->name }}</td>
-                                        {{-- Ambil harga produk dari relasi dan pastikan sesuai format --}}
-                                        <td class="px-4 py-2 border">Rp{{ number_format($item->price, 0, ',', '.') }}
-                                        </td>
-                                        {{-- Ambil jumlah produk --}}
-                                        <td class="px-4 py-2 border">{{ $item->quantity }}</td>
-                                        {{-- Hitung subtotal dari database --}}
                                         <td class="px-4 py-2 border">
-                                            Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                                            {{ $item->product->name ?? 'Produk tidak ditemukan' }}
+                                        </td>
+                                        <td class="px-4 py-2 border">
+                                            Rp{{ number_format($item->price, 0, ',', '.') }}
+                                        </td>
+                                        <td class="px-4 py-2 border">{{ $item->quantity }}</td>
+                                        <td class="px-4 py-2 border">
+                                            Rp{{ number_format($item->quantity * $item->price, 0, ',', '.') }}
+                                        </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center px-4 py-2 border text-gray-500">
+                                            Tidak ada produk dalam pesanan ini.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
-                @endforeach
+                @empty
+                    <p class="text-gray-600">Belum ada pesanan untuk ditampilkan.</p>
+                @endforelse
             </div>
         </main>
     </div>

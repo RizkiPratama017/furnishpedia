@@ -26,12 +26,14 @@
             <!-- Slider Indicators -->
             <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                 @foreach ($products as $index => $product)
-                    <button type="button" class="w-3 h-3 rounded-full"
+                    <button type="button"
+                        class="w-3 h-3 rounded-full opacity-0 bg-gray-500 bg-opacity-50 hover:bg-opacity-75 transition"
                         aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"
                         data-carousel-slide-to="{{ $index }}">
                     </button>
                 @endforeach
             </div>
+
 
             <!-- Slider Controls -->
             <button type="button"
