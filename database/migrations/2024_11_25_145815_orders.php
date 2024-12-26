@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seller_id')->constrained('users')->onDelete('cascade'); // Penjual
             $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade'); // Pembeli
             $table->enum('status', ['pending', 'paid', 'shipped'])->default('pending');
             $table->decimal('shipping_cost', 10, 2);
