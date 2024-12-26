@@ -77,4 +77,18 @@ class OrderController extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Status pengiriman berhasil diperbarui.');
     }
+
+    public function index()
+    {
+        // Ambil semua pesanan pengguna yang sedang login
+        $orders = Order::where('user_id', Auth::id())->with('orderDetails.product')->get();
+
+        return view('orders.index', compact('orders'));
+    }
+
+    public function show($id)
+{
+    $order = Order::with('orderDetails.product')->findOrFail($id);
+    return view('orders.show', compact('order'));
+}
 }
