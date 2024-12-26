@@ -18,7 +18,7 @@ class CheckoutController extends Controller
 
         foreach ($cartItems as $item) {
             $totalPriceOfGoods += $item->product->price * $item->quantity;
-            $shippingCost += $item->product->weight * $item->quantity * 1000; 
+            $shippingCost += $item->product->weight * $item->quantity * 1000;
         }
 
         $totalAmount = $totalPriceOfGoods + $shippingCost;
@@ -30,10 +30,17 @@ class CheckoutController extends Controller
     public function index()
     {
         $cartItems = Cart::where('user_id', Auth::id())->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang belanja kosong.');
+        }
+
         // Menghitung total dengan memanggil fungsi calculateTotal
         $totals = $this->calculateTotal($cartItems);
 
-        return view('checkout', compact('cartItems', 'totals'));
+        return view('checkout', compact('cartItems', 'totals',), [
+            'title' => 'checkout'
+        ]);
     }
 
     // Method store untuk proses checkout
@@ -55,14 +62,22 @@ class CheckoutController extends Controller
                 return redirect()->back()->with('error', 'Keranjang belanja kosong.');
             }
 
-            // Menghitung total dengan memanggil fungsi calculateTotal
+            // Menghitung total
             $totals = $this->calculateTotal($cartItems);
+
+
+            $sellerId = $cartItems->first()->product->user->id;
+
+            if ($cartItems->first()->product->user->role !== 'seller') {
+                return redirect()->back()->with('error', 'Penjual tidak valid.');
+            }
 
             // Simpan data pesanan
             $order = new Order();
-            $order->user_id = Auth::id();
+            $order->seller_id = $sellerId;
+            $order->buyer_id = Auth::id();
             $order->status = 'pending';
-            $order->shipping_cost = $totals['shippingCost']; 
+            $order->shipping_cost = $totals['shippingCost'];
             $order->total_price = $totals['totalAmount'];
             $order->shipping_address = $request->shipping_address;
             $order->payment_method = $request->payment_method;
@@ -74,7 +89,7 @@ class CheckoutController extends Controller
 
             // Pindahkan item keranjang ke item pesanan
             foreach ($cartItems as $cartItem) {
-                $order->orderItems()->create([
+                $order->orderDetails()->create([
                     'product_id' => $cartItem->product_id,
                     'quantity' => $cartItem->quantity,
                     'price' => $cartItem->product->price,
@@ -89,13 +104,11 @@ class CheckoutController extends Controller
             // Commit transaksi
             DB::commit();
 
-            // Redirect ke halaman sukses
             return redirect()->route('checkout.success')->with('success', 'Checkout berhasil.');
         } catch (\Exception $e) {
-            // Rollback transaksi jika terjadi error
+            // Rollback jika ada error
             DB::rollBack();
-            dd('error', $e);
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses checkout.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat proses checkout: ' . $e->getMessage());
         }
     }
 
@@ -107,7 +120,8 @@ class CheckoutController extends Controller
         }
 
         return view('checkout-status', [
-            'status' => $status
+            'status' => $status,
+            'title' => 'checkout-success'
         ]);
     }
 

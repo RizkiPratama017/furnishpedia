@@ -14,7 +14,7 @@ class OrderController extends Controller
         // $validatedData = $request->validate([
         //     'address' => 'required|string|max:255',
         //     'payment_method' => 'required|string',
-            
+
         // ]);
 
         // // Buat pesanan baru
@@ -23,7 +23,7 @@ class OrderController extends Controller
         // $order->address = $validatedData['address'];
         // $order->payment_method = $validatedData['payment_method'];
         // $order->status = 'Pending'; // Status awal pesanan
-        
+
         // $order->total_price = collect(session('cartItems'))->sum(fn($item) =>
         //     Product::find($item['product_id'])->price * $item['quantity']
         // );
@@ -46,22 +46,39 @@ class OrderController extends Controller
         // dd($request->all());
 
     }
-    
+
+    // public function sellerOrders(Request $request)
+    // {
+    //     $user = Auth::user(); // Penjual yang sedang login
+
+    //     if ($user->role !== 'seller') {
+    //         abort(403, 'Akses ditolak');
+    //     }
+
+    //     // Ambil pesanan terkait produk penjual
+    //     $orders = Order::whereHas('orderDetails.product', function ($query) use ($user) {
+    //         $query->where('user_id', $user->id);
+    //     })->with('orderDetails.product')->get();
+
+    //     return view('dashboard-order', compact('orders'));
+    // }
+
     public function sellerOrders(Request $request)
     {
-        $user = Auth::user(); // Penjual yang sedang login
+        $user = Auth::user();
 
         if ($user->role !== 'seller') {
             abort(403, 'Akses ditolak');
         }
 
-        // Ambil pesanan terkait produk penjual
-        $orders = Order::whereHas('orderDetails.product', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->with('orderDetails.product')->get();
+        // Ambil pesanan terkait produk yang dijual oleh penjual
+        $orders = Order::where('seller_id', $user->id)
+            ->with(['buyer', 'orderDetails.product'])
+            ->get();
 
         return view('dashboard-order', compact('orders'));
     }
+
 
     public function updateShippingStatus(Request $request, Order $order)
     {

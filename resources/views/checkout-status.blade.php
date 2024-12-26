@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<x-layout>
+    <x-slot:title>{{ $title }}</x-slot:title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Checkout</title>
-
-    {{-- Stylesheets --}}
-    @vite('resources/css/app.css')
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-</head>
-
-<body class="h-full m-0 bg-gray-100">
     <div class="min-h-screen flex items-center justify-center px-4">
         <div class="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
             <div class="text-center">
@@ -55,9 +42,4 @@
             </div>
         </div>
     </div>
-
-    {{-- Scripts --}}
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-</body>
-
-</html>
+</x-layout>
