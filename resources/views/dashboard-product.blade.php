@@ -65,6 +65,7 @@
                                 <th class="px-4 py-2 text-left border">Harga</th>
                                 <th class="px-4 py-2 text-left border">Stok</th>
                                 <th class="px-4 py-2 text-left border">Kategori</th>
+                                <th class="px-4 py-2 text-left border">Berat</th>
                                 <th class="px-4 py-2 text-center border">Aksi</th>
                             </tr>
                         </thead>
@@ -82,6 +83,7 @@
                                     </td>
                                     <td class="px-4 py-2 border">{{ $product->stock }}</td>
                                     <td class="px-4 py-2 border">{{ $product->category->name ?? 'Tidak ada' }}</td>
+                                    <td class="px-4 py-2 border">{{ $product->weight }}</td>
                                     <td class="px-4 py-2 border text-center">
                                         {{-- Button Edit --}}
                                         <a href="/dashboard/product/{{ $product->id }}"
@@ -110,7 +112,7 @@
                 {{-- Modal --}}
                 <div id="modal_add" tabindex="-1" aria-hidden="true"
                     class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
-                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-screen overflow-y-auto">
                         {{-- Header --}}
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-lg font-bold">Tambah Produk</h2>
@@ -154,6 +156,12 @@
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="weight" class="block text-gray-700 mb-2">Berat</label>
+                                <input type="number" id="weight" name="weight"
+                                    class="w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
+                                    placeholder="Stok produk" required />
                             </div>
                             <div class="mb-4">
                                 <label for="image" class="block text-gray-700 mb-2">Gambar</label>

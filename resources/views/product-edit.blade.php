@@ -64,6 +64,14 @@
                         </select>
                     </div>
 
+                    {{-- Berat --}}
+                    <div class="mb-5">
+                        <label for="weight" class="block text-gray-700 mb-2 font-medium">Berat</label>
+                        <input type="number" id="weight" name="weight" value="{{ $product->weight }}"
+                            class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:border-blue-500"
+                            placeholder="Berat Produk" required />
+                    </div>
+
                     {{-- Gambar --}}
                     <div class="mb-5">
                         <label for="image" class="block mb-2 text-gray-700 font-medium">Gambar Produk</label>
