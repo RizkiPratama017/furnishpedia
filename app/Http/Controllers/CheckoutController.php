@@ -79,7 +79,7 @@ class CheckoutController extends Controller
                 $order->total_price = $totals['totalAmount'];
                 $order->shipping_address = $request->shipping_address;
                 $order->payment_method = $request->payment_method;
-                $order->payment_status = 'pending';
+                $order->payment_status = 'completed';
                 $order->shipping_status = 'dipacking';
                 $order->created_at = now();
                 $order->updated_at = now();

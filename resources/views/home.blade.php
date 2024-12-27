@@ -29,11 +29,9 @@
                     <button type="button"
                         class="w-3 h-3 rounded-full opacity-0 bg-gray-500 bg-opacity-50 hover:bg-opacity-75 transition"
                         aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"
-                        data-carousel-slide-to="{{ $index }}">
-                    </button>
+                        data-carousel-slide-to="{{ $index }}"></button>
                 @endforeach
             </div>
-
 
             <!-- Slider Controls -->
             <button type="button"
@@ -65,7 +63,7 @@
         </div>
         {{-- Carousel --}}
 
-        {{-- hero --}}
+        {{-- Hero Section --}}
         <section class="px-5 py-10 bg-neutral-100 lg:py-20 min-h-screen flex items-center justify-center">
             <div class="grid lg:grid-cols-2 items-center justify-items-center gap-10 max-w-7xl w-full">
                 <!-- Text Section -->
@@ -85,14 +83,15 @@
                 </div>
             </div>
         </section>
+        {{-- Hero Section --}}
 
-        {{-- hero --}}
+        {{-- Product List Heading --}}
         <div class="text-center p-10 mt-10">
             <h1 class="font-bold text-4xl mb-4">Daftar Produk</h1>
             <h1 class="text-3xl">Produk</h1>
         </div>
 
-        {{-- Produk --}}
+        {{-- Product Section --}}
         <section id="Projects"
             class="w-full max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-4 mx-auto">
             @foreach ($products as $product)
@@ -104,78 +103,70 @@
                         <div class="px-4 py-3">
                             <span class="text-gray-400 mr-3 uppercase text-xs">{{ $product->category->name }}</span>
                             <p class="text-lg font-bold text-black truncate block capitalize">{{ $product->name }}</p>
-                            <div class="flex items-center mt-3">
+                            <div class="flex items-center justify-between mt-3">
                                 <p class="text-lg font-semibold text-black cursor-auto">
-                                    Rp.{{ number_format($product->price, 0, ',', '.') }}</p>
+                                    Rp.{{ number_format($product->price, 0, ',', '.') }}
+                                </p>
                                 @if ($product->original_price)
                                     <del>
                                         <p class="text-sm text-gray-600 ml-2">
-                                            Rp.{{ number_format($product->original_price, 0, ',', '.') }}</p>
+                                            Rp.{{ number_format($product->original_price, 0, ',', '.') }}
+                                        </p>
                                     </del>
                                 @endif
+
+                                @if ($product->stock > 0)
+                                    <form action="{{ route('cart.store') }}" method="POST"
+                                        class="flex items-center ml-4">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input type="number" name="quantity" value="1" min="1"
+                                            class="quantity-input w-16 h-8 p-2 border border-gray-300 rounded-md text-center"
+                                            required>
+                                        <button type="submit"
+                                            class="flex items-center justify-center w-8 h-8 bg-gray-200 text-white rounded-full transition-all duration-300 hover:bg-gray-300 active:ring-2 active:ring-yellow-400 ml-2">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @else
+                                    <button type="button" disabled
+                                        class="flex items-center justify-center w-8 h-8 bg-gray-300 text-white rounded-full transition-all duration-300 cursor-not-allowed ml-4">
+                                        <svg class="w-6 h-6 text-gray-600" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2"
+                                                d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
                     </a>
-                    <div class="ml-auto">
-                        <!-- Tombol Keranjang -->
-                        @if ($product->stock > 0)
-                            <form action="{{ route('cart.store') }}" method="POST" class="flex items-center">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="number" name="quantity" value="1" min="1"
-                                    class="quantity-input w-16 h-8 p-2 border border-gray-300 rounded-md text-center"
-                                    required>
-                                <button type="submit"
-                                    class="flex items-center justify-center w-8 h-8 bg-gray-200 text-white rounded-full transition-all duration-300 hover:bg-gray-300 active:ring-2 active:ring-yellow-400">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
-                                    </svg>
-                                </button>
-                            </form>
-                        @else
-                            <button type="button" disabled
-                                class="flex items-center justify-center w-8 h-8 bg-gray-300 text-white rounded-full transition-all duration-300 cursor-not-allowed">
-                                <svg class="w-6 h-6 text-gray-600" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
-                                </svg>
-                            </button>
-                        @endif
+                    <div class="flex items-center px-4 py-3">
+                        @php
+                            $averageRating = $product->averageRating();
+                        @endphp
+                        @for ($i = 1; $i <= 5; $i++)
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                            </svg>
+                        @endfor
+                        <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} / 5</span>
                     </div>
-
                 </div>
-                <!-- Rating dengan Bintang -->
-                <div class="flex items-center mt-3">
-                    @php
-                        $averageRating = $product->averageRating();
-                    @endphp
-                    @for ($i = 1; $i <= 5; $i++)
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
-                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                                d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
-                        </svg>
-                    @endfor
-                    <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} /
-                        5</span>
-                </div>
+            @endforeach
+        </section>
     </div>
-
-    </div>
-    @endforeach
-    </section>
-
-
-
-
-    </div>
-
 
     <x-footer></x-footer>
 </x-layout>

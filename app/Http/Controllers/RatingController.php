@@ -14,6 +14,17 @@ class RatingController extends Controller
             'rating' => 'required|integer|between:1,5',
         ]);
 
+
+        $existingRating = Rating::where('product_id', $request->product_id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($existingRating) {
+            return redirect()->route('products.show', $request->product_id)
+                ->with('error', 'You have already rated this product.');
+        }
+
+
         Rating::create([
             'product_id' => $request->product_id,
             'user_id' => auth()->id(),

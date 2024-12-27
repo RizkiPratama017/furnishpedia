@@ -178,9 +178,12 @@ Route::get('/checkout/success', function () {
 //order
 Route::middleware('auth')->get('/dashboard/order', [OrderController::class, 'sellerOrders'])->name('order.details');
 Route::put('/orders/{order}/update-shipping-status', [OrderController::class, 'updateShippingStatus'])->name('orders.updateShippingStatus');
+Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
 //Histori
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+
 
 //toko
-Route::get('/toko', [TokoController::class, 'index'])->name('toko.index');
+Route::get('/toko/{id}', [TokoController::class, 'index'])->name('toko.index');
