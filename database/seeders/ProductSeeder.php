@@ -12,6 +12,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(50)->create();
+        // Memastikan ada produk yang di-seed
+        Product::factory(50)->create(); // Menambahkan 50 produk secara acak
     }
 }
