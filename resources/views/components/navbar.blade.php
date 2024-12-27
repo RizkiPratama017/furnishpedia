@@ -135,7 +135,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/order"
+                                <a href="/orders"
                                     class="block p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600">
                                     My Orders
                                 </a>

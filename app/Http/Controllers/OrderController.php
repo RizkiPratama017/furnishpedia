@@ -106,6 +106,21 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Status pengiriman berhasil diperbarui.');
     }
 
+
+    public function index()
+    {
+        // Ambil semua pesanan pengguna yang sedang login
+        $orders = Order::where('user_id', Auth::id())->with('orderDetails.product')->get();
+
+        return view('orders.index', compact('orders'));
+    }
+
+    public function show($id)
+{
+    $order = Order::with('orderDetails.product')->findOrFail($id);
+    return view('orders.show', compact('order'));
+}
+
     // Fungsi untuk menghitung ongkos kirim (contoh)
     private function calculateShippingCost(): float
     {
@@ -114,4 +129,5 @@ class OrderController extends Controller
 
         return max($shippingCost, 10000); // Pastikan ongkos kirim tidak kurang dari 10000
     }
+
 }
