@@ -20,10 +20,10 @@ class OrderController extends Controller
 
         // Buat pesanan baru
         $order = new Order();
-        $order->buyer_id = Auth::id(); // Menggunakan pengguna yang sedang login (sebagai pembeli)
+        $order->buyer_id = Auth::id();
         $order->shipping_address = $validatedData['address'];
         $order->payment_method = $validatedData['payment_method'];
-        $order->status = 'Pending'; // Status awal pesanan
+        $order->status = 'Pending';
 
         // Hitung total harga pesanan termasuk ongkos kirim
         $order->total_price = collect(session('cartItems'))->sum(
@@ -32,9 +32,9 @@ class OrderController extends Controller
         );
 
         // Tentukan ongkos kirim
-        $shippingCost = $this->calculateShippingCost(); // Fungsi untuk menghitung ongkos kirim
+        $shippingCost = $this->calculateShippingCost();
         $order->shipping_cost = $shippingCost;
-        $order->total_price += $shippingCost; // Tambahkan ongkos kirim ke total harga
+        $order->total_price += $shippingCost;
 
         // Simpan pesanan
         $order->save();
@@ -46,7 +46,7 @@ class OrderController extends Controller
                 'quantity' => $item['quantity'],
                 'price' => Product::find($item['product_id'])->price,
                 'subtotal' => Product::find($item['product_id'])->price * $item['quantity'],
-                'seller_id' => Product::find($item['product_id'])->user->id,  // Menggunakan seller_id dari produk
+                'seller_id' => Product::find($item['product_id'])->user->id,
             ]);
         }
 
@@ -60,7 +60,7 @@ class OrderController extends Controller
     // Method untuk mengambil pesanan seller yang sedang login
     public function sellerOrders(Request $request)
     {
-        $user = Auth::user(); // Ambil pengguna yang sedang login (penjual)
+        $user = Auth::user();
 
         // Pastikan hanya seller yang dapat mengakses
         if ($user->role !== 'seller') {
@@ -70,16 +70,16 @@ class OrderController extends Controller
         // Ambil pesanan terkait produk yang dijual oleh seller yang sedang login
         $orders = Order::whereHas('orderDetails', function ($query) use ($user) {
             $query->whereHas('product', function ($query) use ($user) {
-                $query->where('user_id', $user->id); // Filter berdasarkan user_id (seller_id)
+                $query->where('user_id', $user->id);
             });
         })
             ->with([
-                'buyer', // Ambil data pembeli
+                'buyer',
                 'orderDetails' => function ($query) use ($user) {
                     $query->whereHas('product', function ($query) use ($user) {
-                        $query->where('user_id', $user->id); // Pastikan hanya detail produk dari seller yang benar
+                        $query->where('user_id', $user->id);
                     })
-                        ->with('product'); // Ambil data produk terkait
+                        ->with('product');
                 },
             ])
             ->get();
@@ -107,27 +107,53 @@ class OrderController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua pesanan pengguna yang sedang login
-        $orders = Order::where('user_id', Auth::id())->with('orderDetails.product')->get();
+        $user = Auth::user();
 
-        return view('orders.index', compact('orders'));
+        // Ambil pesanan yang dimiliki oleh pembeli yang sedang login
+        $orders = Order::where('buyer_id', $user->id)
+            ->with('orderDetails.product')
+            ->get();
+
+        return view('orders.index', compact('orders'), ['title' => 'Pesanan']);
     }
 
+
     public function show($id)
-{
-    $order = Order::with('orderDetails.product')->findOrFail($id);
-    return view('orders.show', compact('order'));
-}
+    {
+
+        $userId = auth()->id();
+
+        // cari pesanan berdasarkan ID dan memastikan itu milik pembeli yang sedang login
+        $order = Order::with('orderDetails.product')
+            ->where('id', $id)
+            ->where('buyer_id', $userId)
+            ->firstOrFail();
+
+        return view('orders.show', compact('order'), ['title' => 'Detail Pesanan']);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        //  pesanan berdasarkan ID
+        $order = Order::findOrFail($id);
+
+        //  pesanan hanya bisa diubah jika statusnya "Dikirim"
+        if ($order->shipping_status === 'dikirim') {
+            $order->shipping_status = 'diterima';
+            $order->save();
+        }
+
+        return redirect()->route('orders.show', $order->id)->with('success', 'Status pesanan berhasil diubah.');
+    }
 
     // Fungsi untuk menghitung ongkos kirim (contoh)
     private function calculateShippingCost(): float
     {
         $ratePerKm = 5000; // Tarif per kilometer dalam IDR
-        $shippingCost = 20000; // Ongkos kirim dasar, bisa disesuaikan berdasarkan jarak atau aturan lainnya
+        $shippingCost = 20000; // Ongkos kirim dasar
 
-        return max($shippingCost, 10000); // Pastikan ongkos kirim tidak kurang dari 10000
+        return max($shippingCost, 10000); // ongkos kirim tidak kurang dari 10000
     }
-
 }
