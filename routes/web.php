@@ -24,6 +24,7 @@ use App\Http\Controllers\DashboardCategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\TokoController;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
@@ -180,3 +181,6 @@ Route::put('/orders/{order}/update-shipping-status', [OrderController::class, 'u
 
 //Histori
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
+
+//toko
+Route::get('/toko', [TokoController::class, 'index'])->name('toko.index');
