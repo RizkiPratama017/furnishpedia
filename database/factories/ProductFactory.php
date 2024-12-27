@@ -19,10 +19,10 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-
+        // Mengambil kategori secara acak
         $category = Category::inRandomOrder()->first();
 
-
+        // Menyusun daftar nama produk berdasarkan kategori
         $productNames = [
             'Meja' => ['Meja Makan', 'Meja Kerja', 'Meja Kopi', 'Meja Belajar', 'Meja Lipat'],
             'Kursi' => ['Kursi Makan', 'Kursi Kantor', 'Kursi Santai', 'Kursi Gaming', 'Kursi Lipat'],
@@ -38,22 +38,21 @@ class ProductFactory extends Factory
             'Peralatan Anak' => ['Tempat Tidur Bayi', 'Meja Belajar Anak', 'Mainan Edukasi', 'Rak Mainan']
         ];
 
-
         $categoryName = $category->name;
-        $productNamesForCategory = $productNames[$categoryName];
+        $productNamesForCategory = $productNames[$categoryName] ?? [];
 
-
+        // Mengambil nama produk secara acak berdasarkan kategori
         $name = fake()->randomElement($productNamesForCategory);
 
         return [
-            "user_id" => User::whereNotIn('role', ['penjual', 'buyer'])->inRandomOrder()->first()->id,
+            "user_id" => User::whereNotIn('role', ['admin', 'buyer'])->inRandomOrder()->first()->id,
             "category_id" => $category->id,
             "name" => $name,
             "description" => Str::slug(fake()->sentence()),
-            "price" => fake()->randomFloat(0, 10000, 10000000),
+            "price" => fake()->randomFloat(2, 10000, 10000000), // Memperbaiki nilai harga
             "stock" => fake()->numberBetween(1, 50),
             "image" => fake()->imageUrl(),
-            "weight" => fake()->randomFloat(0, 1, 1000),
+            "weight" => fake()->randomFloat(2, 0, 1000), // Memperbaiki nilai berat
         ];
     }
 }

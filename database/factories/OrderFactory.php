@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\OrderDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use GuzzleHttp\Client;
 
@@ -151,7 +152,7 @@ class OrderFactory extends Factory
                 ->get();
 
             foreach ($sellerProducts as $product) {
-                \App\Models\OrderDetail::factory()
+                OrderDetail::factory()
                     ->create([
                         'order_id' => $order->id,
                         'product_id' => $product->id,
@@ -165,7 +166,7 @@ class OrderFactory extends Factory
             }
 
             // Hitung total harga setelah detail pesanan dibuat
-            $orderDetails = \App\Models\OrderDetail::where('order_id', $order->id)->get();
+            $orderDetails = OrderDetail::where('order_id', $order->id)->get();
             $totalPrice = $orderDetails->sum('subtotal') + $order->shipping_cost;
 
             $order->update(['total_price' => $totalPrice]);
