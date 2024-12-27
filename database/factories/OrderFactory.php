@@ -50,12 +50,11 @@ class OrderFactory extends Factory
             : 'batal';
 
         return [
-            'user_id' => $seller->id, // Mengaitkan pesanan dengan seller tertentu
+            'buyer_id' => $buyer->id,
             'status' => $this->faker->randomElement(['pending', 'paid', 'shipped']),
-            'total_price' => 0, // Akan dihitung ulang setelah pesanan dibuat
+            'total_price' => 0,  // Akan dihitung setelah detail pesanan
             'shipping_cost' => $shippingCost,
             'shipping_address' => $buyer->address,
-            // 'seller_address' => $seller->address,
             'payment_method' => $this->faker->randomElement(['bank_transfer', 'credit_card', 'cash_on_delivery']),
             'payment_status' => $paymentStatus,
             'shipping_status' => $shippingStatus,
@@ -145,13 +144,18 @@ class OrderFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function ($order) {
-            $sellerProducts = Product::where('user_id', $order->user_id)->inRandomOrder()->take(rand(1, 5))->get();
+            // Ambil produk dari seller terkait
+            $sellerProducts = Product::where('user_id', $order->buyer->id)  // Sesuaikan dengan ID buyer, bukan seller
+                ->inRandomOrder()
+                ->take(rand(1, 5))
+                ->get();
 
             foreach ($sellerProducts as $product) {
                 \App\Models\OrderDetail::factory()
                     ->create([
                         'order_id' => $order->id,
                         'product_id' => $product->id,
+                        'seller_id' => $product->user->id,  // Seller ID berdasarkan produk
                         'price' => $product->price,
                         'quantity' => rand(1, 10),
                         'subtotal' => function (array $attributes) {
@@ -160,6 +164,7 @@ class OrderFactory extends Factory
                     ]);
             }
 
+            // Hitung total harga setelah detail pesanan dibuat
             $orderDetails = \App\Models\OrderDetail::where('order_id', $order->id)->get();
             $totalPrice = $orderDetails->sum('subtotal') + $order->shipping_cost;
 

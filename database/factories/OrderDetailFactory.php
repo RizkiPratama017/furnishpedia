@@ -22,14 +22,15 @@ class OrderDetailFactory extends Factory
         $product = Product::inRandomOrder()->first();
 
         return [
-            'order_id' => Order::inRandomOrder()->first()->id,
-            'product_id' => $product->id,
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'price' => $product->price, // Ambil harga dari produk untuk sinkronisasi
+            'order_id' => Order::inRandomOrder()->first()->id,  // Ambil ID pesanan secara acak
+            'product_id' => $product->id,  // Ambil ID produk yang dipilih
+            'quantity' => $this->faker->numberBetween(1, 10),  // Ambil jumlah produk secara acak
+            'price' => $product->price,  // Ambil harga produk
             'subtotal' => function (array $attributes) {
-                return $attributes['quantity'] * $attributes['price'];
+                return $attributes['quantity'] * $attributes['price'];  // Hitung subtotal berdasarkan quantity dan harga
             },
-            'seller_address' => $product->user->address,
+            'seller_id' => $product->user->id,  // Dapatkan ID seller berdasarkan produk
+            'seller_address' => $product->user->address,  // Dapatkan alamat seller dari produk
         ];
     }
 }

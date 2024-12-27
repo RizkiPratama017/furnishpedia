@@ -10,7 +10,8 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'seller_id',
+        'buyer_id',
         'status',
         'total_price',
         // 'shipping_cost',
@@ -20,6 +21,12 @@ class Order extends Model
         'shipping_status',
     ];
 
+    protected $casts = [
+        'shipping_cost' => 'float',
+        'total_price' => 'float',
+    ];
+
+
     // Menambahkan observer untuk memeriksa status pembayaran dan pembatalan pengiriman
     protected static function booted()
     {
@@ -27,7 +34,7 @@ class Order extends Model
             // Cek jika payment_status diubah menjadi "failed"
             if ($order->isDirty('payment_status') && $order->payment_status === 'failed') {
                 // Ubah shipping_status menjadi 'batal' jika payment_status gagal
-                $order->shipping_status = 'batal';  // Ganti dengan status yang sesuai jika perlu
+                $order->shipping_status = 'batal';
             }
         });
     }
@@ -36,7 +43,7 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
-        public function orderItems()
+    public function orderItems()
     {
         return $this->hasMany(OrderDetail::class, 'order_id');
     }
@@ -46,4 +53,13 @@ class Order extends Model
     }
 
 
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
+
+    public function buyer()
+    {
+        return $this->belongsTo(User::class, 'buyer_id');
+    }
 }

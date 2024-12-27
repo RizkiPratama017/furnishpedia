@@ -68,23 +68,39 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Order::class);
     }
 
-//     public function generateOtp()
-// {
-//     $this->otp = Str::random(6); // OTP 6 karakter
-//     $this->otp_expires_at = now()->addMinutes(10); // Berlaku 10 menit
-//     $this->save();
-// }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 
-// public function generateOtpAndSendEmail(Request $request)
-// {
-//     $user = User::find($request->user_id);
-//     $this->otp = rand(100000, 999999); // Generate OTP 6 digit angka
-//     $this->otp_expires_at = now()->addMinutes(10); // Berlaku selama 10 menit
-//     $this->save();
+    public function ordersAsSeller()
+    {
+        return $this->hasMany(Order::class, 'seller_id');
+    }
 
-//     // Kirim OTP ke email pengguna
-//     Mail::to($this->email)->send(new SendOTP($this->otp));
-// }
+    public function ordersAsBuyer()
+    {
+        return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+
+    //     public function generateOtp()
+    // {
+    //     $this->otp = Str::random(6); // OTP 6 karakter
+    //     $this->otp_expires_at = now()->addMinutes(10); // Berlaku 10 menit
+    //     $this->save();
+    // }
+
+    // public function generateOtpAndSendEmail(Request $request)
+    // {
+    //     $user = User::find($request->user_id);
+    //     $this->otp = rand(100000, 999999); // Generate OTP 6 digit angka
+    //     $this->otp_expires_at = now()->addMinutes(10); // Berlaku selama 10 menit
+    //     $this->save();
+
+    //     // Kirim OTP ke email pengguna
+    //     Mail::to($this->email)->send(new SendOTP($this->otp));
+    // }
 
 
 
