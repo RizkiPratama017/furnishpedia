@@ -20,10 +20,14 @@
                     <a href="/" class="block py-2 px-3 text-white rounded hover:bg-gray-100 hover:text-black"
                         aria-current="page">Home</a>
                 </li>
+
+                @if (auth()->user()->role === 'is_admin')
                 <li>
                     <a href="/category"
                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 hover:text-black">Category</a>
                 </li>
+                @endif
+                
                 <li>
                     <a href="/product"
                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 hover:text-black">Product</a>
