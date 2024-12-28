@@ -84,4 +84,22 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
+
+        public function preview(Request $request)
+    {
+        // Ambil produk yang dipilih
+        $selectedItems = $request->input('selected_items', []);
+
+        // Ambil detail produk dari database
+        $cartItems = Cart::whereIn('id', $selectedItems)->with('product')->get();
+
+        $totals = [
+            'totalPriceOfGoods' => $cartItems->sum(fn($item) => $item->product->price * $item->quantity),
+            'shippingCost' => 15000, // Contoh biaya kirim
+            'totalAmount' => $cartItems->sum(fn($item) => $item->product->price * $item->quantity) + 15000,
+        ];
+
+        return view('checkout', compact('cartItems', 'totals'));
+    }
+    
 }

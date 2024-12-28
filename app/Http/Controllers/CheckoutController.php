@@ -162,4 +162,22 @@ class CheckoutController extends Controller
 
         return view('dashboard-order', compact('order', 'orderItems', 'total'));
     }
+
+    public function preview(Request $request)
+{
+    // Ambil produk yang dipilih berdasarkan ID yang diterima
+    $selectedItems = explode(',', $request->input('selected_items', ''));
+
+    // Ambil detail produk dari database
+    $cartItems = Cart::whereIn('id', $selectedItems)->with('product')->get();
+
+    $totals = [
+        'totalPriceOfGoods' => $cartItems->sum(fn($item) => $item->product->price * $item->quantity),
+        'shippingCost' => 15000, // Contoh biaya kirim
+        'totalAmount' => $cartItems->sum(fn($item) => $item->product->price * $item->quantity) + 15000,
+    ];
+
+    return view('checkout', compact('cartItems', 'totals'));
+}
+
 }
