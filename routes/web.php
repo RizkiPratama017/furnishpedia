@@ -63,8 +63,6 @@ use App\Http\Controllers\TokoController;
     Route::get('auth/google/callback', 'callbackGoogle')->name('google-callback');
     });
 
-    
-
     //category
     Route::get('/categories/detail', [CategoryController::class, 'detail'])->name('categories.detail');
     Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
@@ -114,20 +112,20 @@ Route::middleware(['auth'])->group(function () {
     //cart
     Route::resource('/cart', CartController::class)->middleware('auth');
     Route::get('/cart', [CartController::class, 'indexCart'])->name('cart.index');
-
-    // route dashboard produk
-    Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
-    Route::get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
-
     
     //profile-title
     Route::get('/dashboard-profile', function () {
         return view('profile', ['title' => 'Profile']);
     });
+    
+
     // //profile-title
     // Route::get('/profile', function () {
     //     return view('profile', ['title' => 'Profile']);
     // });
+
+
+
     // profile
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
     Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
@@ -160,8 +158,6 @@ Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.ot
 //-----------------------Middleware Role == seller
 Route::middleware(['is_seller'])->group(function(){
 
-    //dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //dashboard-product
     Route::get('/dashboard-product', function () {
@@ -176,11 +172,14 @@ Route::middleware(['is_seller'])->group(function(){
     Route::put('/dashboard/product/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
     Route::post('/dashboard/product', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 
-
+     // route dashboard produk
+     Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
+     Route::get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
 });
 
 //------------------------Middleware Role == admin
 Route::middleware(['is_admin'])->group(function(){
+
 
     //dashboard-category
     Route::get('/dashboard-category', function () {
@@ -209,5 +208,13 @@ Route::middleware(['is_admin'])->group(function(){
     // route dashboard kategori
     Route::middleware('auth')->get('/dashboard/category', [CategoryController::class, 'index'])->name('dashboard.category');
     Route::middleware('auth')->get('/dashboard/category/{id}', [CategoryController::class, 'viewEdit'])->name('category.edit');
+
+});
+
+//------------------------Middleware Role == Seller or Admin
+Route::middleware(['is_seller_or_is_admin'])->group(function(){
+
+    //dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 });

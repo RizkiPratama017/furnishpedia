@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_buyer' => App\Http\Middleware\CheckBuyer::class,
             'is_seller' => App\Http\Middleware\CheckSeller::class,
             'is_admin' => App\Http\Middleware\CheckAdmin::class,
+            'is_seller_or_is_admin' => App\Http\Middleware\CheckSellerOrAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
