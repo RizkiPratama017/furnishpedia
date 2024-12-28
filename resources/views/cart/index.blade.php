@@ -19,9 +19,6 @@
                         <table class="table-auto w-full border-collapse">
                             <thead>
                                 <tr class="bg-gray-100">
-                                    <th class="px-4 py-2 text-left">
-                                        <input type="checkbox" id="select-all" class="form-checkbox">
-                                    </th>
                                     <th class="px-4 py-2 text-left">Produk</th>
                                     <th class="px-4 py-2 text-left">Harga</th>
                                     <th class="px-4 py-2 text-left">Jumlah</th>
@@ -32,10 +29,6 @@
                             <tbody>
                                 @foreach ($cartItems as $item)
                                     <tr class="border-b">
-                                        <td class="px-4 py-2">
-                                            <input type="checkbox" name="select-item" value="{{ $item->id }}"
-                                                class="form-checkbox">
-                                        </td>
                                         <td class="px-4 py-2 flex items-center gap-4">
                                             <img src="{{ filter_var($item->product->image, FILTER_VALIDATE_URL) ? $item->product->image : asset('storage/' . $item->product->image) }}"
                                                 alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded">
