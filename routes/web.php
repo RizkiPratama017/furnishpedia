@@ -32,11 +32,14 @@ use App\Http\Controllers\TokoController;
 
 Route::get('/', function () {
     $products = App\Models\Product::inRandomOrder()->take(6)->get();
+    $categories = App\Models\Category::all();
     return view('home', [
         'title' => 'Home Page',
-        'products' => $products
+        'products' => $products,
+        'categories' => $categories
     ]);
 });
+
 
 
 // // login

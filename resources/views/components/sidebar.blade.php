@@ -1,4 +1,4 @@
-<aside class="bg-gray-800 text-white w-64 p-4 flex flex-col hidden lg:block">
+<aside class="bg-gray-800 text-white w-64 p-4 flex flex-col hidden lg:block ">
     <ul class="space-y-2">
         {{-- Dashboard --}}
         <li>
@@ -14,12 +14,14 @@
             </a>
         </li>
 
-                @if(Auth::user()->role === 'admin')
+        {{-- Kategori --}}
+        @if (Auth::user()->role === 'admin')
             <!-- Tampilkan semua kategori -->
             <li>
                 <a href="/dashboard/category" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
-                    <svg class="w-6 h-6 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-white dark:text-gray-800" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z" />
                     </svg>
@@ -27,13 +29,7 @@
                 </a>
             </li>
         @else
-        
         @endif
-
-
-        
-        {{-- Kategori --}}
-        
 
         {{-- Produk --}}
         <li>
@@ -47,7 +43,7 @@
             </a>
         </li>
 
-        {{-- Order: Tampilkan Hanya untuk Penjual --}}
+        {{-- Order --}}
         @if (auth()->user()->role === 'seller')
             <li>
                 <a href="/dashboard/order" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
@@ -61,18 +57,6 @@
                 </a>
             </li>
         @endif
-
-        {{-- Profile --}}
-        <li>
-            <a href="/profile" class="block px-2 py-1 hover:bg-gray-700 rounded flex items-center">
-                <svg class="w-6 h-6 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-width="2"
-                        d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-                Profile
-            </a>
-        </li>
 
         {{-- Logout --}}
         <li>
