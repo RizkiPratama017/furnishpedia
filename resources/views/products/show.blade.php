@@ -58,37 +58,30 @@
                 <p class="text-sm text-gray-600 mb-4">{{ $product->description }}</p>
 
                 <!-- Rating -->
-                <div class="mb-4">
-                    <span class="font-semibold">Rating: </span>
-                    @if ($product->ratings->count() > 0)
-                        <div class="flex items-center">
-                            @php
-                                $averageRating = $product->averageRating();
-                            @endphp
-                            @for ($i = 1; $i <= 5; $i++)
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
-                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path
-                                        d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
-                                </svg>
-                            @endfor
-                            <span class="ml-2">{{ number_format($averageRating, 1) }} / 5</span>
-                        </div>
-                    @else
-                        <span>Belum Ada Rating</span>
-                    @endif
+                <div class="flex items-center px-4 py-3">
+                    @php
+                        $averageRating = $product->averageRating();
+                    @endphp
+                    @for ($i = 1; $i <= 5; $i++)
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                        </svg>
+                    @endfor
+                    <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} / 5</span>
                 </div>
 
                 <!-- Form Rating -->
                 @auth
                     @php
                         $userRating = $product->ratings->where('user_id', auth()->id())->first();
+                        $hasPurchased = $product->orderDetails->where('order.buyer_id', auth()->id())->isNotEmpty(); // Pastikan relasi sudah ada di model
                     @endphp
                     @if ($userRating)
-                        <p class="text-sm text-gray-500">Anda Sudah Memberikan Rating {{ $userRating->rating }}
-                            stars.</p>
-                    @else
+                        <p class="text-sm text-gray-500">Anda Sudah Memberikan Rating {{ $userRating->rating }} stars.</p>
+                    @elseif ($hasPurchased)
                         <form action="{{ route('ratings.store') }}" method="POST" class="mb-4">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -106,10 +99,12 @@
                                 class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md transition-all duration-300 hover:bg-blue-300">Submit
                                 Rating</button>
                         </form>
+                    @else
                     @endif
                 @else
                     <p class="text-sm text-gray-500">Silakan login untuk memberikan rating.</p>
                 @endauth
+
 
             </div>
         </div>

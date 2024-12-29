@@ -78,8 +78,7 @@
                                             d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
                                     </svg>
                                 @endfor
-                                <span class="ml-2 text-sm text-gray-500">{{ number_format($averageRating, 1) }} /
-                                    5</span>
+
                             </div>
                         </div>
                     </a>

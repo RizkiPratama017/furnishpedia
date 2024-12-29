@@ -64,74 +64,30 @@
                                     class="text-gray-400 mr-3 uppercase text-xs">{{ $product->category->name }}</span>
                                 <p class="text-lg font-bold text-black truncate block capitalize">{{ $product->name }}
                                 </p>
-                                <div class="flex items-center mt-3">
-                                    <p class="text-lg font-semibold text-black cursor-auto">
-                                        Rp.{{ number_format($product->price, 0, ',', '.') }}</p>
-                                    @if ($product->original_price)
-                                        <del>
-                                            <p class="text-sm text-gray-600 ml-2">
-                                                Rp.{{ number_format($product->original_price, 0, ',', '.') }}</p>
-                                        </del>
-                                    @endif
-
-                                    <!-- Tampilkan rating produk dengan Heroicons -->
-                                    <div class="ml-auto">
-                                        <div class="flex items-center">
-                                            @if ($product->ratings->count() > 0)
-                                                <div class="flex items-center text-yellow-500">
-                                                    <!-- Bintang penuh -->
-                                                    @for ($i = 0; $i < floor($product->averageRating()); $i++)
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                                                            fill="currentColor" viewBox="0 0 20 20">
-                                                            <path
-                                                                d="M10 15l-3.4 2.2 1-4.8L3 7.7l4.8-.4L10 3l2.2 4.5 4.8.4-3.6 4.7 1 4.8L10 15z" />
-                                                        </svg>
-                                                    @endfor
-
-                                                    <!-- Bintang setengah -->
-                                                    @if ($product->averageRating() > floor($product->averageRating()))
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                                                            fill="currentColor" viewBox="0 0 20 20">
-                                                            <path
-                                                                d="M10 15l-3.4 2.2 1-4.8L3 7.7l4.8-.4L10 3l2.2 4.5 4.8.4-3.6 4.7 1 4.8L10 15z" />
-                                                        </svg>
-                                                    @endif
-                                                </div>
-                                                <span
-                                                    class="ml-2 text-sm">{{ number_format($product->averageRating(), 1) }}
-                                                    / 5</span>
-                                            @else
-                                                <span class="text-gray-500">No ratings yet</span>
-                                            @endif
-                                        </div>
+                                <div class="mt-3 flex justify-between items-center">
+                                    <div>
+                                        <p class="text-lg font-semibold text-black cursor-auto">
+                                            Rp.{{ number_format($product->price, 0, ',', '.') }}</p>
+                                        @if ($product->original_price)
+                                            <del>
+                                                <p class="text-sm text-gray-600">
+                                                    Rp.{{ number_format($product->original_price, 0, ',', '.') }}</p>
+                                            </del>
+                                        @endif
                                     </div>
 
-                                    <div class="ml-auto">
-                                        <!-- Tombol Keranjang -->
-                                        @if ($product->stock > 0)
-                                            <form action="{{ route('cart.store') }}" method="POST"
-                                                class="flex items-center">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <input type="number" name="quantity" value="1" min="1"
-                                                    class="quantity-input w-16 h-8 p-2 border border-gray-300 rounded-md text-center"
-                                                    required>
-                                                <button type="submit"
-                                                    class="flex items-center justify-center w-8 h-8 bg-gray-200 text-white rounded-full transition-all duration-300 hover:bg-gray-300 active:ring-2 active:ring-yellow-400">
-                                                    <svg class="w-6 h-6 text-gray-800 dark:text-white"
-                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                        width="24" height="24" fill="none"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                        @else
-                                            <button type="button" disabled
-                                                class="flex items-center justify-center w-8 h-8 bg-gray-300 text-white rounded-full transition-all duration-300 cursor-not-allowed">
-                                                <svg class="w-6 h-6 text-gray-600" aria-hidden="true"
+                                    <!-- Tombol Keranjang -->
+                                    @if ($product->stock > 0)
+                                        <form action="{{ route('cart.store') }}" method="POST"
+                                            class="flex items-center space-x-2">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <input type="number" name="quantity" value="1" min="1"
+                                                class="quantity-input w-16 h-8 p-2 border border-gray-300 rounded-md text-center"
+                                                required>
+                                            <button type="submit"
+                                                class="flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-800 rounded-full transition-all duration-300 hover:bg-gray-300 active:ring-2 active:ring-yellow-400">
+                                                <svg class="w-6 h-6" aria-hidden="true"
                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round"
@@ -139,10 +95,37 @@
                                                         d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
                                                 </svg>
                                             </button>
-                                        @endif
-                                    </div>
+                                        </form>
+                                    @else
+                                        <button type="button" disabled
+                                            class="flex items-center justify-center w-10 h-10 bg-gray-300 text-white rounded-full transition-all duration-300 cursor-not-allowed">
+                                            <svg class="w-6 h-6 text-gray-600" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
+                                            </svg>
+                                        </button>
+                                    @endif
+                                </div>
+
+                                <!-- Tampilkan rating produk dengan Heroicons -->
+                                <div class="flex items-center px-4 py-3">
+                                    @php
+                                        $averageRating = $product->averageRating();
+                                    @endphp
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-5 w-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path
+                                                d="M10 15.27L16.18 19l-1.64-7.03L19 9.24l-7.19-.61L10 2 8.19 8.63 1 9.24l4.46 2.73L3.82 19z" />
+                                        </svg>
+                                    @endfor
 
                                 </div>
+
                             </div>
                         </a>
                     </div>

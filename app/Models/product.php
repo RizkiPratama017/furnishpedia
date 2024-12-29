@@ -33,4 +33,9 @@ class Product extends Model
     {
         return $this->ratings()->avg('rating') ?? 0;
     }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'product_id');
+    }
 }
