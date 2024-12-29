@@ -3,7 +3,7 @@
     $totalItems = $cartItems->sum('quantity') ?? 0;
 @endphp
 
-<nav class="bg-white dark:bg-gray-800 sticky top-0 z-50">
+<nav class="bg-white dark:bg-gray-800 fixed top-0 left-0 w-full z-50 shadow-lg">
     <div class="max-w-screen-xl px-4 mx-auto py-4">
         <div class="flex items-center justify-between">
 
@@ -68,10 +68,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                     </svg>
-                    <span class="ml-2">My Cart ({{ $totalItems ?? 0 }})</span>
-                    <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        viewBox="0 0 24 24">
+                    <span class="ml-2 hidden sm:block">My Cart ({{ $totalItems ?? 0 }})</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="m19 9-7 7-7-7" />
                     </svg>
@@ -115,10 +114,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
-                    Account
-                    <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        viewBox="0 0 24 24">
+                    <span class="hidden sm:block">Account</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="m19 9-7 7-7-7" />
                     </svg>
