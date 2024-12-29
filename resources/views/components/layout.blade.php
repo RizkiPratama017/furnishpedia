@@ -144,6 +144,23 @@
                 window.location.href = '/search?q=' + this.value;
             }
         });
+
+        window.onscroll = function() {
+            stickyNavbar()
+        };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop; // position navbar relative to top of page
+
+        function stickyNavbar() {
+            if (window.pageYOffset > sticky) {
+                navbar.classList.add("fixed", "top-0", "left-0", "w-full");
+                navbar.classList.remove("sticky");
+            } else {
+                navbar.classList.remove("fixed", "top-0", "left-0", "w-full");
+                navbar.classList.add("sticky");
+            }
+        }
     </script>
 
     <!-- Flowbite JavaScript -->
