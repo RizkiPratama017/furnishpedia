@@ -3,7 +3,7 @@
     $totalItems = $cartItems->sum('quantity') ?? 0;
 @endphp
 
-<nav class="bg-white dark:bg-gray-800 fixed top-0 left-0 w-full z-50 shadow-lg">
+<nav id="navbar" class="bg-white dark:bg-gray-800 w-full z-50 shadow-lg">
     <div class="max-w-screen-xl px-4 mx-auto py-4">
         <div class="flex items-center justify-between">
 
