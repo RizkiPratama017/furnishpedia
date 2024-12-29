@@ -11,15 +11,14 @@
                         <rect x="14" y="1" width="7" height="6"></rect>
                         <rect x="14" y="11" width="7" height="12"></rect>
                     </svg>
-                    <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">Ruma</span>
+                    <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">Furnishpedia</span>
                 </a>
                 <div class="mt-4 lg:max-w-sm">
                     <p class="text-sm text-gray-800">
-                        Ruma adalah Marketplace yang Menjual Furnitur Rumah
+                        Furnishpedia adalah Marketplace yang Menjual Furnitur Rumah
                     </p>
                     <p class="mt-4 text-sm text-gray-800">
-                        Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-                        explicabo.
+                        dikerjakan oleh kelompok DigitalDreamers
                     </p>
                 </div>
             </div>
