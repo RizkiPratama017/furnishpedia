@@ -69,7 +69,7 @@
                                             </p>
                                         </div>
                                         <div class="inline-flex items-center text-base font-semibold text-gray-900">
-                                            IDR {{ number_format($transaction->total_price, 0, ',', '.') }}
+                                            Rp{{ number_format($transaction->total_price, 0, ',', '.') }}
                                         </div>
                                     </div>
                                 </li>
