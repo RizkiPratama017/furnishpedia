@@ -57,6 +57,10 @@
         </div>
 
         <div class="mt-6">
+            <a href="{{ route('orders.pdf', $order->id) }}"
+                class="inline-block bg-red-600 text-white text-center py-2 px-4 rounded-lg hover:bg-gray-700 transition">
+                Unduh PDF
+            </a>
             <a href="/orders"
                 class="inline-block bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-gray-700 transition">
                 Kembali

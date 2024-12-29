@@ -30,51 +30,51 @@ use App\Http\Controllers\TokoController;
 
 //------------------Middleware Role == all
 
-    Route::get('/', function () {
-        $products = App\Models\Product::inRandomOrder()->take(6)->get();
-        return view('home', [
-            'title' => 'Home Page',
-            'products' => $products
-        ]);
-    });
+Route::get('/', function () {
+    $products = App\Models\Product::inRandomOrder()->take(6)->get();
+    return view('home', [
+        'title' => 'Home Page',
+        'products' => $products
+    ]);
+});
 
 
-    // // login
-    // Route::view('/login', 'login')->name('login');
-    // // Route::view('/register', 'register')->name('register');
-   
-    //toko
-    Route::get('/toko/{id}', [TokoController::class, 'index'])->name('toko.index');
+// // login
+// Route::view('/login', 'login')->name('login');
+// // Route::view('/register', 'register')->name('register');
 
-    //products
-    Route::resource('products', ProductController::class)->except(['index'])->middleware('auth');
-    Route::get('products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/product', [ProductController::class, 'search'])->name('products.search');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-    
-    //live search
-    Route::get('/search', [CariController::class, 'search'])->name('search');
-    Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
-    Route::get('/search/suggestions', [CariController::class, 'getSuggestions']);
+//toko
+Route::get('/toko/{id}', [TokoController::class, 'index'])->name('toko.index');
 
-    //google API
-    Route::controller(GoogleAuthController::class)->group(function () {
+//products
+Route::resource('products', ProductController::class)->except(['index'])->middleware('auth');
+Route::get('products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/product', [ProductController::class, 'search'])->name('products.search');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+//live search
+Route::get('/search', [CariController::class, 'search'])->name('search');
+Route::get('/search/live', [CariController::class, 'liveSearch'])->name('search.live');
+Route::get('/search/suggestions', [CariController::class, 'getSuggestions']);
+
+//google API
+Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
     Route::get('auth/google/callback', 'callbackGoogle')->name('google-callback');
-    });
+});
 
-    //category
-    Route::get('/categories/detail', [CategoryController::class, 'detail'])->name('categories.detail');
-    Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+//category
+Route::get('/categories/detail', [CategoryController::class, 'detail'])->name('categories.detail');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
-    // // Dummy routes untuk login sosial
-    // Route::get('/login/{provider}', function ($provider) {
-    //     return "Login with $provider not implemented yet!";
-    // })->name('social.login');
+// // Dummy routes untuk login sosial
+// Route::get('/login/{provider}', function ($provider) {
+//     return "Login with $provider not implemented yet!";
+// })->name('social.login');
 
 //------------------Middleware Role == guest
 Route::middleware(['guest'])->group(function () {
-    
+
     //login
     Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
     Route::post('/login', [LoginController::class, 'authenticate']);
@@ -87,13 +87,11 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/forgot-password', function () {
         return view('auth.forgot-password');
     })->name('password.request');
-   
-    
 });
 
 //------------------Middleware Role == Auth
 Route::middleware(['auth'])->group(function () {
-    
+
     //logout
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
@@ -108,16 +106,17 @@ Route::middleware(['auth'])->group(function () {
     //Histori
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-    
+    Route::get('/orders/{id}/pdf', [OrderController::class, 'generatePDF'])->name('orders.pdf');
+
     //cart
     Route::resource('/cart', CartController::class)->middleware('auth');
     Route::get('/cart', [CartController::class, 'indexCart'])->name('cart.index');
-    
+
     //profile-title
     Route::get('/dashboard-profile', function () {
         return view('profile', ['title' => 'Profile']);
     });
-    
+
 
     // //profile-title
     // Route::get('/profile', function () {
@@ -146,17 +145,16 @@ Route::middleware(['auth'])->group(function () {
 
 
 // ----------------------Middleware Role == buyer
-Route::middleware(['is_buyer'])->group(function(){
+Route::middleware(['is_buyer'])->group(function () {
 
-//otp - buka toko
-Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
-Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.otp');
-
+    //otp - buka toko
+    Route::post('/send-otp', [OtpController::class, 'sendOTP'])->name('send.otp');
+    Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('verify.otp');
 });
 
 
 //-----------------------Middleware Role == seller
-Route::middleware(['is_seller'])->group(function(){
+Route::middleware(['is_seller'])->group(function () {
 
 
     //dashboard-product
@@ -172,13 +170,13 @@ Route::middleware(['is_seller'])->group(function(){
     Route::put('/dashboard/product/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
     Route::post('/dashboard/product', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 
-     // route dashboard produk
-     Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
-     Route::get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
+    // route dashboard produk
+    Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
+    Route::get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
 });
 
 //------------------------Middleware Role == admin
-Route::middleware(['is_admin'])->group(function(){
+Route::middleware(['is_admin'])->group(function () {
 
 
     //dashboard-category
@@ -203,18 +201,16 @@ Route::middleware(['is_admin'])->group(function(){
     Route::resource('categories', CategoryController::class)->middleware('auth')->except('show');
     Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
     Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('categories.update')->middleware('auth');
-    
+
 
     // route dashboard kategori
     Route::middleware('auth')->get('/dashboard/category', [CategoryController::class, 'index'])->name('dashboard.category');
     Route::middleware('auth')->get('/dashboard/category/{id}', [CategoryController::class, 'viewEdit'])->name('category.edit');
-
 });
 
 //------------------------Middleware Role == Seller or Admin
-Route::middleware(['is_seller_or_is_admin'])->group(function(){
+Route::middleware(['is_seller_or_is_admin'])->group(function () {
 
     //dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 });

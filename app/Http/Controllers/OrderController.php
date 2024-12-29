@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -155,5 +156,16 @@ class OrderController extends Controller
         $shippingCost = 20000; // Ongkos kirim dasar
 
         return max($shippingCost, 10000); // ongkos kirim tidak kurang dari 10000
+    }
+
+    //pdf reporting
+    public function generatePDF($id)
+    {
+        $order = Order::with('orderDetails.product')->findOrFail($id);
+
+        $title = 'Detail Pesanan #' . $order->id; // Menambahkan judul dinamis berdasarkan ID pesanan
+
+        $pdf = Pdf::loadView('orders.pdf', compact('order', 'title'));
+        return $pdf->download('order-detail-' . $order->id . '.pdf');
     }
 }
