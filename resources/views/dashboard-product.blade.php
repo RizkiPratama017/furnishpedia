@@ -11,10 +11,12 @@
                 {{-- Header --}}
                 <div class="flex flex-wrap justify-between items-center mb-6">
                     <h1 class="text-2xl font-bold text-gray-800">Produk</h1>
-                    <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-                        data-modal-target="modal_add" data-modal-toggle="modal_add" type="button">
-                        Tambah
-                    </button>
+                    @if (auth()->user()->role === 'seller')
+                        <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                            data-modal-target="modal_add" data-modal-toggle="modal_add" type="button">
+                            Tambah
+                        </button>
+                    @endif
                 </div>
 
                 {{-- Alert --}}
@@ -86,8 +88,10 @@
                                     <td class="px-4 py-2 border">{{ $product->weight }}</td>
                                     <td class="px-4 py-2 border text-center">
                                         {{-- Button Edit --}}
-                                        <a href="/dashboard/product/{{ $product->id }}"
-                                            class="text-blue-500 hover:text-blue-700 mx-2">Edit</a>
+                                        @if (auth()->user()->role === 'seller')
+                                            <a href="/dashboard/product/{{ $product->id }}"
+                                                class="text-blue-500 hover:text-blue-700 mx-2">Edit</a>
+                                        @endif
 
                                         {{-- Button Delete --}}
                                         <form action="{{ route('products.destroy', $product->id) }}" method="POST"
@@ -98,6 +102,7 @@
                                                 onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
                                         </form>
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

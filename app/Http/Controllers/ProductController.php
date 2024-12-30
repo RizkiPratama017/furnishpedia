@@ -42,20 +42,26 @@ class ProductController extends Controller
     {
         $query = $request->input('search');
         $categories = \App\Models\Category::all();
+        $user = auth()->user();
 
+        //  produk yang akan ditampilkan
+        if ($user->role === 'admin') {
 
-        $userId = auth()->id();
-
-        // Filter produk berdasarkan user_id dan query pencarian
-        $products = Product::where('user_id', $userId) // Filter produk milik pengguna yang login
-            ->where(function ($q) use ($query) {
+            $products = Product::where(function ($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%")
                     ->orWhere('description', 'LIKE', "%{$query}%");
-            })
-            ->paginate(5);
+            })->paginate(5);
+        } else {
+            // seller hanya melihat produk mereka sendiri
+            $products = Product::where('user_id', $user->id)
+                ->where(function ($q) use ($query) {
+                    $q->where('name', 'LIKE', "%{$query}%")
+                        ->orWhere('description', 'LIKE', "%{$query}%");
+                })->paginate(5);
+        }
+
 
         if ($request->ajax()) {
-
             return view('dashboard-product-table', compact('products'));
         }
 
@@ -67,6 +73,7 @@ class ProductController extends Controller
             'searchQuery' => $query
         ]);
     }
+
 
 
 
@@ -82,28 +89,6 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
-            'weight' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $validatedData['user_id'] = Auth::id();
-
-        if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('img', 'public');
-        }
-
-        Product::create($validatedData);
-
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
-    }
 
 
     public function destroy($id)
@@ -117,22 +102,45 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dihapus!');
     }
 
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'weight' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Make sure user_id is correctly set (it was in the factory)
+        $validatedData['user_id'] = Auth::id();
+
+        if ($request->hasFile('image')) {
+            $validatedData['image'] = $request->file('image')->store('img', 'public');
+        }
+
+        Product::create($validatedData);
+
+        return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
+    }
+
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:500',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'weight' => 'required|integer',
+            'weight' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'image_url' => 'nullable|url',
         ]);
 
-        // Update field produk
+        // Update product attributes
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
@@ -140,32 +148,30 @@ class ProductController extends Controller
         $product->weight = $request->weight;
         $product->category_id = $request->category_id;
 
-        //gambar
+        // Handle image update
         if ($request->hasFile('image')) {
-
-            if ($request->old_image && !filter_var($request->old_image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($request->old_image);
+            if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($product->image);
             }
-
             $product->image = $request->file('image')->store('img', 'public');
-        } elseif ($request->filled('image_url')) {
-
-            if ($request->old_image && !filter_var($request->old_image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($request->old_image);
-            }
-
-            $product->image = $request->image_url;
         }
-
 
         $product->save();
 
         return redirect('/dashboard/product')->with('success', 'Produk berhasil diperbarui!');
     }
 
+
     public function dproduk()
     {
-        $products = Product::where('user_id', Auth::user()->id)->paginate(5);
+        if (Auth::user()->role === 'admin') {
+
+            $products = Product::paginate(5);
+        } else {
+
+            $products = Product::where('user_id', Auth::user()->id)->paginate(5);
+        }
+
         $categories = Category::all();
 
         return view('dashboard-product', [
@@ -174,7 +180,6 @@ class ProductController extends Controller
             'categories' => $categories
         ]);
     }
-
 
 
     public function show($id)
