@@ -15,9 +15,13 @@
             <td class="px-4 py-2 border">Rp{{ number_format($product->price, 0, ',', '.') }}</td>
             <td class="px-4 py-2 border">{{ $product->stock }}</td>
             <td class="px-4 py-2 border">{{ $product->category->name ?? 'Tidak ada' }}</td>
+            <td class="px-4 py-2 border">{{ $product->weight }}</td>
             <td class="px-4 py-2 border text-center">
                 {{-- Button Edit --}}
-                <a href="/dashboard/product/{{ $product->id }}" class="text-blue-500 hover:text-blue-700 mx-2">Edit</a>
+                @if (auth()->user()->role === 'seller')
+                    <a href="/dashboard/product/{{ $product->id }}"
+                        class="text-blue-500 hover:text-blue-700 mx-2">Edit</a>
+                @endif
 
                 {{-- Button Delete --}}
                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
@@ -27,6 +31,7 @@
                         onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
                 </form>
             </td>
+
         </tr>
     @endforeach
 @endif

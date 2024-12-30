@@ -160,21 +160,21 @@ Route::middleware(['is_buyer'])->group(function () {
 Route::middleware(['is_seller'])->group(function () {
 
 
-    //dashboard-product
-    Route::get('/dashboard-product', function () {
-        if (Auth::user()->role == 'buyer') {
-            return redirect('/');
-        }
-        $products = App\Models\Product::all();
-        return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
-    });
+    // //dashboard-product
+    // Route::get('/dashboard-product', function () {
+    //     if (Auth::user()->role == 'buyer') {
+    //         return redirect('/');
+    //     }
+    //     $products = App\Models\Product::all();
+    //     return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
+    // });
 
     //fungsi CRUD produk
     Route::put('/dashboard/product/{id}', [ProductController::class, 'update'])->name('products.update')->middleware('auth');
     Route::post('/dashboard/product', [ProductController::class, 'store'])->name('products.store')->middleware('auth');
 
     // route dashboard produk
-    Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
+    // Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
     Route::get('/dashboard/product/{id}', [ProductController::class, 'viewEdit'])->name('product.edit');
 });
 
@@ -189,15 +189,6 @@ Route::middleware(['is_admin'])->group(function () {
         }
         $categories = App\Models\Category::all();
         return view('dashboard-category', ['title' => 'Dashboard Kategori', 'categories' => $categories]);
-    });
-
-    //dashboard-product
-    Route::get('/dashboard-product', function () {
-        if (Auth::user()->role == 'buyer') {
-            return redirect('/');
-        }
-        $products = App\Models\Product::all();
-        return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
     });
 
     // fungsi CRUD Category
@@ -216,4 +207,14 @@ Route::middleware(['is_seller_or_is_admin'])->group(function () {
 
     //dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    //dashboard-product
+    Route::get('/dashboard-product', function () {
+        if (Auth::user()->role == 'buyer') {
+            return redirect('/');
+        }
+        $products = App\Models\Product::all();
+        return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
+    });
+    Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
 });
