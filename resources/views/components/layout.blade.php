@@ -44,6 +44,13 @@
         #search-suggestions div:hover {
             background-color: #f0f0f0;
         }
+
+        #navbar {
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -145,16 +152,17 @@
             }
         });
 
-        window.onscroll = function() {
-            stickyNavbar()
+        window.onload = window.onscroll = function() {
+            stickyNavbar();
         };
 
         var navbar = document.getElementById("navbar");
-        var sticky = navbar.offsetTop; // position navbar relative to top of page
+        var sticky = navbar.offsetTop; // Posisi awal navbar terhadap atas halaman
 
         function stickyNavbar() {
             if (window.pageYOffset > sticky) {
                 navbar.classList.add("fixed", "top-0", "left-0", "w-full");
+                navbar.style.zIndex = "1050";
                 navbar.classList.remove("sticky");
             } else {
                 navbar.classList.remove("fixed", "top-0", "left-0", "w-full");

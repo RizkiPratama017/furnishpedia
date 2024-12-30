@@ -5,6 +5,35 @@
         <x-navbar></x-navbar>
     </header>
 
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" data-dismiss="alert">
+                <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M14.348 5.652a.5.5 0 10-.707.707L9.707 10l3.934 3.934a.5.5 0 00.707-.707L10.414 10l3.934-3.934z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" data-dismiss="alert">
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M14.348 5.652a.5.5 0 10-.707.707L9.707 10l3.934 3.934a.5.5 0 00.707-.707L10.414 10l3.934-3.934z">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    @endif
+
+
     <div class="container mx-auto px-4">
         {{-- Carousel --}}
         <div id="default-carousel" class="relative w-full mb-10" data-carousel="slide">
