@@ -1,5 +1,5 @@
 # Gunakan base image PHP dengan FPM untuk Laravel
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fpm
 
 # Install dependensi sistem yang dibutuhkan Laravel
 RUN apk add --no-cache --update \
