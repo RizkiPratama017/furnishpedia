@@ -1,0 +1,25 @@
+# Ignore vendor folder, karena sudah diinstall dengan composer
+/vendor
+
+# Ignore node_modules folder, karena sudah diinstall dengan npm
+/node_modules
+
+# Ignore .env file karena mengandung informasi sensitif
+/.env
+
+# Ignore folder cache atau log
+/storage/*
+/bootstrap/cache/*
+
+# Ignore file editor lokal
+/.idea/
+/.vscode/
+/*.sublime-workspace
+/*.sublime-project
+
+# Ignore file OS atau file konfigurasi lokal
+.DS_Store
+Thumbs.db
+
+# Ignore file build dari frontend
+/public/build
