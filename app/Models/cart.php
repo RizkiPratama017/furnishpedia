@@ -16,29 +16,14 @@ class Cart extends Model
         'price',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
 
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-
-
-    // Fungsi untuk menghitung ongkos kirim berdasarkan berat produk
-    public function hitungOngkosKirim()
+    public function user()
     {
-        // Tarif ongkos kirim per kg (misalnya, 5.000)
-        // $tarifPerKg = 5000;
-
-        // // Ambil berat produk
-        // $beratProduk = $this->product->weight; // Pastikan kolom weight ada pada tabel produk
-        // $quantity = $this->quantity;
-
-        // r eturn $tarifPerKg * $beratProduk * $quantity;
+        return $this->belongsTo(User::class);
     }
 }

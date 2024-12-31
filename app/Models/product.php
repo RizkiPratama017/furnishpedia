@@ -13,16 +13,6 @@ class Product extends Model
     protected $fillable = ['name', 'description', 'price', 'stock', 'image', 'user_id', 'category_id', 'weight'];
 
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function ratings()
     {
         return $this->hasMany(Rating::class);
@@ -36,5 +26,15 @@ class Product extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class, 'product_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
