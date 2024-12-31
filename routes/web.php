@@ -30,6 +30,16 @@ use App\Http\Controllers\TokoController;
 
 //------------------Middleware Role == all
 
+// Route::get('/', function () {
+//     $products = App\Models\Product::inRandomOrder()->take(6)->get();
+//     $categories = App\Models\Category::all();
+//     return view('home', [
+//         'title' => 'Home Page',
+//         'products' => $products,
+//         'categories' => $categories
+//     ]);
+// });
+
 Route::get('/', function () {
     $products = Product::inRandomOrder()->take(6)->get();
     $categories = Category::all();
@@ -39,7 +49,6 @@ Route::get('/', function () {
         'categories' => $categories
     ]);
 });
-
 
 
 // // login
