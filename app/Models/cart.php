@@ -39,6 +39,6 @@ class Cart extends Model
         // $beratProduk = $this->product->weight; // Pastikan kolom weight ada pada tabel produk
         // $quantity = $this->quantity;
 
-        // return $tarifPerKg * $beratProduk * $quantity;
+        // r eturn $tarifPerKg * $beratProduk * $quantity;
     }
 }
