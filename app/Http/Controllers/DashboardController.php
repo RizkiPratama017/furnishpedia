@@ -61,7 +61,8 @@ class DashboardController extends Controller
         $transactionsChange = $this->calculatePercentageChange($lastMonthTransactionsCount, $currentMonthTransactionsCount);
 
         // Menyiapkan data untuk chart
-        $monthlyRevenue = Order::selectRaw('SUM(total_price) as total, strftime("%Y-%m", created_at) as month') // Menggunakan strftime untuk SQLite
+        // Menyiapkan data untuk chart
+        $monthlyRevenue = Order::selectRaw('SUM(total_price) as total, DATE_FORMAT(created_at, "%Y-%m") as month') // Ganti strftime dengan DATE_FORMAT untuk MySQL
             ->whereHas('orderDetails', function ($query) use ($userId) {
                 $query->where('seller_id', $userId);
             })
@@ -69,6 +70,7 @@ class DashboardController extends Controller
             ->groupBy('month')
             ->orderBy('month')
             ->get();
+
 
         // Menyiapkan label dan data revenue
         $labels = [];
