@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OtpController;
+use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\CariController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TokoController;
 use App\Http\Controllers\UserController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\LoginController;
@@ -16,15 +18,14 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukaTokoController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\DashboardCategoryController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Middleware\RoleMiddleware;
-use App\Http\Controllers\TokoController;
 
 
 
@@ -129,8 +130,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     // profile
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
-    Route::patch('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
     //buka toko
     Route::get('/bukatoko', [BukaTokoController::class, 'index'])->name('bukatoko');
@@ -187,7 +188,7 @@ Route::middleware(['is_admin'])->group(function () {
         if (Auth::user()->role == 'is_seller') {
             return redirect('/');
         }
-        $categories = App\Models\Category::all();
+        $categories = Category::all();
         return view('dashboard-category', ['title' => 'Dashboard Kategori', 'categories' => $categories]);
     });
 
@@ -213,7 +214,7 @@ Route::middleware(['is_seller_or_is_admin'])->group(function () {
         if (Auth::user()->role == 'buyer') {
             return redirect('/');
         }
-        $products = App\Models\Product::all();
+        $products = Product::all();
         return view('dashboard-product', ['title' => 'Dashboard Produk', 'products' => $products]);
     });
     Route::get('/dashboard/product', [ProductController::class, 'dproduk'])->name('dashboard.product');
