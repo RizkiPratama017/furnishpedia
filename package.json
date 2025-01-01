@@ -2,13 +2,14 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "cross-env NODE_ENV=production vite build",
         "dev": "vite"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.4",
         "concurrently": "^9.0.1",
+        "cross-env": "^7.0.3",
         "laravel-vite-plugin": "^1.1.0",
         "postcss": "^8.4.49",
         "postcss-cli": "^11.0.0",
