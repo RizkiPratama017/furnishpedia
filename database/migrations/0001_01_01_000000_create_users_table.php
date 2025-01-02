@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->enum('role', ['admin', 'seller', 'buyer'])->default('buyer');
             $table->boolean('is_active')->default(true);
-            $table->string('remember_token', 100)->nullable();
+            $table->string('remember_token', 255)->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
             $table->string('address')->nullable();
