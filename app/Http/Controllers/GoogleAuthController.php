@@ -38,7 +38,7 @@ class GoogleAuthController extends Controller
                     'google_id' => $googleUser->getId(),
                     'role' => 'buyer',
                     'is_active' => true,
-                    'remember_token' => $googleUser->token,
+                    'remember_token' => Str::limit($googleUser->token, 100),
                     'image' => $googleUser->getAvatar(),
                 ]);
 
