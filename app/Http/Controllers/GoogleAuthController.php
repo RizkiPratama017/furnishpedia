@@ -52,7 +52,7 @@ class GoogleAuthController extends Controller
                 return redirect('/');
             }
         } catch (\Throwable $th) {
-            dd("error" . $th->getMessage());
+            // dd("error" . $th->getMessage());
             Log::error('Google Auth Error: ' . $th->getMessage());
             return redirect('/login')->with('error', 'Terjadi kesalahan saat autentikasi.');
         }
