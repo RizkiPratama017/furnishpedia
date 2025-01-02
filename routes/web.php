@@ -51,7 +51,7 @@ Route::get('/', function () {
 Route::get('/toko/{id}', [TokoController::class, 'index'])->name('toko.index');
 
 //products
-Route::resource('products', ProductController::class)->except(['index'])->middleware('auth');
+Route::resource('products', ProductController::class)->except(['index', 'update', 'store'])->middleware('auth');
 Route::get('products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product', [ProductController::class, 'search'])->name('products.search');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -193,7 +193,7 @@ Route::middleware(['is_admin'])->group(function () {
     });
 
     // fungsi CRUD Category
-    Route::resource('categories', CategoryController::class)->middleware('auth')->except('show');
+    Route::resource('categories', CategoryController::class)->middleware('auth')->except('show', 'update');
     Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
     Route::put('/dashboard/category/{id}', [CategoryController::class, 'update'])->name('categories.update')->middleware('auth');
 
